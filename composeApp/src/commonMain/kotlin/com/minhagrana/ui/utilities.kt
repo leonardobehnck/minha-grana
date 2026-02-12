@@ -3,10 +3,10 @@ package com.minhagrana.ui
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 
 
 fun isValidEmail(email: String): Boolean {
