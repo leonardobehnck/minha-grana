@@ -209,8 +209,8 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
     // ==================== AGGREGATIONS ====================
 
     suspend fun calculateMonthTotals(monthId: Long): Triple<Double, Double, Double> {
-        val income = queries.sumIncomeByMonthId(monthId).executeAsOne().total ?: 0.0
-        val expense = queries.sumExpenseByMonthId(monthId).executeAsOne().total ?: 0.0
+        val income = queries.sumIncomeByMonthId(monthId).executeAsOne()
+        val expense = queries.sumExpenseByMonthId(monthId).executeAsOne()
         val balance = income - expense
         return Triple(income, expense, balance)
     }
