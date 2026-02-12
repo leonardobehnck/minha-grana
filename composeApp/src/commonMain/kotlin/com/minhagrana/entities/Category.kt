@@ -1,4 +1,4 @@
-package com.app.minhagrana.entities
+package com.minhagrana.entities
 
 import androidx.compose.ui.graphics.Color
 import com.app.minhagrana.ui.theme.categoryBaby

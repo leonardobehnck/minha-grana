@@ -1,4 +1,4 @@
-package com.app.minhagrana.entities
+package com.minhagrana.entities
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

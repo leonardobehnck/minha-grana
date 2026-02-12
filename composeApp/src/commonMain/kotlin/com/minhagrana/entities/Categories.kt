@@ -1,4 +1,4 @@
-package com.app.minhagrana.entities
+package com.minhagrana.entities
 
 import com.app.minhagrana.ui.theme.categoryBaby
 import com.app.minhagrana.ui.theme.categoryHealth
