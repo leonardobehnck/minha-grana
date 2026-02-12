@@ -8,7 +8,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 
-
 fun isValidEmail(email: String): Boolean {
     val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
     return email.matches(emailRegex)
@@ -22,17 +21,38 @@ fun formatDoubleToBRL(value: Double): String {
     val intPart = absValue.toLong()
     val decPart = ((absValue - intPart) * 100 + 0.5).toLong()
 
-    val intStr = if (intPart == 0L) "0" else intPart.toString().reversed().chunked(3).joinToString(".").reversed()
+    val intStr =
+        if (intPart == 0L) {
+            "0"
+        } else {
+            intPart
+                .toString()
+                .reversed()
+                .chunked(3)
+                .joinToString(".")
+                .reversed()
+        }
     val decStr = decPart.toString().padStart(2, '0')
 
     val sign = if (isNegative) "-" else ""
     return "${sign}R$ $intStr,$decStr"
 }
 
-private val monthNamesPtBr = listOf(
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-)
+private val monthNamesPtBr =
+    listOf(
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro",
+    )
 
 val currentMonth: String
     get() {
@@ -46,7 +66,10 @@ fun getCurrentDate(): String {
     val now = Clock.System.now()
     val localDateTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
     val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
-    val month = localDateTime.month.number.toString().padStart(2, '0')
+    val month =
+        localDateTime.month.number
+            .toString()
+            .padStart(2, '0')
     val year = localDateTime.year
     return "$day/$month/$year"
 }

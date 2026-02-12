@@ -61,11 +61,12 @@ fun Balance(
             }
             Icon(
                 modifier = Modifier.noRippleClickable { isBalanceVisible = !isBalanceVisible },
-                painter = if (isBalanceVisible) {
-                    painterResource(Res.drawable.ic_hide)
-                } else {
-                    painterResource(Res.drawable.ic_unhide)
-                },
+                painter =
+                    if (isBalanceVisible) {
+                        painterResource(Res.drawable.ic_hide)
+                    } else {
+                        painterResource(Res.drawable.ic_unhide)
+                    },
                 contentDescription = "hide balance",
                 tint = gray,
             )

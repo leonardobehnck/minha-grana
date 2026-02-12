@@ -14,8 +14,9 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DatabaseHelper(private val database: MinhaGranaDatabase) {
-
+class DatabaseHelper(
+    private val database: MinhaGranaDatabase,
+) {
     private val queries = database.minhaGranaDatabaseQueries
 
     // ==================== USER ====================
@@ -26,25 +27,21 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
             name = user.name,
             email = user.email,
             password = user.password,
-            balance_visibility = user.balanceVisibility
+            balance_visibility = user.balanceVisibility,
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getAllUsersFlow(): Flow<List<User>> {
-        return queries.selectAllUsers()
+    fun getAllUsersFlow(): Flow<List<User>> =
+        queries
+            .selectAllUsers()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toUser() } }
-    }
 
-    suspend fun getUserByEmail(email: String): User? {
-        return queries.selectUserByEmail(email).executeAsOneOrNull()?.toUser()
-    }
+    suspend fun getUserByEmail(email: String): User? = queries.selectUserByEmail(email).executeAsOneOrNull()?.toUser()
 
-    suspend fun getUserByUuid(uuid: String): User? {
-        return queries.selectUserByUuid(uuid).executeAsOneOrNull()?.toUser()
-    }
+    suspend fun getUserByUuid(uuid: String): User? = queries.selectUserByUuid(uuid).executeAsOneOrNull()?.toUser()
 
     suspend fun updateUser(user: User) {
         queries.updateUser(
@@ -52,7 +49,7 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
             email = user.email,
             password = user.password,
             balance_visibility = user.balanceVisibility,
-            id = user.id.toLong()
+            id = user.id.toLong(),
         )
     }
 
@@ -65,51 +62,46 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
     suspend fun insertCategory(category: Category): Long {
         queries.insertCategory(
             name = category.name,
-            color_hex = colorToHex(category.color)
+            color_hex = colorToHex(category.color),
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getAllCategoriesFlow(): Flow<List<Category>> {
-        return queries.selectAllCategories()
+    fun getAllCategoriesFlow(): Flow<List<Category>> =
+        queries
+            .selectAllCategories()
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toCategory() } }
-    }
 
-    suspend fun getAllCategories(): List<Category> {
-        return queries.selectAllCategories().executeAsList().map { it.toCategory() }
-    }
+    suspend fun getAllCategories(): List<Category> = queries.selectAllCategories().executeAsList().map { it.toCategory() }
 
-    suspend fun getCategoryById(id: Int): Category? {
-        return queries.selectCategoryById(id.toLong()).executeAsOneOrNull()?.toCategory()
-    }
+    suspend fun getCategoryById(id: Int): Category? = queries.selectCategoryById(id.toLong()).executeAsOneOrNull()?.toCategory()
 
-    suspend fun getCategoryByName(name: String): Category? {
-        return queries.selectCategoryByName(name).executeAsOneOrNull()?.toCategory()
-    }
+    suspend fun getCategoryByName(name: String): Category? = queries.selectCategoryByName(name).executeAsOneOrNull()?.toCategory()
 
     // ==================== YEAR ====================
 
-    suspend fun insertYear(year: Year, userId: Long): Long {
+    suspend fun insertYear(
+        year: Year,
+        userId: Long,
+    ): Long {
         queries.insertYear(
             uuid = year.uuid,
             name = year.name,
-            user_id = userId
+            user_id = userId,
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getYearsByUserIdFlow(userId: Long): Flow<List<Year>> {
-        return queries.selectYearsByUserId(userId)
+    fun getYearsByUserIdFlow(userId: Long): Flow<List<Year>> =
+        queries
+            .selectYearsByUserId(userId)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toYear(emptyList()) } }
-    }
 
-    suspend fun getYearByUuid(uuid: String): YearEntity? {
-        return queries.selectYearByUuid(uuid).executeAsOneOrNull()
-    }
+    suspend fun getYearByUuid(uuid: String): YearEntity? = queries.selectYearByUuid(uuid).executeAsOneOrNull()
 
     suspend fun deleteYear(id: Int) {
         queries.deleteYearById(id.toLong())
@@ -117,39 +109,43 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
 
     // ==================== MONTH ====================
 
-    suspend fun insertMonth(month: Month, yearId: Long): Long {
+    suspend fun insertMonth(
+        month: Month,
+        yearId: Long,
+    ): Long {
         queries.insertMonth(
             uuid = month.uuid,
             name = month.name,
             income = month.income,
             expense = month.expense,
             balance = month.balance,
-            year_id = yearId
+            year_id = yearId,
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getMonthsByYearIdFlow(yearId: Long): Flow<List<Month>> {
-        return queries.selectMonthsByYearId(yearId)
+    fun getMonthsByYearIdFlow(yearId: Long): Flow<List<Month>> =
+        queries
+            .selectMonthsByYearId(yearId)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toMonth(emptyList()) } }
-    }
 
-    suspend fun getMonthsByYearId(yearId: Long): List<MonthEntity> {
-        return queries.selectMonthsByYearId(yearId).executeAsList()
-    }
+    suspend fun getMonthsByYearId(yearId: Long): List<MonthEntity> = queries.selectMonthsByYearId(yearId).executeAsList()
 
-    suspend fun getMonthByUuid(uuid: String): MonthEntity? {
-        return queries.selectMonthByUuid(uuid).executeAsOneOrNull()
-    }
+    suspend fun getMonthByUuid(uuid: String): MonthEntity? = queries.selectMonthByUuid(uuid).executeAsOneOrNull()
 
-    suspend fun updateMonthTotals(monthId: Long, income: Double, expense: Double, balance: Double) {
+    suspend fun updateMonthTotals(
+        monthId: Long,
+        income: Double,
+        expense: Double,
+        balance: Double,
+    ) {
         queries.updateMonthTotals(
             income = income,
             expense = expense,
             balance = balance,
-            id = monthId
+            id = monthId,
         )
     }
 
@@ -159,7 +155,10 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
 
     // ==================== ENTRY ====================
 
-    suspend fun insertEntry(entry: Entry, monthId: Long): Long {
+    suspend fun insertEntry(
+        entry: Entry,
+        monthId: Long,
+    ): Long {
         queries.insertEntry(
             uuid = entry.uuid,
             name = entry.name,
@@ -168,13 +167,14 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
             repeat = entry.repeat.toLong(),
             type = entry.type.name,
             month_id = monthId,
-            category_id = entry.category.id.toLong()
+            category_id = entry.category.id.toLong(),
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getEntriesByMonthIdFlow(monthId: Long): Flow<List<Entry>> {
-        return queries.selectEntriesByMonthId(monthId)
+    fun getEntriesByMonthIdFlow(monthId: Long): Flow<List<Entry>> =
+        queries
+            .selectEntriesByMonthId(monthId)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list ->
@@ -183,11 +183,8 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
                     entity.toEntry(category)
                 }
             }
-    }
 
-    suspend fun getEntriesByMonthId(monthId: Long): List<EntryEntity> {
-        return queries.selectEntriesByMonthId(monthId).executeAsList()
-    }
+    suspend fun getEntriesByMonthId(monthId: Long): List<EntryEntity> = queries.selectEntriesByMonthId(monthId).executeAsList()
 
     suspend fun updateEntry(entry: Entry) {
         queries.updateEntry(
@@ -197,7 +194,7 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
             repeat = entry.repeat.toLong(),
             type = entry.type.name,
             category_id = entry.category.id.toLong(),
-            id = entry.id.toLong()
+            id = entry.id.toLong(),
         )
     }
 
@@ -216,53 +213,60 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
 
     // ==================== MAPPERS ====================
 
-    private fun UserEntity.toUser(): User = User(
-        id = id.toInt(),
-        uuid = uuid,
-        name = name,
-        email = email,
-        password = password,
-        balanceVisibility = balance_visibility
-    )
+    private fun UserEntity.toUser(): User =
+        User(
+            id = id.toInt(),
+            uuid = uuid,
+            name = name,
+            email = email,
+            password = password,
+            balanceVisibility = balance_visibility,
+        )
 
-    private fun CategoryEntity.toCategory(): Category = Category(
-        id = id.toInt(),
-        name = name,
-        color = getDefaultColor(name)
-    )
+    private fun CategoryEntity.toCategory(): Category =
+        Category(
+            id = id.toInt(),
+            name = name,
+            color = getDefaultColor(name),
+        )
 
-    private fun YearEntity.toYear(months: List<Month>): Year = Year(
-        id = id.toInt(),
-        uuid = uuid,
-        name = name,
-        months = months
-    )
+    private fun YearEntity.toYear(months: List<Month>): Year =
+        Year(
+            id = id.toInt(),
+            uuid = uuid,
+            name = name,
+            months = months,
+        )
 
-    private fun MonthEntity.toMonth(entries: List<Entry>): Month = Month(
-        id = id.toInt(),
-        uuid = uuid,
-        name = name,
-        income = income,
-        expense = expense,
-        balance = balance,
-        entries = entries
-    )
+    private fun MonthEntity.toMonth(entries: List<Entry>): Month =
+        Month(
+            id = id.toInt(),
+            uuid = uuid,
+            name = name,
+            income = income,
+            expense = expense,
+            balance = balance,
+            entries = entries,
+        )
 
-    private fun EntryEntity.toEntry(category: Category): Entry = Entry(
-        id = id.toInt(),
-        uuid = uuid,
-        name = name,
-        value = value_,
-        date = date,
-        repeat = repeat.toInt(),
-        type = EntryType.valueOf(type),
-        category = category
-    )
+    private fun EntryEntity.toEntry(category: Category): Entry =
+        Entry(
+            id = id.toInt(),
+            uuid = uuid,
+            name = name,
+            value = value_,
+            date = date,
+            repeat = repeat.toInt(),
+            type = EntryType.valueOf(type),
+            category = category,
+        )
 
     private fun colorToHex(color: androidx.compose.ui.graphics.Color): String {
         val red = (color.red * 255).toInt()
         val green = (color.green * 255).toInt()
         val blue = (color.blue * 255).toInt()
-        return "#${red.toString(16).padStart(2, '0').uppercase()}${green.toString(16).padStart(2, '0').uppercase()}${blue.toString(16).padStart(2, '0').uppercase()}"
+        return "#${red.toString(
+            16,
+        ).padStart(2, '0').uppercase()}${green.toString(16).padStart(2, '0').uppercase()}${blue.toString(16).padStart(2, '0').uppercase()}"
     }
 }

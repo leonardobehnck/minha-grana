@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class EntryViewModel(
-    //private val entryRepository: EntryRepository,
+    // private val entryRepository: EntryRepository,
 ) : ViewModel() {
     private val interactions = Channel<EntryInteraction>(Channel.UNLIMITED)
     private val states =

@@ -120,7 +120,17 @@ class BRLVisualTransformation : VisualTransformation {
         val intPart = absValue / 100
         val decPart = absValue % 100
 
-        val intStr = if (intPart == 0L) "0" else intPart.toString().reversed().chunked(3).joinToString(".").reversed()
+        val intStr =
+            if (intPart == 0L) {
+                "0"
+            } else {
+                intPart
+                    .toString()
+                    .reversed()
+                    .chunked(3)
+                    .joinToString(".")
+                    .reversed()
+            }
         val decStr = decPart.toString().padStart(2, '0')
 
         val sign = if (isNegative) "-" else ""

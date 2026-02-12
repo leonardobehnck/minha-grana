@@ -58,29 +58,31 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomNavigationItems = listOf(
-        BottomNavigationItem(
-            label = "Home",
-            icon = Icons.Default.Home,
-            route = HomeRoute.Home,
-        ),
-        BottomNavigationItem(
-            label = "Entries",
-            icon = Icons.Default.Home, // Will be replaced with custom icon
-            route = EntriesRoute.Entries(),
-            useCustomIcon = true,
-            customIconRes = Res.drawable.ic_data,
-        ),
-        BottomNavigationItem(
-            label = "",
-            icon = Icons.Default.Add,
-            route = EntriesRoute.Entries(showBottomEntryItem = true),
-        ),
-    )
+    val bottomNavigationItems =
+        listOf(
+            BottomNavigationItem(
+                label = "Home",
+                icon = Icons.Default.Home,
+                route = HomeRoute.Home,
+            ),
+            BottomNavigationItem(
+                label = "Entries",
+                icon = Icons.Default.Home,
+                route = EntriesRoute.Entries(),
+                useCustomIcon = true,
+                customIconRes = Res.drawable.ic_data,
+            ),
+            BottomNavigationItem(
+                label = "",
+                icon = Icons.Default.Add,
+                route = EntriesRoute.Entries(showBottomEntryItem = true),
+            ),
+        )
 
-    val showBottomNav = bottomNavigationItems.any { 
-        currentDestination?.hasRoute(it.route::class) == true 
-    }
+    val showBottomNav =
+        bottomNavigationItems.any {
+            currentDestination?.hasRoute(it.route::class) == true
+        }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -96,32 +98,36 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                     bottomNavigationItems.forEachIndexed { index, navigationItem ->
                         NavigationBarItem(
                             modifier = Modifier.padding(top = 16.dp),
-                            colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = MaterialTheme.colorScheme.onPrimary,
-                            ),
-                            selected = currentDestination?.hierarchy?.any {
-                                it.hasRoute(navigationItem.route::class)
-                            } == true,
+                            colors =
+                                NavigationBarItemDefaults.colors(
+                                    indicatorColor = MaterialTheme.colorScheme.onPrimary,
+                                ),
+                            selected =
+                                currentDestination?.hierarchy?.any {
+                                    it.hasRoute(navigationItem.route::class)
+                                } == true,
                             icon = {
                                 if (navigationItem.useCustomIcon && navigationItem.customIconRes != null) {
                                     Icon(
                                         painter = painterResource(navigationItem.customIconRes),
                                         contentDescription = navigationItem.label,
-                                        tint = if (navigationSelectedItem == index) {
-                                            MaterialTheme.colorScheme.primary
-                                        } else {
-                                            MaterialTheme.colorScheme.secondary
-                                        },
+                                        tint =
+                                            if (navigationSelectedItem == index) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else {
+                                                MaterialTheme.colorScheme.secondary
+                                            },
                                     )
                                 } else {
                                     Icon(
                                         imageVector = navigationItem.icon,
                                         contentDescription = navigationItem.label,
-                                        tint = if (navigationSelectedItem == index) {
-                                            MaterialTheme.colorScheme.primary
-                                        } else {
-                                            MaterialTheme.colorScheme.secondary
-                                        },
+                                        tint =
+                                            if (navigationSelectedItem == index) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else {
+                                                MaterialTheme.colorScheme.secondary
+                                            },
                                     )
                                 }
                             },

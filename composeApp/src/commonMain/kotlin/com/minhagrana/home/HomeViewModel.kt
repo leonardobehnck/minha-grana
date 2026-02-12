@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    //private val yearRepository: YearRepository,
+    // private val yearRepository: YearRepository,
 ) : ViewModel() {
     private val interactions = Channel<HomeInteraction>(Channel.UNLIMITED)
     private val states =
