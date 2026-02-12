@@ -2,7 +2,6 @@ package com.minhagrana.database
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
-import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
@@ -264,6 +263,6 @@ class DatabaseHelper(private val database: MinhaGranaDatabase) {
         val red = (color.red * 255).toInt()
         val green = (color.green * 255).toInt()
         val blue = (color.blue * 255).toInt()
-        return String.format("#%02X%02X%02X", red, green, blue)
+        return "#${red.toString(16).padStart(2, '0').uppercase()}${green.toString(16).padStart(2, '0').uppercase()}${blue.toString(16).padStart(2, '0').uppercase()}"
     }
 }
