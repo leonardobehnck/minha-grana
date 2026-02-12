@@ -1,12 +1,12 @@
 package com.minhagrana.entities
 
 import androidx.compose.ui.graphics.Color
-import com.app.minhagrana.ui.theme.categoryBaby
-import com.app.minhagrana.ui.theme.categoryHealth
-import com.app.minhagrana.ui.theme.categoryIncome
-import com.app.minhagrana.ui.theme.categoryPet
-import com.app.minhagrana.ui.theme.categoryTransport
-import com.app.minhagrana.ui.theme.gray
+import com.minhagrana.ui.theme.categoryBaby
+import com.minhagrana.ui.theme.categoryHealth
+import com.minhagrana.ui.theme.categoryIncome
+import com.minhagrana.ui.theme.categoryPet
+import com.minhagrana.ui.theme.categoryTransport
+import com.minhagrana.ui.theme.gray
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 

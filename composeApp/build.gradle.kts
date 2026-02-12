@@ -46,6 +46,7 @@ kotlin {
             implementation(libs.sqldelight.coroutines)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.kotlinx.datetime)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.native.driver)
@@ -90,7 +91,7 @@ dependencies {
 sqldelight {
     databases {
         create("MinhaGranaDatabase") {
-            packageName.set("com.app.minhagrana.database")
+            packageName.set("com.minhagrana.database")
         }
     }
 }

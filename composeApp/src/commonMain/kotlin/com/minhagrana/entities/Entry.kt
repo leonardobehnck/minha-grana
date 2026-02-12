@@ -1,6 +1,6 @@
 package com.minhagrana.entities
 
-import com.app.minhagrana.ui.currentMonth
+import com.minhagrana.ui.currentMonth
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
