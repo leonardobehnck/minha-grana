@@ -39,8 +39,6 @@ class DatabaseHelper(
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toUser() } }
 
-    suspend fun getUserByEmail(email: String): User? = queries.selectUserByEmail(email).executeAsOneOrNull()?.toUser()
-
     suspend fun getUserByUuid(uuid: String): User? = queries.selectUserByUuid(uuid).executeAsOneOrNull()?.toUser()
 
     suspend fun updateUser(user: User) {
@@ -101,6 +99,8 @@ class DatabaseHelper(
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toYear(emptyList()) } }
 
+    suspend fun getYearById(id: Long): YearEntity? = queries.selectYearById(id).executeAsOneOrNull()
+
     suspend fun getYearByUuid(uuid: String): YearEntity? = queries.selectYearByUuid(uuid).executeAsOneOrNull()
 
     suspend fun deleteYear(id: Int) {
@@ -132,6 +132,8 @@ class DatabaseHelper(
             .map { list -> list.map { it.toMonth(emptyList()) } }
 
     suspend fun getMonthsByYearId(yearId: Long): List<MonthEntity> = queries.selectMonthsByYearId(yearId).executeAsList()
+
+    suspend fun getMonthById(id: Long): MonthEntity? = queries.selectMonthById(id).executeAsOneOrNull()
 
     suspend fun getMonthByUuid(uuid: String): MonthEntity? = queries.selectMonthByUuid(uuid).executeAsOneOrNull()
 
