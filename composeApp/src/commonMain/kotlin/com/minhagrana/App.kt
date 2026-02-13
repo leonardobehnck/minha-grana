@@ -5,23 +5,21 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -36,19 +34,29 @@ import androidx.navigation.compose.rememberNavController
 import com.minhagrana.ui.presentation.entries.AnnualBalanceScreen
 import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
-import com.minhagrana.ui.presentation.newentry.NewEntryScreen
 import com.minhagrana.ui.presentation.home.HomeScreen
+import com.minhagrana.ui.presentation.newentry.NewEntryScreen
 import com.minhagrana.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
-import minhagrana.composeapp.generated.resources.ic_data
+import minhagrana.composeapp.generated.resources.compose_multiplatform
+import minhagrana.composeapp.generated.resources.ic_add
+import minhagrana.composeapp.generated.resources.ic_home
+import minhagrana.composeapp.generated.resources.ic_report
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun App() {
     AppTheme {
-        val navController = rememberNavController()
-        BottomNavigationBar(navController)
+        Surface(
+            modifier =
+                Modifier
+                    .imePadding()
+                    .background(MaterialTheme.colorScheme.background),
+        ) {
+            val navController = rememberNavController()
+            BottomNavigationBar(navController)
+        }
     }
 }
 
@@ -62,28 +70,25 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
         listOf(
             BottomNavigationItem(
                 label = "Home",
-                icon = Icons.Default.Home,
                 route = HomeRoute.Home,
+                customIconRes = Res.drawable.ic_home,
             ),
             BottomNavigationItem(
-                label = "",
-                icon = Icons.Default.Add,
+                label = "New Entry",
                 route = NewEntryRoute.NewEntry,
-                isAddButton = true,
+                customIconRes = Res.drawable.ic_add,
             ),
             BottomNavigationItem(
                 label = "Entries",
-                icon = Icons.Default.Home,
                 route = EntriesRoute.Entries,
-                useCustomIcon = true,
-                customIconRes = Res.drawable.ic_data,
+                customIconRes = Res.drawable.ic_report,
             ),
         )
 
     val showBottomNav =
         currentDestination?.hasRoute(HomeRoute.Home::class) == true ||
-            currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
-            currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
+                currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
+                currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -98,9 +103,9 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                 ) {
                     bottomNavigationItems.forEachIndexed { index, navigationItem ->
                         val isSelected =
-                                currentDestination?.hierarchy?.any {
-                                    it.hasRoute(navigationItem.route::class)
-                                } == true
+                            currentDestination?.hierarchy?.any {
+                                it.hasRoute(navigationItem.route::class)
+                            } == true
                         NavigationBarItem(
                             modifier = Modifier.padding(top = 16.dp),
                             colors =
@@ -109,29 +114,16 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                                 ),
                             selected = isSelected,
                             icon = {
-                                if (navigationItem.useCustomIcon && navigationItem.customIconRes != null) {
-                                    Icon(
-                                        painter = painterResource(navigationItem.customIconRes),
-                                        contentDescription = navigationItem.label,
-                                        tint =
-                                            if (isSelected) {
-                                                MaterialTheme.colorScheme.primary
-                                            } else {
-                                                MaterialTheme.colorScheme.secondary
-                                            },
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = navigationItem.icon,
-                                        contentDescription = navigationItem.label,
-                                        tint =
-                                            if (isSelected) {
-                                                MaterialTheme.colorScheme.primary
-                                            } else {
-                                                MaterialTheme.colorScheme.secondary
-                                            },
-                                    )
-                                }
+                                Icon(
+                                    painter = painterResource(navigationItem.customIconRes),
+                                    contentDescription = navigationItem.label,
+                                    tint =
+                                        if (isSelected) {
+                                            MaterialTheme.colorScheme.primary
+                                        } else {
+                                            MaterialTheme.colorScheme.secondary
+                                        },
+                                )
                             },
                             onClick = {
                                 navController.navigate(navigationItem.route) {
@@ -237,11 +229,9 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
 
 data class BottomNavigationItem<T : Any>(
     val label: String = "",
-    val icon: ImageVector = Icons.Default.Home,
     val route: T,
+    val customIconRes: org.jetbrains.compose.resources.DrawableResource = Res.drawable.compose_multiplatform,
     val useCustomIcon: Boolean = false,
-    val customIconRes: org.jetbrains.compose.resources.DrawableResource? = null,
-    val isAddButton: Boolean = false,
 )
 
 @Serializable
