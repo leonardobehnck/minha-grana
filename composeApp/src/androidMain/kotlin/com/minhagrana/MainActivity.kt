@@ -17,16 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppTheme {
-                Surface(
-                    modifier =
-                        Modifier
-                            .imePadding()
-                            .background(MaterialTheme.colorScheme.background),
-                ) {
-                    App()
-                }
-            }
+            App()
         }
     }
 }
