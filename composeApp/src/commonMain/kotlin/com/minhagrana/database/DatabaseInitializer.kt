@@ -2,9 +2,9 @@ package com.minhagrana.database
 
 import com.minhagrana.entities.User
 import com.minhagrana.entities.Year
-import com.minhagrana.repository.CategoryRepository
-import com.minhagrana.repository.UserRepository
-import com.minhagrana.repository.YearRepository
+import com.minhagrana.models.repositories.CategoryRepository
+import com.minhagrana.models.repositories.UserRepository
+import com.minhagrana.models.repositories.YearRepository
 
 class DatabaseInitializer(
     private val categoryRepository: CategoryRepository,

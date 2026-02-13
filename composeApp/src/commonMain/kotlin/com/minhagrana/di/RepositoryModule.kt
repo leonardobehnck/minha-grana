@@ -1,16 +1,16 @@
 package com.minhagrana.di
 
 import com.minhagrana.database.DatabaseInitializer
-import com.minhagrana.repository.CategoryRepository
-import com.minhagrana.repository.EntryRepository
-import com.minhagrana.repository.MonthRepository
-import com.minhagrana.repository.UserRepository
-import com.minhagrana.repository.YearRepository
-import com.minhagrana.repository.impl.CategoryRepositoryImpl
-import com.minhagrana.repository.impl.EntryRepositoryImpl
-import com.minhagrana.repository.impl.MonthRepositoryImpl
-import com.minhagrana.repository.impl.UserRepositoryImpl
-import com.minhagrana.repository.impl.YearRepositoryImpl
+import com.minhagrana.models.repositories.CategoryRepository
+import com.minhagrana.models.repositories.EntryRepository
+import com.minhagrana.models.repositories.MonthRepository
+import com.minhagrana.models.repositories.UserRepository
+import com.minhagrana.models.repositories.YearRepository
+import com.minhagrana.models.repositories.impl.CategoryRepositoryImpl
+import com.minhagrana.models.repositories.impl.EntryRepositoryImpl
+import com.minhagrana.models.repositories.impl.MonthRepositoryImpl
+import com.minhagrana.models.repositories.impl.UserRepositoryImpl
+import com.minhagrana.models.repositories.impl.YearRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule =

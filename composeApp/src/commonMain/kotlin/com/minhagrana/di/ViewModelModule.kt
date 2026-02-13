@@ -1,9 +1,9 @@
 package com.minhagrana.di
 
-import com.minhagrana.annualbalance.AnnualBalanceViewModel
-import com.minhagrana.entries.EntriesViewModel
-import com.minhagrana.entries.EntryViewModel
-import com.minhagrana.home.HomeViewModel
+import com.minhagrana.models.annualbalance.AnnualBalanceViewModel
+import com.minhagrana.models.entries.EntriesViewModel
+import com.minhagrana.models.entries.EntryViewModel
+import com.minhagrana.models.home.HomeViewModel
 import org.koin.dsl.module
 
 val viewModelModule =
