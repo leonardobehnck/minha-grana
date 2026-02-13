@@ -19,9 +19,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -38,7 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.minhagrana.ui.presentation.entries.AnnualBalanceScreen
 import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
-import com.minhagrana.ui.presentation.entries.NewEntryScreen
+import com.minhagrana.ui.presentation.newentry.NewEntryScreen
 import com.minhagrana.ui.presentation.home.HomeScreen
 import com.minhagrana.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
@@ -56,7 +54,6 @@ fun App() {
 
 @Composable
 fun BottomNavigationBar(rootNavController: NavHostController) {
-    var navigationSelectedItem by remember { mutableIntStateOf(0) }
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -97,27 +94,27 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                 exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
             ) {
                 NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ) {
                     bottomNavigationItems.forEachIndexed { index, navigationItem ->
+                        val isSelected =
+                                currentDestination?.hierarchy?.any {
+                                    it.hasRoute(navigationItem.route::class)
+                                } == true
                         NavigationBarItem(
                             modifier = Modifier.padding(top = 16.dp),
                             colors =
                                 NavigationBarItemDefaults.colors(
                                     indicatorColor = MaterialTheme.colorScheme.onPrimary,
                                 ),
-                            selected =
-                                !navigationItem.isAddButton &&
-                                    currentDestination?.hierarchy?.any {
-                                        it.hasRoute(navigationItem.route::class)
-                                    } == true,
+                            selected = isSelected,
                             icon = {
                                 if (navigationItem.useCustomIcon && navigationItem.customIconRes != null) {
                                     Icon(
                                         painter = painterResource(navigationItem.customIconRes),
                                         contentDescription = navigationItem.label,
                                         tint =
-                                            if (navigationSelectedItem == index) {
+                                            if (isSelected) {
                                                 MaterialTheme.colorScheme.primary
                                             } else {
                                                 MaterialTheme.colorScheme.secondary
@@ -128,7 +125,7 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                                         imageVector = navigationItem.icon,
                                         contentDescription = navigationItem.label,
                                         tint =
-                                            if (navigationSelectedItem == index) {
+                                            if (isSelected) {
                                                 MaterialTheme.colorScheme.primary
                                             } else {
                                                 MaterialTheme.colorScheme.secondary
@@ -137,7 +134,6 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                                 }
                             },
                             onClick = {
-                                navigationSelectedItem = index
                                 navController.navigate(navigationItem.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
