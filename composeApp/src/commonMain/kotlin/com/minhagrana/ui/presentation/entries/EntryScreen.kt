@@ -25,8 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Entry
-import com.minhagrana.models.entries.EntryViewModel
 import com.minhagrana.models.entries.EntryInteraction
+import com.minhagrana.models.entries.EntryViewModel
 import com.minhagrana.models.entries.EntryViewState
 import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.DatePicker

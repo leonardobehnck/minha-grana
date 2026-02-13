@@ -7,7 +7,7 @@ import org.koin.core.context.startKoin
  * Safe to call multiple times: startKoin runs only once.
  * In Swift: KoinInitializer.shared.initKoin()
  */
- 
+
 object KoinInitializer {
     private var started = false
 

@@ -87,8 +87,8 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
 
     val showBottomNav =
         currentDestination?.hasRoute(HomeRoute.Home::class) == true ||
-                currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
-                currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
+            currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
+            currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

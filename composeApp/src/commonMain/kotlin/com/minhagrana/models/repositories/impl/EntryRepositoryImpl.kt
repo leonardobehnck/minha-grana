@@ -31,9 +31,7 @@ class EntryRepositoryImpl(
         }
     }
 
-    override suspend fun getEntryByUuid(uuid: String): Entry? {
-        return null
-    }
+    override suspend fun getEntryByUuid(uuid: String): Entry? = null
 
     override suspend fun insertEntry(
         entry: Entry,

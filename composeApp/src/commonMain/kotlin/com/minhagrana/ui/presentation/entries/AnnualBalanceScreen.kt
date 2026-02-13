@@ -20,11 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.minhagrana.entities.Month
+import com.minhagrana.entities.Year
 import com.minhagrana.models.annualbalance.AnnualBalanceInteraction
 import com.minhagrana.models.annualbalance.AnnualBalanceViewModel
 import com.minhagrana.models.annualbalance.AnnualBalanceViewState
-import com.minhagrana.entities.Month
-import com.minhagrana.entities.Year
 import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.BalanceCard
 import com.minhagrana.ui.components.MonthChanger

@@ -59,9 +59,10 @@ class YearRepositoryImpl(
     override suspend fun getYearById(id: Long): Year? {
         val yearEntity = databaseHelper.getYearById(id) ?: return null
         val months = monthRepository.getMonthsByYearId(id)
-        val monthsWithEntries = months.map { m ->
-            m.copy(entries = entryRepository.getEntriesByMonthId(m.id.toLong()))
-        }
+        val monthsWithEntries =
+            months.map { m ->
+                m.copy(entries = entryRepository.getEntriesByMonthId(m.id.toLong()))
+            }
         return Year(
             id = yearEntity.id.toInt(),
             uuid = yearEntity.uuid,
@@ -85,9 +86,10 @@ class YearRepositoryImpl(
                 months = createMonthsForYear(existingYear.id.toLong())
             }
 
-            val monthsWithEntries = months.map { m ->
-                m.copy(entries = entryRepository.getEntriesByMonthId(m.id.toLong()))
-            }
+            val monthsWithEntries =
+                months.map { m ->
+                    m.copy(entries = entryRepository.getEntriesByMonthId(m.id.toLong()))
+                }
             return existingYear.copy(months = monthsWithEntries)
         }
 
