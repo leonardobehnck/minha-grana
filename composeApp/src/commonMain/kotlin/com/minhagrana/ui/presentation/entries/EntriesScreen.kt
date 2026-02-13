@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.Month
-import com.minhagrana.entries.EntriesInteraction
-import com.minhagrana.entries.EntriesViewModel
+import com.minhagrana.models.entries.EntriesInteraction
+import com.minhagrana.models.entries.EntriesViewModel
 import com.minhagrana.models.entries.EntriesViewState
 import com.minhagrana.ui.components.BalanceItem
 import com.minhagrana.ui.components.EntryItem

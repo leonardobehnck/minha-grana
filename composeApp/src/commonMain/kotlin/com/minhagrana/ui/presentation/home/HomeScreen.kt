@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Month
 import com.minhagrana.entities.Year
-import com.minhagrana.home.HomeInteraction
-import com.minhagrana.home.HomeViewModel
-import com.minhagrana.home.HomeViewState
+import com.minhagrana.models.home.HomeInteraction
+import com.minhagrana.models.home.HomeViewModel
+import com.minhagrana.models.home.HomeViewState
 import com.minhagrana.ui.components.Balance
 import com.minhagrana.ui.components.CircularIcon
 import com.minhagrana.ui.components.Header3

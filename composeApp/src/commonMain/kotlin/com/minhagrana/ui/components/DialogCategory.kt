@@ -22,7 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Categories
 import com.minhagrana.entities.Category
-import com.minhagrana.repository.CategoryRepository
+import com.minhagrana.models.repositories.CategoryRepository
 import org.koin.compose.koinInject
 
 @Composable

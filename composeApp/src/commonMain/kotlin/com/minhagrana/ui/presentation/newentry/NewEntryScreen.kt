@@ -34,8 +34,8 @@ import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
-import com.minhagrana.repository.EntryRepository
-import com.minhagrana.repository.YearRepository
+import com.minhagrana.models.repositories.EntryRepository
+import com.minhagrana.models.repositories.YearRepository
 import com.minhagrana.ui.components.BRLVisualTransformation
 import com.minhagrana.ui.components.BasicInputText
 import com.minhagrana.ui.components.DatePicker
