@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.getCurrentDate
-import com.minhagrana.ui.theme.gray
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -59,7 +58,7 @@ fun DatePicker(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Start,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyLarge,
         )
         if (iconRightVisibility) {
@@ -71,7 +70,7 @@ fun DatePicker(
                         .align(Alignment.CenterVertically),
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color.Black,
+                tint = MaterialTheme.colorScheme.onSurface,
             )
         }
         Box(
@@ -91,7 +90,7 @@ fun DatePicker(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Start,
-                color = gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

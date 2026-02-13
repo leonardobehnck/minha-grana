@@ -31,7 +31,7 @@ fun Header3(
         Text(
             modifier = Modifier.padding(16.dp),
             text = "Olá, $title!",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.headlineLarge,
         )
     }

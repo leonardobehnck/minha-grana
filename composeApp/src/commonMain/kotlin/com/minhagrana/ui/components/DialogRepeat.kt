@@ -33,7 +33,7 @@ fun DialogRepeat(
                     .fillMaxWidth()
                     .shadow(8.dp)
                     .clip(MaterialTheme.shapes.large)
-                    .background(MaterialTheme.colorScheme.onPrimary)
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -54,6 +54,7 @@ fun DialogRepeat(
                                     .padding(start = 16.dp, top = 8.dp)
                                     .noRippleClickable { onItemSelected(repeatItems[index]) },
                             text = "${repeatItems[index]}x",
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }

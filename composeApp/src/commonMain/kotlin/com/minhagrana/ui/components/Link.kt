@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.gray
 
 @Composable
 fun Link(
@@ -77,7 +76,7 @@ fun Link(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Start,
-            color = gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyLarge,
         )
     }

@@ -13,9 +13,16 @@ import com.minhagrana.ui.theme.AppTheme
 
 @Composable
 fun PieChart(reportItems: Map<Category, Double>) {
-    val totalValue = reportItems.values.sum()
-    val proportions = reportItems.values.map { it / totalValue }
-    val angles = proportions.map { it * 360f }
+    val entries = reportItems.entries.toList()
+    val totalValue = entries.sumOf { it.value }
+    val segments: List<Pair<Category, Float>> =
+        if (totalValue > 0) {
+            entries.map { (category, value) ->
+                category to (value / totalValue * 360).toFloat()
+            }
+        } else {
+            emptyList()
+        }
 
     Canvas(
         modifier = Modifier.fillMaxSize(),
@@ -23,7 +30,7 @@ fun PieChart(reportItems: Map<Category, Double>) {
             val canvasWidth = size.width
             val canvasHeight = size.height
 
-            val circleSize = 400f
+            val circleSize = minOf(canvasWidth, canvasHeight) * 0.85f
             val offset =
                 Offset(
                     x = (canvasWidth - circleSize) / 2,
@@ -32,17 +39,17 @@ fun PieChart(reportItems: Map<Category, Double>) {
 
             var startAngle = -90f
 
-            angles.forEachIndexed { index, sweepAngle ->
+            segments.forEach { (category, sweepAngle) ->
                 drawArc(
-                    style = Stroke(width = 100f),
-                    color = reportItems.keys.elementAt(index).color,
+                    style = Stroke(width = circleSize * 0.25f),
+                    color = category.color,
                     startAngle = startAngle,
-                    sweepAngle = sweepAngle.toFloat(),
+                    sweepAngle = sweepAngle,
                     useCenter = false,
                     size = Size(circleSize, circleSize),
                     topLeft = offset,
                 )
-                startAngle += sweepAngle.toFloat()
+                startAngle += sweepAngle
             }
         },
     )

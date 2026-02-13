@@ -21,7 +21,6 @@ import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.gray
 
 @Composable
 fun EntryItem(
@@ -41,7 +40,7 @@ fun EntryItem(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.onPrimary)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -64,7 +63,7 @@ fun EntryItem(
                 )
                 Text(
                     text = entry.category.name,
-                    color = gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall,
                 )
             }
@@ -87,7 +86,7 @@ fun EntryItem(
         }
     }
     HorizontalDivider(
-        color = MaterialTheme.colorScheme.secondaryContainer,
+        color = MaterialTheme.colorScheme.outlineVariant,
     )
 }
 

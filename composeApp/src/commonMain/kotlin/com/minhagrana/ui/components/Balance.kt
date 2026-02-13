@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.gray
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.ic_hide
 import minhagrana.composeapp.generated.resources.ic_unhide
@@ -68,7 +67,7 @@ fun Balance(
                         painterResource(Res.drawable.ic_unhide)
                     },
                 contentDescription = "hide balance",
-                tint = gray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

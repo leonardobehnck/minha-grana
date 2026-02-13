@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.gray300
 import kotlin.math.abs
 
 @Composable
@@ -71,7 +70,7 @@ fun InputText(
             placeholder = {
                 Text(
                     hint,
-                    color = gray300,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
@@ -82,7 +81,7 @@ fun InputText(
                     focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                    cursorColor = Color.Black,
+                    cursorColor = MaterialTheme.colorScheme.onBackground,
                 ),
         )
         if (warningTextVisibility) {

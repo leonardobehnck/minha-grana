@@ -37,7 +37,7 @@ fun Dialog(
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState,
-            containerColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.surface,
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),

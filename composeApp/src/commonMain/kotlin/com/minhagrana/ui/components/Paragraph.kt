@@ -24,7 +24,7 @@ import com.minhagrana.ui.theme.AppTheme
 fun Paragraph(
     title: String = "",
     icon: Boolean = false,
-    color: Color = MaterialTheme.colorScheme.secondary,
+    color: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     onClick: (() -> Unit)? = null,
 ) {
     Row(
@@ -32,7 +32,7 @@ fun Paragraph(
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 20.dp)
-                .background(MaterialTheme.colorScheme.onSecondaryContainer)
+                .background(MaterialTheme.colorScheme.secondaryContainer)
                 .noRippleClickable(onClick = { onClick?.invoke() }),
         verticalAlignment = Alignment.CenterVertically,
     ) {

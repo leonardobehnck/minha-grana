@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.gray
 
 @Composable
 fun Header2(
@@ -33,7 +32,7 @@ fun Header2(
         )
         Text(
             text = subtitle,
-            color = gray,
+            color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 16.dp),
         )

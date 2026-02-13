@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Month
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.danger
 
 @Composable
 fun BalanceItem(month: Month = Month()) {
@@ -60,7 +59,7 @@ fun BalanceItem(month: Month = Month()) {
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    color = danger,
+                    color = MaterialTheme.colorScheme.error,
                     text = formatDoubleToBRL(month.expense),
                 )
                 Text(
