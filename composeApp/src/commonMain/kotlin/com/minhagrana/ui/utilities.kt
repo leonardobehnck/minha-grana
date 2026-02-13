@@ -3,14 +3,22 @@ package com.minhagrana.ui
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.number
-import kotlinx.datetime.toLocalDateTime
+import com.minhagrana.util.currentMonthNumber
+import com.minhagrana.util.getCurrentDateString
 
 fun isValidEmail(email: String): Boolean {
     val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
     return email.matches(emailRegex)
+}
+
+/**
+ * Parses the raw input from a BRL-formatted field (BRLVisualTransformation).
+ * The field stores digits as centavos (e.g. "500" = R$ 5,00). Returns value in reais.
+ */
+fun parseBRLInputToDouble(text: String): Double {
+    val digits = text.filter { it.isDigit() }
+    if (digits.isEmpty()) return 0.0
+    return (digits.toLongOrNull() ?: 0L) / 100.0
 }
 
 fun formatDoubleToBRL(value: Double): String {
@@ -55,24 +63,9 @@ private val monthNamesPtBr =
     )
 
 val currentMonth: String
-    get() {
-        val now = Clock.System.now()
-        val localDateTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
-        val monthIndex = localDateTime.month.number - 1
-        return monthNamesPtBr.getOrElse(monthIndex) { "Null" }
-    }
+    get() = monthNamesPtBr.getOrElse(currentMonthNumber() - 1) { "Null" }
 
-fun getCurrentDate(): String {
-    val now = Clock.System.now()
-    val localDateTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
-    val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
-    val month =
-        localDateTime.month.number
-            .toString()
-            .padStart(2, '0')
-    val year = localDateTime.year
-    return "$day/$month/$year"
-}
+fun getCurrentDate(): String = getCurrentDateString()
 
 fun processMonthDataByExpense(month: Month): Map<Category, Double> {
     val expenseEntries = month.entries.filter { it.type == EntryType.EXPENSE }
