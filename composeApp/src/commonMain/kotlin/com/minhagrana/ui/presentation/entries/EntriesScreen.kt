@@ -1,6 +1,7 @@
 package com.minhagrana.ui.presentation.entries
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,83 +9,103 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.minhagrana.entities.Category
 import com.minhagrana.entities.Entry
-import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
+import com.minhagrana.entries.EntriesInteraction
+import com.minhagrana.entries.EntriesViewModel
+import com.minhagrana.models.entries.EntriesViewState
 import com.minhagrana.ui.components.BalanceItem
-import com.minhagrana.ui.components.DialogEntryItem
 import com.minhagrana.ui.components.EntryItem
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.MonthChanger
-import com.minhagrana.ui.theme.AppTheme
-import com.minhagrana.ui.theme.primaryLight
+import org.koin.compose.koinInject
 
 @Composable
 fun EntriesScreen(
-    showBottomSheetNav: Boolean,
-    onEntrySelected: () -> Unit = {},
+    monthUuid: String? = null,
+    yearId: Long = -1,
+    onEntrySelected: (Entry) -> Unit = {},
     onEntriesByYearSelected: () -> Unit = {},
+    viewModel: EntriesViewModel = koinInject(),
 ) {
-    var showBottomSheet by remember { mutableStateOf(showBottomSheetNav) }
+    val state by viewModel.bind().collectAsState()
 
-    val month =
-        Month(
-            name = "Outubro",
-            income = 5000.0,
-            expense = 3000.0,
-            entries =
-                listOf(
-                    Entry(
-                        name = "Gasolina",
-                        value = 200.0,
-                        type = EntryType.INCOME,
-                    ),
-                    Entry(
-                        name = "Gasolina",
-                        value = 200.0,
-                    ),
-                    Entry(
-                        name = "Gasolina",
-                        value = 100.0,
-                    ),
-                    Entry(
-                        name = "Gasolina",
-                        value = 22200.0,
-                    ),
-                    Entry(
-                        name = "Gasolina",
-                        value = 1000.0,
-                    ),
-                    Entry(
-                        name = "Salário",
-                        value = 5500.0,
-                        type = EntryType.INCOME,
-                        category =
-                            Category(
-                                name = "Salário",
-                                color = primaryLight,
-                            ),
-                    ),
-                    Entry(
-                        name = "Salário",
-                        value = 100.0,
-                    ),
-                ),
-        )
+    LaunchedEffect(monthUuid, yearId) {
+        if (monthUuid != null) {
+            viewModel.setCurrentMonth(monthUuid, yearId)
+        }
+        viewModel.interact(EntriesInteraction.OnMonthSelected)
+    }
+
+    when (val currentState = state) {
+        is EntriesViewState.Idle,
+        is EntriesViewState.Loading,
+        -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is EntriesViewState.Success -> {
+            EntriesContent(
+                month = currentState.month,
+                onEntrySelected = onEntrySelected,
+                onEntriesByYearSelected = onEntriesByYearSelected,
+                onNextMonth = { viewModel.interact(EntriesInteraction.OnNextMonthSelected("")) },
+                onPreviousMonth = { viewModel.interact(EntriesInteraction.OnPreviousYearSelected("")) },
+            )
+        }
+
+        is EntriesViewState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = currentState.message,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+
+        is EntriesViewState.NoConnection -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = currentState.message,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EntriesContent(
+    month: Month,
+    onEntrySelected: (Entry) -> Unit,
+    onEntriesByYearSelected: () -> Unit,
+    onNextMonth: () -> Unit,
+    onPreviousMonth: () -> Unit,
+) {
     Scaffold(
-        modifier =
-            Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
     ) { padding ->
         Column(
             modifier =
@@ -98,9 +119,9 @@ fun EntriesScreen(
                 onClick = { onEntriesByYearSelected() },
             )
             MonthChanger(
-                onNextPressed = { /*TODO*/ },
-                onPreviousPressed = { /*TODO*/ },
-                month = "Outubro",
+                onNextPressed = onNextMonth,
+                onPreviousPressed = onPreviousMonth,
+                month = month.name,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Column(
@@ -109,11 +130,27 @@ fun EntriesScreen(
                         .padding(bottom = 30.dp)
                         .fillMaxSize(),
             ) {
-                month.entries.forEach {
-                    EntryItem(
-                        entry = it,
-                        onClick = onEntrySelected,
-                    )
+                if (month.entries.isEmpty()) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(32.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "Nenhum lançamento neste mês",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
+                } else {
+                    month.entries.forEach { entry ->
+                        EntryItem(
+                            entry = entry,
+                            onClick = { onEntrySelected(entry) },
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier.padding(top = 20.dp),
@@ -122,23 +159,7 @@ fun EntriesScreen(
                         month = month,
                     )
                 }
-                DialogEntryItem(
-                    title = "Novo lançamento",
-                    onConfirmSelected = {},
-                    showBottomSheet = showBottomSheet,
-                    onDismiss = { showBottomSheet = false },
-                )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewEntriesScreen() {
-    AppTheme {
-        EntriesScreen(
-            showBottomSheetNav = true,
-        )
     }
 }

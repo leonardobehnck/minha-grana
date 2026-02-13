@@ -1,25 +1,33 @@
 package com.minhagrana.ui.presentation.entries
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.minhagrana.entities.Category
 import com.minhagrana.entities.Entry
+import com.minhagrana.entries.EntryViewModel
+import com.minhagrana.models.entries.EntryInteraction
+import com.minhagrana.models.entries.EntryViewState
 import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.DatePicker
 import com.minhagrana.ui.components.Dialog
@@ -29,21 +37,123 @@ import com.minhagrana.ui.components.EditItemHeader
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.Link
 import com.minhagrana.ui.components.SecondaryButton
-import com.minhagrana.ui.theme.AppTheme
+import com.minhagrana.ui.parseBRLInputToDouble
+import org.koin.compose.koinInject
 
 @Composable
 fun EntryScreen(
+    entry: Entry? = null,
+    monthId: Long = -1,
     navigateUp: () -> Unit = {},
     onSaveEntrySelected: () -> Unit = {},
+    onEntryDeleted: () -> Unit = {},
+    viewModel: EntryViewModel = koinInject(),
 ) {
-    val entry = Entry()
-    var category by remember { mutableStateOf(Category()) }
+    val state by viewModel.bind().collectAsState()
 
-    var entryNameValue by remember { mutableStateOf("") }
-    var entryValue by remember { mutableStateOf(entry.value.toString()) }
+    LaunchedEffect(entry, monthId) {
+        viewModel.setMonthId(monthId)
+        if (entry != null) {
+            viewModel.interact(EntryInteraction.OnEntrySelected(entry))
+        }
+    }
+
+    when (val currentState = state) {
+        is EntryViewState.Idle -> {
+            if (entry == null) {
+                EntryContent(
+                    entry = Entry(),
+                    navigateUp = navigateUp,
+                    onSaveEntry = { updatedEntry ->
+                        viewModel.interact(EntryInteraction.OnEntryUpdated(updatedEntry))
+                        onSaveEntrySelected()
+                    },
+                    onDeleteEntry = {
+                        viewModel.interact(EntryInteraction.OnEntryDeleted)
+                        onEntryDeleted()
+                    },
+                )
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+
+        is EntryViewState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is EntryViewState.Success -> {
+            EntryContent(
+                entry = currentState.entry,
+                navigateUp = navigateUp,
+                onSaveEntry = { updatedEntry ->
+                    viewModel.interact(EntryInteraction.OnEntryUpdated(updatedEntry))
+                    onSaveEntrySelected()
+                },
+                onDeleteEntry = {
+                    viewModel.interact(EntryInteraction.OnEntryDeleted)
+                    onEntryDeleted()
+                },
+            )
+        }
+
+        is EntryViewState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = currentState.message,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+
+        is EntryViewState.NoConnection -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = currentState.message,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EntryContent(
+    entry: Entry,
+    navigateUp: () -> Unit,
+    onSaveEntry: (Entry) -> Unit,
+    onDeleteEntry: () -> Unit,
+) {
+    var category by remember { mutableStateOf(entry.category) }
+    var entryNameValue by remember { mutableStateOf(entry.name) }
+    var entryValue by remember {
+        mutableStateOf(
+            kotlin.math
+                .round(entry.value * 100)
+                .toLong()
+                .toString(),
+        )
+    }
     var entryCategory by remember { mutableStateOf(entry.category.name) }
     var entryDate by remember { mutableStateOf(entry.date) }
     var entryRepeat by remember { mutableIntStateOf(entry.repeat) }
+    var entryType by remember { mutableStateOf(entry.type) }
 
     val showBottomSheetDelete = remember { mutableStateOf(false) }
     val showBottomSheetCategory = remember { mutableStateOf(false) }
@@ -63,18 +173,18 @@ fun EntryScreen(
                     .background(MaterialTheme.colorScheme.background),
         ) {
             Header1(
-                title = "Editar lançamento",
+                title = if (entry.id > 0) "Editar lançamento" else "Novo lançamento",
             )
             Column(
                 modifier =
                     Modifier
                         .height(300.dp)
-                        .background(MaterialTheme.colorScheme.onSecondaryContainer),
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 EditItemHeader(
-                    entry = entry,
+                    entry = entry.copy(type = entryType),
                     category = category,
-                    name = entry.name,
+                    name = entryNameValue,
                     entryNameValue = entryNameValue,
                     onEntryNameChange = { newName -> entryNameValue = newName },
                     newValue = entryValue,
@@ -94,7 +204,7 @@ fun EntryScreen(
                     Link(
                         title = "Repetir",
                         iconRightVisibility = true,
-                        result = if (entryRepeat == 0) "" else "${entryRepeat}x",
+                        result = if (entryRepeat <= 1) "" else "${entryRepeat}x",
                         color = MaterialTheme.colorScheme.onSecondary,
                         onClick = { showBottomSheetRepeat.value = true },
                     )
@@ -105,7 +215,10 @@ fun EntryScreen(
                 subtitle = "Tem certeza que deseja excluir?",
                 actionButtonText = "Sim",
                 dismissButtonText = "Cancelar",
-                onConfirmSelected = {},
+                onConfirmSelected = {
+                    showBottomSheetDelete.value = false
+                    onDeleteEntry()
+                },
                 onDismiss = { showBottomSheetDelete.value = false },
                 showBottomSheet = showBottomSheetDelete.value,
             )
@@ -132,15 +245,18 @@ fun EntryScreen(
         }
         SecondaryButton(
             title = "Salvar",
-            onClick = { onSaveEntrySelected() },
+            onClick = {
+                val updatedEntry =
+                    entry.copy(
+                        name = entryNameValue,
+                        value = parseBRLInputToDouble(entryValue),
+                        date = entryDate,
+                        repeat = entryRepeat,
+                        type = entryType,
+                        category = category,
+                    )
+                onSaveEntry(updatedEntry)
+            },
         )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewEntryScreen() {
-    AppTheme {
-        EntryScreen()
     }
 }
