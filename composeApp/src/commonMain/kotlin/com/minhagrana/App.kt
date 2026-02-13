@@ -35,11 +35,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.minhagrana.ui.presentation.entries.AnnualBalanceScreen
 import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
+import com.minhagrana.ui.presentation.entries.NewEntryScreen
 import com.minhagrana.ui.presentation.home.HomeScreen
+import com.minhagrana.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.ic_data
@@ -47,8 +48,10 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun App() {
-    val navController = rememberNavController()
-    BottomNavigationBar(navController)
+    AppTheme {
+        val navController = rememberNavController()
+        BottomNavigationBar(navController)
+    }
 }
 
 @Composable
@@ -66,23 +69,24 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                 route = HomeRoute.Home,
             ),
             BottomNavigationItem(
-                label = "Entries",
-                icon = Icons.Default.Home,
-                route = EntriesRoute.Entries(),
-                useCustomIcon = true,
-                customIconRes = Res.drawable.ic_data,
-            ),
-            BottomNavigationItem(
                 label = "",
                 icon = Icons.Default.Add,
-                route = EntriesRoute.Entries(showBottomEntryItem = true),
+                route = NewEntryRoute.NewEntry,
+                isAddButton = true,
+            ),
+            BottomNavigationItem(
+                label = "Entries",
+                icon = Icons.Default.Home,
+                route = EntriesRoute.Entries,
+                useCustomIcon = true,
+                customIconRes = Res.drawable.ic_data,
             ),
         )
 
     val showBottomNav =
-        bottomNavigationItems.any {
-            currentDestination?.hasRoute(it.route::class) == true
-        }
+        currentDestination?.hasRoute(HomeRoute.Home::class) == true ||
+            currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
+            currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -103,9 +107,10 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                                     indicatorColor = MaterialTheme.colorScheme.onPrimary,
                                 ),
                             selected =
-                                currentDestination?.hierarchy?.any {
-                                    it.hasRoute(navigationItem.route::class)
-                                } == true,
+                                !navigationItem.isAddButton &&
+                                    currentDestination?.hierarchy?.any {
+                                        it.hasRoute(navigationItem.route::class)
+                                    } == true,
                             icon = {
                                 if (navigationItem.useCustomIcon && navigationItem.customIconRes != null) {
                                     Icon(
@@ -132,15 +137,13 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                                 }
                             },
                             onClick = {
-                                if (currentDestination?.route != navigationItem.route.toString()) {
-                                    navigationSelectedItem = index
-                                    navController.navigate(navigationItem.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
+                                navigationSelectedItem = index
+                                navController.navigate(navigationItem.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
                                     }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
                             },
                         )
@@ -155,6 +158,7 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                 startDestination = HomeRoute.Root,
             ) {
                 homeNavGraph(navController = navController)
+                newEntryNavGraph(navController = navController)
                 entriesNavGraph(navController = navController)
             }
         }
@@ -171,20 +175,39 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
     }
 }
 
+fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
+    navigation<NewEntryRoute.Root>(
+        startDestination = NewEntryRoute.NewEntry,
+    ) {
+        composable<NewEntryRoute.NewEntry> {
+            NewEntryScreen(
+                onEntrySaved = {
+                    navController.navigate(EntriesRoute.Entries) {
+                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    }
+                },
+                onCancel = {
+                    navController.navigate(EntriesRoute.Entries) {
+                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    }
+                },
+            )
+        }
+    }
+}
+
 fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
     navigation<EntriesRoute.Root>(
-        startDestination = EntriesRoute.Entries(),
+        startDestination = EntriesRoute.Entries,
     ) {
         composable<EntriesRoute.Entries> {
-            val args = it.toRoute<EntriesRoute.Entries>()
             EntriesScreen(
-                showBottomSheetNav = args.showBottomEntryItem,
                 onEntriesByYearSelected = {
                     navController.navigate(EntriesRoute.AnnualEntries)
                 },
-                onEntrySelected = {
+                onEntrySelected = { entry ->
                     navController.navigate(EntriesRoute.EditEntry) {
-                        popUpTo(EntriesRoute.Entries(false)) { inclusive = false }
+                        popUpTo(EntriesRoute.Entries) { inclusive = false }
                     }
                 },
             )
@@ -195,8 +218,8 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 },
                 onSaveEntrySelected = {
-                    navController.navigate(EntriesRoute.Entries(false)) {
-                        popUpTo(EntriesRoute.Entries(false)) { inclusive = true }
+                    navController.navigate(EntriesRoute.Entries) {
+                        popUpTo(EntriesRoute.Entries) { inclusive = true }
                     }
                 },
             )
@@ -206,9 +229,9 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                 navigateUp = {
                     navController.navigateUp()
                 },
-                onMonthSelected = {
-                    navController.navigate(EntriesRoute.Entries(false)) {
-                        popUpTo(EntriesRoute.Entries(false)) { inclusive = false }
+                onMonthSelected = { month ->
+                    navController.navigate(EntriesRoute.Entries) {
+                        popUpTo(EntriesRoute.Entries) { inclusive = false }
                     }
                 },
             )
@@ -222,9 +245,8 @@ data class BottomNavigationItem<T : Any>(
     val route: T,
     val useCustomIcon: Boolean = false,
     val customIconRes: org.jetbrains.compose.resources.DrawableResource? = null,
+    val isAddButton: Boolean = false,
 )
-
-// Navigation Routes
 
 @Serializable
 sealed class HomeRoute {
@@ -236,14 +258,21 @@ sealed class HomeRoute {
 }
 
 @Serializable
+sealed class NewEntryRoute {
+    @Serializable
+    data object Root : NewEntryRoute()
+
+    @Serializable
+    data object NewEntry : NewEntryRoute()
+}
+
+@Serializable
 sealed class EntriesRoute {
     @Serializable
     data object Root : EntriesRoute()
 
     @Serializable
-    data class Entries(
-        val showBottomEntryItem: Boolean = false,
-    ) : EntriesRoute()
+    data object Entries : EntriesRoute()
 
     @Serializable
     data object EditEntry : EntriesRoute()
