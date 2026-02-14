@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -67,66 +68,91 @@ fun WelcomeScreen(
                     CircularProgressIndicator()
                 }
             }
-            else -> {
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(padding)
-                            .background(MaterialTheme.colorScheme.background)
-                            .verticalScroll(rememberScrollState()),
+
+            is OnboardingViewState.Success -> {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(padding),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Column(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 200.dp)
-                                .background(MaterialTheme.colorScheme.onSecondaryContainer),
-                    ) {
-                        Image(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                                    .height(48.dp),
-                            painter = painterResource(Res.drawable.logo_small),
-                            contentDescription = "Logo MinhaGrana",
-                            contentScale = ContentScale.Fit,
-                        )
-                        Text(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                            text = "Boas-vindas",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        if (state is OnboardingViewState.Error) {
-                            Text(
-                                text = (state as OnboardingViewState.Error).message,
-                                color = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                            )
-                        }
-                        InputText(
-                            title = "Nome",
-                            textFieldValue = name,
-                            onValueChange = { name = it },
-                            keyboardOptions =
-                                KeyboardOptions(
-                                    keyboardType = KeyboardType.Text,
-                                    imeAction = ImeAction.Done,
-                                ),
-                        )
-                        PrimaryButton(
-                            modifier = Modifier.padding(bottom = 16.dp),
-                            enabled = name.text.isNotBlank(),
-                            title = "Criar conta",
-                            onClick = {
-                                viewModel.interact(OnboardingInteraction.OnCreateUser(name.text))
-                            },
-                        )
-                    }
+                    CircularProgressIndicator()
                 }
             }
+
+            else -> {
+                WelcomeContent(
+                    name = name,
+                    onNameChange = { name = it },
+                    errorMessage = (state as? OnboardingViewState.Error)?.message,
+                    onCreateAccount = { viewModel.interact(OnboardingInteraction.OnCreateUser(it)) },
+                    padding = padding,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WelcomeContent(
+    name: TextFieldValue,
+    onNameChange: (TextFieldValue) -> Unit,
+    errorMessage: String?,
+    onCreateAccount: (String) -> Unit,
+    padding: PaddingValues,
+) {
+    Column(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(padding)
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
+    ) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 200.dp)
+                    .background(MaterialTheme.colorScheme.onSecondaryContainer),
+        ) {
+            Image(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .height(48.dp),
+                painter = painterResource(Res.drawable.logo_small),
+                contentDescription = "Logo MinhaGrana",
+                contentScale = ContentScale.Fit,
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "Boas-vindas",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            if (errorMessage != null) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+            InputText(
+                title = "Nome",
+                textFieldValue = name,
+                onValueChange = onNameChange,
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done,
+                    ),
+            )
+            PrimaryButton(
+                modifier = Modifier.padding(bottom = 16.dp),
+                enabled = name.text.isNotBlank(),
+                title = "Criar conta",
+                onClick = { onCreateAccount(name.text) },
+            )
         }
     }
 }
