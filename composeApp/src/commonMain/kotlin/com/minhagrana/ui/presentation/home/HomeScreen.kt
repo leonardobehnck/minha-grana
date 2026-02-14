@@ -35,7 +35,10 @@ import com.minhagrana.util.currentMonthNumber
 import org.koin.compose.koinInject
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
+fun HomeScreen(
+    onProfileSelected: () -> Unit,
+    viewModel: HomeViewModel = koinInject()
+) {
     val state by viewModel.bind().collectAsState()
 
     LaunchedEffect(Unit) {
@@ -55,7 +58,10 @@ fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
         }
 
         is HomeViewState.Success -> {
-            HomeContent(year = currentState.year)
+            HomeContent(
+                onProfileSelected = onProfileSelected,
+                year = currentState.year
+            )
         }
 
         is HomeViewState.Error -> {
@@ -85,11 +91,13 @@ fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
 }
 
 @Composable
-private fun HomeContent(year: Year) {
+private fun HomeContent(
+    onProfileSelected: () -> Unit,
+    year: Year
+) {
+
     val currentMonthIndex = currentMonthNumber() - 1
-
     val month = year.months.getOrNull(currentMonthIndex) ?: year.months.firstOrNull() ?: Month()
-
     val totalBalance = year.months.sumOf { it.balance }
 
     Column(
@@ -97,6 +105,7 @@ private fun HomeContent(year: Year) {
     ) {
         Header3(
             title = "Minha Grana",
+            onProfileSelected = onProfileSelected,
         )
         Balance(
             balanceValue = totalBalance,
