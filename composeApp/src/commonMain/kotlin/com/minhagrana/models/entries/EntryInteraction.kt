@@ -7,7 +7,9 @@ sealed class EntryInteraction {
         val entry: Entry,
     ) : EntryInteraction()
 
-    data class OnNewEntry(val monthId: Long) : EntryInteraction()
+    data class OnNewEntry(
+        val monthId: Long,
+    ) : EntryInteraction()
 
     data class OnEntryUpdated(
         val entry: Entry,

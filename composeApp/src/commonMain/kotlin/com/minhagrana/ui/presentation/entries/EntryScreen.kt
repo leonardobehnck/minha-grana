@@ -60,7 +60,8 @@ fun EntryScreen(
 
     when (val currentState = state) {
         is EntryViewState.Idle,
-        is EntryViewState.Loading -> {
+        is EntryViewState.Loading,
+        -> {
             ProgressBar()
         }
 
