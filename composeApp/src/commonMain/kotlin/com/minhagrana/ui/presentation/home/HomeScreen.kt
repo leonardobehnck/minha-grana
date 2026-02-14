@@ -60,7 +60,8 @@ fun HomeScreen(
         is HomeViewState.Success -> {
             HomeContent(
                 onProfileSelected = onProfileSelected,
-                year = currentState.year
+                year = currentState.year,
+                userName = currentState.userName,
             )
         }
 
@@ -93,9 +94,9 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     onProfileSelected: () -> Unit,
-    year: Year
+    year: Year,
+    userName: String,
 ) {
-
     val currentMonthIndex = currentMonthNumber() - 1
     val month = year.months.getOrNull(currentMonthIndex) ?: year.months.firstOrNull() ?: Month()
     val totalBalance = year.months.sumOf { it.balance }
@@ -104,7 +105,7 @@ private fun HomeContent(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
     ) {
         Header3(
-            title = "Minha Grana",
+            title = userName,
             onProfileSelected = onProfileSelected,
         )
         Balance(
