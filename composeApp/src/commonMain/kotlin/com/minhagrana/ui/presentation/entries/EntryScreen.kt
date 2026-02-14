@@ -53,13 +53,14 @@ fun EntryScreen(
         viewModel.setMonthId(monthId)
         if (entry != null) {
             viewModel.interact(EntryInteraction.OnEntrySelected(entry))
+        } else {
+            viewModel.interact(EntryInteraction.OnNewEntry(monthId))
         }
     }
 
     when (val currentState = state) {
         is EntryViewState.Idle,
-        is EntryViewState.Loading,
-        -> {
+        is EntryViewState.Loading -> {
             ProgressBar()
         }
 

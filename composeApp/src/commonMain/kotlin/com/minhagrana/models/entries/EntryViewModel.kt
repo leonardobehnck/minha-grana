@@ -46,6 +46,7 @@ class EntryViewModel(
                     is EntryInteraction.OnEntryDeleted -> deleteEntry()
                     is EntryInteraction.OnEntryUpdated -> updateEntry(interaction.entry)
                     is EntryInteraction.OnEntrySelected -> fetchEntry(interaction.entry)
+                    is EntryInteraction.OnNewEntry -> openNewEntry(interaction.monthId)
                 }
             }
         }
@@ -69,6 +70,12 @@ class EntryViewModel(
                 states.value = EntryViewState.Error(e.message ?: "Erro ao carregar lançamento")
             }
         }
+    }
+
+    private fun openNewEntry(monthId: Long) {
+        currentMonthId = monthId
+        currentEntry = null
+        states.value = EntryViewState.Success(Entry())
     }
 
     private fun deleteEntry() {
