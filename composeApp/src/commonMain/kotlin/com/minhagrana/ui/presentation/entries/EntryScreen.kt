@@ -1,18 +1,14 @@
 package com.minhagrana.ui.presentation.entries
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,7 +17,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Entry
@@ -34,8 +29,11 @@ import com.minhagrana.ui.components.Dialog
 import com.minhagrana.ui.components.DialogCategory
 import com.minhagrana.ui.components.DialogRepeat
 import com.minhagrana.ui.components.EditItemHeader
+import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.Link
+import com.minhagrana.ui.components.NoConnectivity
+import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.parseBRLInputToDouble
 import org.koin.compose.koinInject
@@ -44,9 +42,9 @@ import org.koin.compose.koinInject
 fun EntryScreen(
     entry: Entry? = null,
     monthId: Long = -1,
-    navigateUp: () -> Unit = {},
-    onSaveEntrySelected: () -> Unit = {},
-    onEntryDeleted: () -> Unit = {},
+    navigateUp: () -> Unit,
+    onSaveEntrySelected: () -> Unit,
+    onEntryDeleted: () -> Unit,
     viewModel: EntryViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
@@ -59,37 +57,10 @@ fun EntryScreen(
     }
 
     when (val currentState = state) {
-        is EntryViewState.Idle -> {
-            if (entry == null) {
-                EntryContent(
-                    entry = Entry(),
-                    navigateUp = navigateUp,
-                    onSaveEntry = { updatedEntry ->
-                        viewModel.interact(EntryInteraction.OnEntryUpdated(updatedEntry))
-                        onSaveEntrySelected()
-                    },
-                    onDeleteEntry = {
-                        viewModel.interact(EntryInteraction.OnEntryDeleted)
-                        onEntryDeleted()
-                    },
-                )
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-        }
-
-        is EntryViewState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+        is EntryViewState.Idle,
+        is EntryViewState.Loading,
+        -> {
+            ProgressBar()
         }
 
         is EntryViewState.Success -> {
@@ -108,26 +79,12 @@ fun EntryScreen(
         }
 
         is EntryViewState.Error -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            Error(message = currentState.message)
         }
 
         is EntryViewState.NoConnection -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
+            NoConnectivity {
+                entry?.let { viewModel.interact(EntryInteraction.OnEntrySelected(it)) }
             }
         }
     }
@@ -173,7 +130,7 @@ private fun EntryContent(
                     .background(MaterialTheme.colorScheme.background),
         ) {
             Header1(
-                title = if (entry.id > 0) "Editar lançamento" else "Novo lançamento",
+                title = "Editar lançamento",
             )
             Column(
                 modifier =
