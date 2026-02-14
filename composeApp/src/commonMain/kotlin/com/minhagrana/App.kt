@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -22,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -38,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.minhagrana.models.root.RootInteraction
 import com.minhagrana.models.root.RootViewModel
 import com.minhagrana.models.root.RootViewState
+import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.presentation.entries.AnnualBalanceScreen
 import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
@@ -52,6 +51,7 @@ import minhagrana.composeapp.generated.resources.compose_multiplatform
 import minhagrana.composeapp.generated.resources.ic_add
 import minhagrana.composeapp.generated.resources.ic_home
 import minhagrana.composeapp.generated.resources.ic_report
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -197,12 +197,7 @@ fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
                 is RootViewState.Idle,
                 is RootViewState.Loading,
                 -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    ProgressBar()
                 }
                 else -> { }
             }
@@ -266,11 +261,6 @@ fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
                         popUpTo(EntriesRoute.Entries) { inclusive = true }
                     }
                 },
-                onCancel = {
-                    navController.navigate(EntriesRoute.Entries) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = true }
-                    }
-                },
             )
         }
     }
@@ -302,6 +292,7 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                         popUpTo(EntriesRoute.Entries) { inclusive = true }
                     }
                 },
+                onEntryDeleted = {},
             )
         }
         composable<EntriesRoute.AnnualEntries> {
@@ -322,7 +313,7 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
 data class BottomNavigationItem<T : Any>(
     val label: String = "",
     val route: T,
-    val customIconRes: org.jetbrains.compose.resources.DrawableResource = Res.drawable.compose_multiplatform,
+    val customIconRes: DrawableResource = Res.drawable.compose_multiplatform,
     val useCustomIcon: Boolean = false,
 )
 
