@@ -36,6 +36,7 @@ import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
 import com.minhagrana.ui.presentation.home.HomeScreen
 import com.minhagrana.ui.presentation.newentry.NewEntryScreen
+import com.minhagrana.ui.presentation.onboarding.WelcomeScreen
 import com.minhagrana.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
@@ -143,12 +144,27 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = HomeRoute.Root,
+                startDestination = OnboardingRoute.Root,
             ) {
+                onboardingNavGraph(navController = navController)
                 homeNavGraph(navController = navController)
                 newEntryNavGraph(navController = navController)
                 entriesNavGraph(navController = navController)
             }
+        }
+    }
+}
+
+fun NavGraphBuilder.onboardingNavGraph(navController: NavHostController) {
+    navigation<OnboardingRoute.Root>(
+        startDestination = OnboardingRoute.Welcome,
+    ) {
+        composable<OnboardingRoute.Welcome> {
+            WelcomeScreen(
+                onUserCreated = {
+                    navController.navigate(HomeRoute.Root)
+                }
+            )
         }
     }
 }
@@ -158,6 +174,9 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
         startDestination = HomeRoute.Home,
     ) {
         composable<HomeRoute.Home> {
+            HomeScreen()
+        }
+        composable<HomeRoute.Profile> {
             HomeScreen()
         }
     }
@@ -193,7 +212,7 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                 onEntriesByYearSelected = {
                     navController.navigate(EntriesRoute.AnnualEntries)
                 },
-                onEntrySelected = { entry ->
+                onEntrySelected = {
                     navController.navigate(EntriesRoute.EditEntry) {
                         popUpTo(EntriesRoute.Entries) { inclusive = false }
                     }
@@ -235,12 +254,24 @@ data class BottomNavigationItem<T : Any>(
 )
 
 @Serializable
+sealed class OnboardingRoute {
+    @Serializable
+    data object Root : OnboardingRoute()
+
+    @Serializable
+    data object Welcome : OnboardingRoute()
+}
+
+@Serializable
 sealed class HomeRoute {
     @Serializable
     data object Root : HomeRoute()
 
     @Serializable
     data object Home : HomeRoute()
+
+    @Serializable
+    data object Profile : HomeRoute()
 }
 
 @Serializable
