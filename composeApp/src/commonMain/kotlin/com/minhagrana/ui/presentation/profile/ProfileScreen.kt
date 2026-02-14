@@ -61,7 +61,7 @@ fun ProfileScreen(
                 user = currentState.user,
                 navigateUp = navigateUp,
                 onSaveProfileSelected = onSaveProfileSelected,
-                onDeleteAccountRequested = { onDeleteAccountSelected() },
+                onConfirmDeleteAccount = { viewModel.interact(ProfileInteraction.OnDeleteAccount) },
                 onUpdateName = { name -> viewModel.interact(ProfileInteraction.OnUpdateName(name)) },
             )
         }
@@ -71,10 +71,8 @@ fun ProfileScreen(
         }
 
         is ProfileViewState.AccountDeleted -> {
-            LaunchedEffect(state) {
-                if (state is ProfileViewState.AccountDeleted) {
-                    viewModel.interact(ProfileInteraction.OnDeleteAccount)
-                }
+            LaunchedEffect(Unit) {
+                onDeleteAccountSelected()
             }
         }
     }
@@ -85,7 +83,7 @@ private fun ProfileContent(
     user: User,
     navigateUp: () -> Unit,
     onSaveProfileSelected: () -> Unit,
-    onDeleteAccountRequested: () -> Unit,
+    onConfirmDeleteAccount: () -> Unit,
     onUpdateName: (String) -> Unit,
 ) {
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
@@ -128,7 +126,7 @@ private fun ProfileContent(
                 Modifier
                     .align(Alignment.End)
                     .padding(16.dp)
-                    .noRippleClickable(onClick = onDeleteAccountRequested),
+                    .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
             text = "Excluir conta",
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.labelMedium,
@@ -150,8 +148,8 @@ private fun ProfileContent(
             actionButtonText = "Excluir",
             dismissButtonText = "Cancelar",
             onConfirmSelected = {
-                onDeleteAccountRequested()
                 showDeleteAccountDialog = false
+                onConfirmDeleteAccount()
             },
             showBottomSheet = showDeleteAccountDialog,
             onDismiss = { showDeleteAccountDialog = false },
