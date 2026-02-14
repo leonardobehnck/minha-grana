@@ -31,8 +31,8 @@ fun PrimaryButton(
     shape = MaterialTheme.shapes.small,
     colors =
         ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
         ),
 ) {
     Text(

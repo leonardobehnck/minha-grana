@@ -28,7 +28,7 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun Balance(
     balanceValue: Double = 4000.0,
-    balanceVisibility: Boolean = true,
+    balanceVisibility: Boolean = false,
 ) {
     var isBalanceVisible by remember { mutableStateOf(balanceVisibility) }
 
@@ -62,9 +62,9 @@ fun Balance(
                 modifier = Modifier.noRippleClickable { isBalanceVisible = !isBalanceVisible },
                 painter =
                     if (isBalanceVisible) {
-                        painterResource(Res.drawable.ic_hide)
-                    } else {
                         painterResource(Res.drawable.ic_unhide)
+                    } else {
+                        painterResource(Res.drawable.ic_hide)
                     },
                 contentDescription = "hide balance",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,

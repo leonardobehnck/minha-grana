@@ -98,7 +98,7 @@ private fun ProfileContent(
         modifier =
             Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onSecondaryContainer),
+                .background(MaterialTheme.colorScheme.background),
     ) {
         AppBar(
             title = "Minha conta",

@@ -20,7 +20,7 @@ fun SecondaryButton(
     modifier: Modifier = Modifier,
     title: String,
     enabled: Boolean = true,
-    colorButton: Color = MaterialTheme.colorScheme.primary,
+    colorButton: Color = MaterialTheme.colorScheme.secondary,
     onClick: () -> Unit = {},
 ) = Button(
     modifier =

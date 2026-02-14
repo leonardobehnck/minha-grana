@@ -26,13 +26,17 @@ fun Paragraph(
     icon: Boolean = false,
     color: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     onClick: (() -> Unit)? = null,
+    background: Boolean = true,
 ) {
     Row(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 20.dp)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .then(
+                    if (background) Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+                    else Modifier,
+                )
                 .noRippleClickable(onClick = { onClick?.invoke() }),
         verticalAlignment = Alignment.CenterVertically,
     ) {

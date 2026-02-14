@@ -37,7 +37,7 @@ fun Dialog(
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surface,
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -49,12 +49,14 @@ fun Dialog(
                     Paragraph(
                         title = subtitle,
                         color = MaterialTheme.colorScheme.onBackground,
+                        background = false,
                     )
                 }
                 if (description.isNotEmpty()) {
                     Paragraph(
                         color = descriptionColor,
                         title = description,
+                        background = false,
                     )
                 }
                 Row(
@@ -67,7 +69,7 @@ fun Dialog(
                             Modifier
                                 .weight(1f),
                     ) {
-                        PrimaryButton(
+                        SecondaryButton(
                             title = dismissButtonText,
                             onClick = {
                                 scope.launch { sheetState.hide() }.invokeOnCompletion {

@@ -31,6 +31,7 @@ fun Header3(
             modifier
                 .fillMaxWidth()
                 .height(100.dp)
+                .noRippleClickable{ onProfileSelected() }
                 .background(MaterialTheme.colorScheme.primary),
     ) {
         Row {
@@ -47,10 +48,7 @@ fun Header3(
                 painter = painterResource(Res.drawable.ic_profile),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = "Profile",
-                modifier =
-                    Modifier
-                        .noRippleClickable { onProfileSelected() }
-                        .padding(16.dp),
+                modifier = Modifier.padding(16.dp),
             )
         }
     }

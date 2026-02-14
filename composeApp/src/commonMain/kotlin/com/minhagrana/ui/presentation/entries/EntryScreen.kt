@@ -138,7 +138,7 @@ private fun EntryContent(
                 modifier =
                     Modifier
                         .height(300.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .background(MaterialTheme.colorScheme.surface),
             ) {
                 EditItemHeader(
                     entry = entry.copy(type = entryType),
