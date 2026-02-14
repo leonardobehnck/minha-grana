@@ -26,8 +26,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.minhagrana.models.profile.ProfileInteraction
-import com.minhagrana.models.profile.ProfileViewState
 import com.minhagrana.models.profile.ProfileViewModel
+import com.minhagrana.models.profile.ProfileViewState
 import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.Dialog
 import com.minhagrana.ui.components.Header1

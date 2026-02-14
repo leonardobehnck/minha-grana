@@ -35,9 +35,10 @@ fun Header3(
     ) {
         Row {
             Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .padding(16.dp),
                 text = "Olá, $title!",
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.headlineLarge,
@@ -46,9 +47,10 @@ fun Header3(
                 painter = painterResource(Res.drawable.ic_profile),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = "Profile",
-                modifier = Modifier
-                    .noRippleClickable { onProfileSelected() }
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .noRippleClickable { onProfileSelected() }
+                        .padding(16.dp),
             )
         }
     }

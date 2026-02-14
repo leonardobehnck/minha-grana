@@ -7,7 +7,11 @@ sealed class OnboardingViewState {
 
     data object Loading : OnboardingViewState()
 
-    data class Success(val user: User) : OnboardingViewState()
+    data class Success(
+        val user: User,
+    ) : OnboardingViewState()
 
-    data class Error(val message: String) : OnboardingViewState()
+    data class Error(
+        val message: String,
+    ) : OnboardingViewState()
 }

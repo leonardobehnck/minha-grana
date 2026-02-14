@@ -30,8 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.minhagrana.models.onboarding.OnboardingInteraction
-import com.minhagrana.models.onboarding.OnboardingViewState
 import com.minhagrana.models.onboarding.OnboardingViewModel
+import com.minhagrana.models.onboarding.OnboardingViewState
 import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.PrimaryButton
 import minhagrana.composeapp.generated.resources.Res

@@ -37,7 +37,7 @@ import org.koin.compose.koinInject
 @Composable
 fun HomeScreen(
     onProfileSelected: () -> Unit,
-    viewModel: HomeViewModel = koinInject()
+    viewModel: HomeViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
 

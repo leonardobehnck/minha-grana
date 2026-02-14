@@ -7,9 +7,13 @@ sealed class ProfileViewState {
 
     data object Loading : ProfileViewState()
 
-    data class Success(val user: User) : ProfileViewState()
+    data class Success(
+        val user: User,
+    ) : ProfileViewState()
 
-    data class Error(val message: String) : ProfileViewState()
+    data class Error(
+        val message: String,
+    ) : ProfileViewState()
 
     data object AccountDeleted : ProfileViewState()
 }
