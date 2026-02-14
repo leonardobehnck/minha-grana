@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -32,6 +34,8 @@ import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.logo
+import minhagrana.composeapp.generated.resources.logo_large
 import minhagrana.composeapp.generated.resources.logo_small
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
@@ -97,15 +101,15 @@ private fun WelcomeContent(
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 200.dp)
-                    .background(MaterialTheme.colorScheme.onSecondaryContainer),
+                    .background(MaterialTheme.colorScheme.surface),
         ) {
             Image(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                painter = painterResource(Res.drawable.logo_small),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .height(125.dp),
+                painter = painterResource(Res.drawable.logo),
                 contentDescription = "Logo MinhaGrana",
+                contentScale = ContentScale.Fit,
             )
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
