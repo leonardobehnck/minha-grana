@@ -30,7 +30,7 @@ fun MonthChanger(
         modifier =
             Modifier
                 .height(48.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -42,12 +42,12 @@ fun MonthChanger(
                     .size(25.dp)
                     .noRippleClickable { onPreviousPressed() },
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.onSurface,
             contentDescription = "Previous Month",
         )
         Text(
             text = month,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
         Icon(
@@ -57,7 +57,7 @@ fun MonthChanger(
                     .size(25.dp)
                     .noRippleClickable { onNextPressed() },
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.onSurface,
             contentDescription = "Next Month",
         )
     }

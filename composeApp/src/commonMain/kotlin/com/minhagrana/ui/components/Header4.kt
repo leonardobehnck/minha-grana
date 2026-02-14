@@ -26,7 +26,7 @@ fun Header4(
     ) {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.headlineLarge,
         )
     }
