@@ -44,4 +44,6 @@ class UserRepositoryImpl(
     override suspend fun updateUser(user: User) = databaseHelper.updateUser(user)
 
     override suspend fun deleteUser(id: Int) = databaseHelper.deleteUser(id)
+
+    override suspend fun deleteAllData() = databaseHelper.deleteAllData()
 }
