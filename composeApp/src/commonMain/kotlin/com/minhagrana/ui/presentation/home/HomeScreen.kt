@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +27,11 @@ import com.minhagrana.models.home.HomeViewModel
 import com.minhagrana.models.home.HomeViewState
 import com.minhagrana.ui.components.Balance
 import com.minhagrana.ui.components.CircularIcon
+import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header3
+import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.PieChart
+import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.processMonthDataByExpense
 import com.minhagrana.util.currentMonthNumber
 import org.koin.compose.koinInject
@@ -49,12 +51,7 @@ fun HomeScreen(
         is HomeViewState.Idle,
         is HomeViewState.Loading,
         -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            ProgressBar()
         }
 
         is HomeViewState.Success -> {
@@ -66,27 +63,11 @@ fun HomeScreen(
         }
 
         is HomeViewState.Error -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            Error(message = currentState.message)
         }
 
         is HomeViewState.NoConnection -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            NoConnectivity { viewModel.interact(HomeInteraction.OnScreenOpened) }
         }
     }
 }
