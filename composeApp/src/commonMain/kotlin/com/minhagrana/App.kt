@@ -242,8 +242,14 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
                 navigateUp = {
                     navController.navigateUp()
                 },
-                onSaveProfileSelected = {},
-                onDeleteAccountSelected = {}
+                onSaveProfileSelected = {
+                    navController.navigate(HomeRoute.Home)
+                },
+                onDeleteAccountSelected = {
+                    navController.navigate(OnboardingRoute.Welcome) {
+                        popUpTo(OnboardingRoute.Welcome) { inclusive = true }
+                    }
+                }
             )
         }
     }
