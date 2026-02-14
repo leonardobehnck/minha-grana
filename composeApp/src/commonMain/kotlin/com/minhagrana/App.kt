@@ -15,10 +15,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -37,7 +41,12 @@ import com.minhagrana.ui.presentation.entries.EntryScreen
 import com.minhagrana.ui.presentation.home.HomeScreen
 import com.minhagrana.ui.presentation.newentry.NewEntryScreen
 import com.minhagrana.ui.presentation.onboarding.WelcomeScreen
+import com.minhagrana.models.root.RootInteraction
+import com.minhagrana.models.root.RootViewModel
+import com.minhagrana.models.root.RootViewState
+import com.minhagrana.ui.presentation.profile.ProfileScreen
 import com.minhagrana.ui.theme.AppTheme
+import org.koin.compose.koinInject
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.compose_multiplatform
@@ -144,12 +153,58 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = OnboardingRoute.Root,
+                startDestination = RootRoute.Root,
             ) {
+                rootNavGraph(navController = navController)
                 onboardingNavGraph(navController = navController)
                 homeNavGraph(navController = navController)
                 newEntryNavGraph(navController = navController)
                 entriesNavGraph(navController = navController)
+            }
+        }
+    }
+}
+
+fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
+    navigation<RootRoute.Root>(
+        startDestination = RootRoute.Gate,
+    ) {
+        composable<RootRoute.Gate> {
+            val viewModel: RootViewModel = koinInject()
+            val state by viewModel.bind().collectAsState()
+
+            LaunchedEffect(Unit) {
+                viewModel.interact(RootInteraction.CheckUserExists)
+            }
+
+            LaunchedEffect(state) {
+                when (state) {
+                    is RootViewState.HasUser -> {
+                        navController.navigate(HomeRoute.Root) {
+                            popUpTo(RootRoute.Root) { inclusive = true }
+                        }
+                    }
+                    is RootViewState.NoUser -> {
+                        navController.navigate(OnboardingRoute.Root) {
+                            popUpTo(RootRoute.Root) { inclusive = true }
+                        }
+                    }
+                    else -> { }
+                }
+            }
+
+            when (state) {
+                is RootViewState.Idle,
+                is RootViewState.Loading,
+                -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                else -> { }
             }
         }
     }
@@ -162,8 +217,10 @@ fun NavGraphBuilder.onboardingNavGraph(navController: NavHostController) {
         composable<OnboardingRoute.Welcome> {
             WelcomeScreen(
                 onUserCreated = {
-                    navController.navigate(HomeRoute.Root)
-                }
+                    navController.navigate(HomeRoute.Root) {
+                        popUpTo(OnboardingRoute.Welcome) { inclusive = true }
+                    }
+                },
             )
         }
     }
@@ -174,10 +231,20 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
         startDestination = HomeRoute.Home,
     ) {
         composable<HomeRoute.Home> {
-            HomeScreen()
+            HomeScreen(
+                onProfileSelected = {
+                    navController.navigate(HomeRoute.Profile)
+                },
+            )
         }
         composable<HomeRoute.Profile> {
-            HomeScreen()
+            ProfileScreen(
+                navigateUp = {
+                    navController.navigateUp()
+                },
+                onSaveProfileSelected = {},
+                onDeleteAccountSelected = {}
+            )
         }
     }
 }
@@ -252,6 +319,15 @@ data class BottomNavigationItem<T : Any>(
     val customIconRes: org.jetbrains.compose.resources.DrawableResource = Res.drawable.compose_multiplatform,
     val useCustomIcon: Boolean = false,
 )
+
+@Serializable
+sealed class RootRoute {
+    @Serializable
+    data object Root : RootRoute()
+
+    @Serializable
+    data object Gate : RootRoute()
+}
 
 @Serializable
 sealed class OnboardingRoute {
