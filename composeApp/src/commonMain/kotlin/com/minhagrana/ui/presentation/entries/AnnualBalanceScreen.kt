@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +26,10 @@ import com.minhagrana.models.annualbalance.AnnualBalanceViewModel
 import com.minhagrana.models.annualbalance.AnnualBalanceViewState
 import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.BalanceCard
+import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.MonthChanger
+import com.minhagrana.ui.components.NoConnectivity
+import com.minhagrana.ui.components.ProgressBar
 import org.koin.compose.koinInject
 
 @Composable
@@ -46,12 +48,7 @@ fun AnnualBalanceScreen(
         is AnnualBalanceViewState.Idle,
         is AnnualBalanceViewState.Loading,
         -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            ProgressBar()
         }
 
         is AnnualBalanceViewState.Success -> {
@@ -65,27 +62,11 @@ fun AnnualBalanceScreen(
         }
 
         is AnnualBalanceViewState.Error -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            Error(message = currentState.message)
         }
 
         is AnnualBalanceViewState.NoConnection -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            NoConnectivity { viewModel.interact(AnnualBalanceInteraction.OnScreenOpened) }
         }
     }
 }
