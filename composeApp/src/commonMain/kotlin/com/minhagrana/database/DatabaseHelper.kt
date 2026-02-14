@@ -39,6 +39,8 @@ class DatabaseHelper(
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toUser() } }
 
+    suspend fun getAllUsers(): List<User> = queries.selectAllUsers().executeAsList().map { it.toUser() }
+
     suspend fun getUserByUuid(uuid: String): User? = queries.selectUserByUuid(uuid).executeAsOneOrNull()?.toUser()
 
     suspend fun updateUser(user: User) {
@@ -53,6 +55,11 @@ class DatabaseHelper(
 
     suspend fun deleteUser(id: Int) {
         queries.deleteUserById(id.toLong())
+    }
+
+    suspend fun deleteAllData() {
+        getAllUsers().forEach { deleteUser(it.id) }
+        getAllCategories().forEach { queries.deleteCategoryById(it.id.toLong()) }
     }
 
     // ==================== CATEGORY ====================
@@ -77,6 +84,10 @@ class DatabaseHelper(
     suspend fun getCategoryById(id: Int): Category? = queries.selectCategoryById(id.toLong()).executeAsOneOrNull()?.toCategory()
 
     suspend fun getCategoryByName(name: String): Category? = queries.selectCategoryByName(name).executeAsOneOrNull()?.toCategory()
+
+    suspend fun deleteCategory(id: Int) {
+        queries.deleteCategoryById(id.toLong())
+    }
 
     // ==================== YEAR ====================
 
