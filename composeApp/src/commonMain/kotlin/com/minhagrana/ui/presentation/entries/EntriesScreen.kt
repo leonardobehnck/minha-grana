@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,16 +26,19 @@ import com.minhagrana.models.entries.EntriesViewModel
 import com.minhagrana.models.entries.EntriesViewState
 import com.minhagrana.ui.components.BalanceItem
 import com.minhagrana.ui.components.EntryItem
+import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.MonthChanger
+import com.minhagrana.ui.components.NoConnectivity
+import com.minhagrana.ui.components.ProgressBar
 import org.koin.compose.koinInject
 
 @Composable
 fun EntriesScreen(
     monthUuid: String? = null,
     yearId: Long = -1,
-    onEntrySelected: (Entry) -> Unit = {},
-    onEntriesByYearSelected: () -> Unit = {},
+    onEntrySelected: (Entry) -> Unit,
+    onEntriesByYearSelected: () -> Unit,
     viewModel: EntriesViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
@@ -52,12 +54,7 @@ fun EntriesScreen(
         is EntriesViewState.Idle,
         is EntriesViewState.Loading,
         -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            ProgressBar()
         }
 
         is EntriesViewState.Success -> {
@@ -71,27 +68,11 @@ fun EntriesScreen(
         }
 
         is EntriesViewState.Error -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            Error(message = currentState.message)
         }
 
         is EntriesViewState.NoConnection -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = currentState.message,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+            NoConnectivity { viewModel.interact(EntriesInteraction.OnMonthSelected) }
         }
     }
 }
