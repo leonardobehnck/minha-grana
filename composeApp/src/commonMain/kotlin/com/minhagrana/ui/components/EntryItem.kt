@@ -40,7 +40,7 @@ fun EntryItem(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -58,7 +58,7 @@ fun EntryItem(
             ) {
                 Text(
                     text = entry.name,
-                    color = MaterialTheme.colorScheme.onSecondary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(

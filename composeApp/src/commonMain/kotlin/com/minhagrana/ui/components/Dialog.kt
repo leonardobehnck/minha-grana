@@ -37,7 +37,7 @@ fun Dialog(
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.background,
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -48,6 +48,7 @@ fun Dialog(
                 if (subtitle.isNotEmpty()) {
                     Paragraph(
                         title = subtitle,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
                 if (description.isNotEmpty()) {
