@@ -5,6 +5,7 @@ import com.minhagrana.models.entries.EntriesViewModel
 import com.minhagrana.models.entries.EntryViewModel
 import com.minhagrana.models.home.HomeViewModel
 import com.minhagrana.models.onboarding.OnboardingViewModel
+import com.minhagrana.models.profile.ProfileViewModel
 import com.minhagrana.models.root.RootViewModel
 import org.koin.dsl.module
 
@@ -16,4 +17,5 @@ val viewModelModule =
         factory { EntriesViewModel(get(), get(), get(), get()) }
         factory { EntryViewModel(get(), get()) }
         factory { OnboardingViewModel(get()) }
+        factory { ProfileViewModel(get()) }
     }
