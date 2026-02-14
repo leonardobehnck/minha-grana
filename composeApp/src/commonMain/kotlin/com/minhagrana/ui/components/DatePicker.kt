@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.getCurrentDate
-import kotlin.time.Instant
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
@@ -120,7 +120,7 @@ fun DatePicker(
                                     datePickerState.selectedDateMillis?.let { millis ->
                                         val instant = Instant.fromEpochMilliseconds(millis)
                                         val localDate = instant.toLocalDateTime(TimeZone.UTC).date
-                                        val day = localDate.day.toString().padStart(2, '0')
+                                        val day = localDate.dayOfMonth.toString().padStart(2, '0')
                                         val month = localDate.month.number.toString().padStart(2, '0')
                                         val year = localDate.year
                                         selectedDate = "$day/$month/$year"
