@@ -9,6 +9,7 @@ sealed class HomeViewState {
 
     data class Success(
         val year: Year,
+        val userName: String,
     ) : HomeViewState()
 
     data class Error(

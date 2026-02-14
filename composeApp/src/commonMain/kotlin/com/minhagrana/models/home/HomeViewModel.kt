@@ -46,7 +46,7 @@ class HomeViewModel(
                 val yearWithMonths = yearRepository.getYearById(currentYear.id.toLong())
 
                 if (yearWithMonths != null) {
-                    states.value = HomeViewState.Success(yearWithMonths)
+                    states.value = HomeViewState.Success(yearWithMonths, user.name)
                 } else {
                     states.value = HomeViewState.Error("Ano não encontrado")
                 }
