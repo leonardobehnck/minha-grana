@@ -10,6 +10,13 @@ plugins {
 }
 
 kotlin {
+    targets.all {
+        compilations.all {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -23,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = false
+            binaryOption("bundleId", "com.minhagrana.ComposeApp")
         }
     }
 
