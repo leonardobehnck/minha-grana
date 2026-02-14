@@ -1,14 +1,12 @@
 package com.minhagrana.ui.presentation.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,39 +32,28 @@ import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.PrimaryButton
+import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.noRippleClickable
 import org.koin.compose.koinInject
 
 @Composable
 fun ProfileScreen(
-    navigateUp: () -> Unit = {},
-    onSaveProfileSelected: () -> Unit = {},
-    onDeleteAccountSelected: () -> Unit = {},
+    navigateUp: () -> Unit,
+    onSaveProfileSelected: () -> Unit,
+    onDeleteAccountSelected: () -> Unit,
     viewModel: ProfileViewModel = koinInject(),
 ) {
-    var showDeleteAccountDialog by remember { mutableStateOf(false) }
     val state by viewModel.bind().collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.interact(ProfileInteraction.OnScreenOpened)
     }
 
-    LaunchedEffect(state) {
-        if (state is ProfileViewState.AccountDeleted) {
-            onDeleteAccountSelected()
-        }
-    }
-
     when (val currentState = state) {
         is ProfileViewState.Idle,
         is ProfileViewState.Loading,
         -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            ProgressBar()
         }
 
         is ProfileViewState.Success -> {
@@ -74,7 +61,7 @@ fun ProfileScreen(
                 user = currentState.user,
                 navigateUp = navigateUp,
                 onSaveProfileSelected = onSaveProfileSelected,
-                onDeleteAccountRequested = { showDeleteAccountDialog = true },
+                onDeleteAccountRequested = { onDeleteAccountSelected() },
                 onUpdateName = { name -> viewModel.interact(ProfileInteraction.OnUpdateName(name)) },
             )
         }
@@ -83,22 +70,14 @@ fun ProfileScreen(
             Error(message = currentState.message)
         }
 
-        is ProfileViewState.AccountDeleted -> { }
+        is ProfileViewState.AccountDeleted -> {
+            LaunchedEffect(state) {
+                if (state is ProfileViewState.AccountDeleted) {
+                    viewModel.interact(ProfileInteraction.OnDeleteAccount)
+                }
+            }
+        }
     }
-
-    Dialog(
-        title = "Deletar conta",
-        subtitle = "Tem certeza que deseja excluir sua conta?",
-        description = "Todos seus dados serão perdidos.",
-        actionButtonText = "Excluir",
-        dismissButtonText = "Cancelar",
-        onConfirmSelected = {
-            viewModel.interact(ProfileInteraction.OnDeleteAccount)
-            showDeleteAccountDialog = false
-        },
-        showBottomSheet = showDeleteAccountDialog,
-        onDismiss = { showDeleteAccountDialog = false },
-    )
 }
 
 @Composable
@@ -109,6 +88,8 @@ private fun ProfileContent(
     onDeleteAccountRequested: () -> Unit,
     onUpdateName: (String) -> Unit,
 ) {
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
+
     var name by remember(user) { mutableStateOf(TextFieldValue(user.name)) }
 
     LaunchedEffect(user) {
@@ -160,6 +141,20 @@ private fun ProfileContent(
                 onUpdateName(name.text)
                 onSaveProfileSelected()
             },
+        )
+
+        Dialog(
+            title = "Deletar conta",
+            subtitle = "Tem certeza que deseja excluir sua conta?",
+            description = "Todos seus dados serão perdidos.",
+            actionButtonText = "Excluir",
+            dismissButtonText = "Cancelar",
+            onConfirmSelected = {
+                onDeleteAccountRequested()
+                showDeleteAccountDialog = false
+            },
+            showBottomSheet = showDeleteAccountDialog,
+            onDismiss = { showDeleteAccountDialog = false },
         )
     }
 }
