@@ -5,10 +5,12 @@ import com.minhagrana.models.entries.EntriesViewModel
 import com.minhagrana.models.entries.EntryViewModel
 import com.minhagrana.models.home.HomeViewModel
 import com.minhagrana.models.onboarding.OnboardingViewModel
+import com.minhagrana.models.root.RootViewModel
 import org.koin.dsl.module
 
 val viewModelModule =
     module {
+        factory { RootViewModel(get()) }
         factory { HomeViewModel(get(), get()) }
         factory { AnnualBalanceViewModel(get(), get()) }
         factory { EntriesViewModel(get(), get(), get(), get()) }
