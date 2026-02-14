@@ -44,7 +44,6 @@ import com.minhagrana.ui.components.DialogRepeat
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.Link
-import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.components.SelectorEntry
 import com.minhagrana.ui.getCurrentDate
@@ -61,8 +60,7 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun NewEntryScreen(
-    onEntrySaved: () -> Unit = {},
-    onCancel: () -> Unit = {},
+    onEntrySaved: () -> Unit,
     databaseInitializer: DatabaseInitializer = koinInject(),
     yearRepository: YearRepository = koinInject(),
     entryRepository: EntryRepository = koinInject(),
@@ -85,7 +83,6 @@ fun NewEntryScreen(
 
     val scope = rememberCoroutineScope()
 
-    // Load current month ID on screen open
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             val user = databaseInitializer.initialize()
@@ -109,14 +106,14 @@ fun NewEntryScreen(
                     .verticalScroll(rememberScrollState()),
         ) {
             Header1(
-                title = "Novo lançamento",
+                title = "Adicionar lançamento",
             )
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 BasicInputText(
-                    hint = "Nome do lançamento",
+                    hint = "Nome",
                     value = entryName,
                     onValueChange = { entryName = it },
                     keyboardOptions =
@@ -225,43 +222,35 @@ fun NewEntryScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 8.dp),
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                PrimaryButton(
-                    title = "Cancelar",
-                    onClick = onCancel,
-                )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                SecondaryButton(
-                    title = if (isSaving) "Salvando..." else "Adicionar",
-                    onClick = {
-                        val monthId = currentMonthId
-                        if (monthId != null && !isSaving) {
-                            isSaving = true
+            SecondaryButton(
+                title = if (isSaving) "Salvando..." else "Adicionar",
+                onClick = {
+                    val monthId = currentMonthId
+                    if (monthId != null && !isSaving) {
+                        isSaving = true
 
-                            val entryValue = parseBRLInputToDouble(value.text)
+                        val entryValue = parseBRLInputToDouble(value.text)
 
-                            val entry =
-                                Entry(
-                                    uuid = Uuid.random().toString(),
-                                    name = entryName.ifBlank { "Novo lançamento" },
-                                    value = entryValue,
-                                    date = selectedDate,
-                                    repeat = selectedRepeat,
-                                    type = if (selectedEntryPositive) EntryType.INCOME else EntryType.EXPENSE,
-                                    category = selectedCategory ?: Category(),
-                                )
+                        val entry =
+                            Entry(
+                                uuid = Uuid.random().toString(),
+                                name = entryName.ifBlank { "Novo lançamento" },
+                                value = entryValue,
+                                date = selectedDate,
+                                repeat = selectedRepeat,
+                                type = if (selectedEntryPositive) EntryType.INCOME else EntryType.EXPENSE,
+                                category = selectedCategory ?: Category(),
+                            )
 
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    entryRepository.insertEntry(entry, monthId)
-                                }
-                                onEntrySaved()
+                        scope.launch {
+                            withContext(Dispatchers.IO) {
+                                entryRepository.insertEntry(entry, monthId)
                             }
+                            onEntrySaved()
                         }
-                    },
-                )
-            }
+                    }
+                },
+            )
         }
     }
 }
