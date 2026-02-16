@@ -33,6 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.minhagrana.models.root.RootInteraction
 import com.minhagrana.models.root.RootViewModel
 import com.minhagrana.models.root.RootViewState
@@ -275,15 +276,17 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                 onEntriesByYearSelected = {
                     navController.navigate(EntriesRoute.AnnualEntries)
                 },
-                onEntrySelected = {
-                    navController.navigate(EntriesRoute.EditEntry) {
+                onEntrySelected = { entry ->
+                    navController.navigate(EntriesRoute.EditEntry(entryUuid = entry.uuid)) {
                         popUpTo(EntriesRoute.Entries) { inclusive = false }
                     }
                 },
             )
         }
         composable<EntriesRoute.EditEntry> {
+            val args = it.toRoute<EntriesRoute.EditEntry>()
             EntryScreen(
+                entryUuid = args.entryUuid,
                 navigateUp = {
                     navController.navigateUp()
                 },
@@ -365,7 +368,7 @@ sealed class EntriesRoute {
     data object Entries : EntriesRoute()
 
     @Serializable
-    data object EditEntry : EntriesRoute()
+    data class EditEntry(val entryUuid: String) : EntriesRoute()
 
     @Serializable
     data object AnnualEntries : EntriesRoute()
