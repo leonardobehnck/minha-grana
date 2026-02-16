@@ -25,11 +25,11 @@ class DatabaseInitializer(
         val user = userRepository.getOrCreateDefaultUser()
 
         // Get or create current year with months
-        yearRepository.getCurrentYearOrCreate(user.id.toLong())
+        yearRepository.getCurrentYearOrCreate(user.uuid)
 
         isInitialized = true
         return user
     }
 
-    suspend fun getCurrentYear(userId: Long): Year = yearRepository.getCurrentYearOrCreate(userId)
+    suspend fun getCurrentYear(userUuid: String): Year = yearRepository.getCurrentYearOrCreate(userUuid)
 }
