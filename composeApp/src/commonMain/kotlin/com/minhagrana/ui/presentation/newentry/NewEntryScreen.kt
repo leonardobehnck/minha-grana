@@ -16,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +47,7 @@ import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.components.SelectorEntry
 import com.minhagrana.ui.getCurrentDate
 import com.minhagrana.ui.parseBRLInputToDouble
-import com.minhagrana.util.currentMonthNumber
+import com.minhagrana.ui.parseDateDDMMYYYY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -71,7 +70,6 @@ fun NewEntryScreen(
     var selectedRepeat by remember { mutableIntStateOf(1) }
     var selectedEntryPositive by rememberSaveable { mutableStateOf(false) }
     var selectedEntryNegative by rememberSaveable { mutableStateOf(true) }
-    var currentMonthId by remember { mutableStateOf<Long?>(null) }
     var isSaving by remember { mutableStateOf(false) }
 
     val openCategoryDialog = remember { mutableStateOf(false) }
@@ -82,16 +80,6 @@ fun NewEntryScreen(
     }
 
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            val user = databaseInitializer.initialize()
-            val year = yearRepository.getCurrentYearOrCreate(user.id.toLong())
-            val currentMonthIndex = currentMonthNumber() - 1
-            val month = year.months.getOrNull(currentMonthIndex)
-            currentMonthId = month?.id?.toLong()
-        }
-    }
 
     Column(
         modifier =
@@ -225,28 +213,43 @@ fun NewEntryScreen(
             SecondaryButton(
                 title = if (isSaving) "Salvando..." else "Adicionar",
                 onClick = {
-                    val monthId = currentMonthId
-                    if (monthId != null && !isSaving) {
-                        isSaving = true
+                    if (isSaving) return@SecondaryButton
+                    val parsed = parseDateDDMMYYYY(selectedDate)
+                    if (parsed == null) return@SecondaryButton
 
-                        val entryValue = parseBRLInputToDouble(value.text)
+                    val (_, monthNumber, yearNumber) = parsed
+                    isSaving = true
 
-                        val entry =
-                            Entry(
-                                uuid = Uuid.random().toString(),
-                                name = entryName.ifBlank { "Novo lançamento" },
-                                value = entryValue,
-                                date = selectedDate,
-                                repeat = selectedRepeat,
-                                type = if (selectedEntryPositive) EntryType.INCOME else EntryType.EXPENSE,
-                                category = selectedCategory ?: Category(),
-                            )
+                    val entryValue = parseBRLInputToDouble(value.text)
+                    val entry =
+                        Entry(
+                            uuid = Uuid.random().toString(),
+                            name = entryName.ifBlank { "Novo lançamento" },
+                            value = entryValue,
+                            date = selectedDate,
+                            repeat = selectedRepeat,
+                            type = if (selectedEntryPositive) EntryType.INCOME else EntryType.EXPENSE,
+                            category = selectedCategory ?: Category(),
+                        )
 
-                        scope.launch {
-                            withContext(Dispatchers.IO) {
-                                entryRepository.insertEntry(entry, monthId)
-                            }
-                            onEntrySaved()
+                    scope.launch {
+                        try {
+                            val saved =
+                                withContext(Dispatchers.IO) {
+                                    val user = databaseInitializer.initialize()
+                                    val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
+                                    val month = year.months.getOrNull(monthNumber - 1)
+                                    val monthId = month?.id?.toLong()
+                                    if (monthId != null) {
+                                        entryRepository.insertEntry(entry, monthId)
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }
+                            if (saved) onEntrySaved()
+                        } finally {
+                            isSaving = false
                         }
                     }
                 },
