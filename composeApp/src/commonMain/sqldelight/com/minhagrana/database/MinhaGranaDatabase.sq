@@ -2,10 +2,7 @@
 CREATE TABLE IF NOT EXISTS UserEntity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     uuid TEXT NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    password TEXT NOT NULL,
-    balance_visibility INTEGER AS kotlin.Boolean NOT NULL DEFAULT 1
+    name TEXT NOT NULL
 );
 
 -- Category table
@@ -20,8 +17,8 @@ CREATE TABLE IF NOT EXISTS YearEntity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     uuid TEXT NOT NULL UNIQUE,
     name TEXT NOT NULL,
-    user_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES UserEntity(id) ON DELETE CASCADE
+    user_uuid TEXT NOT NULL,
+    FOREIGN KEY (user_uuid) REFERENCES UserEntity(uuid) ON DELETE CASCADE
 );
 
 -- Month table
@@ -53,8 +50,8 @@ CREATE TABLE IF NOT EXISTS EntryEntity (
 
 -- User queries
 insertUser:
-INSERT INTO UserEntity(uuid, name, email, password, balance_visibility)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO UserEntity(uuid, name)
+VALUES (?, ?);
 
 selectAllUsers:
 SELECT * FROM UserEntity;
@@ -65,14 +62,14 @@ SELECT * FROM UserEntity WHERE id = ?;
 selectUserByUuid:
 SELECT * FROM UserEntity WHERE uuid = ?;
 
-selectUserByEmail:
-SELECT * FROM UserEntity WHERE email = ?;
-
 updateUser:
-UPDATE UserEntity SET name = ?, email = ?, password = ?, balance_visibility = ? WHERE id = ?;
+UPDATE UserEntity SET name = ? WHERE uuid = ?;
 
 deleteUserById:
 DELETE FROM UserEntity WHERE id = ?;
+
+deleteAllUsers:
+DELETE FROM UserEntity;
 
 -- Category queries
 insertCategory:
@@ -94,9 +91,12 @@ UPDATE CategoryEntity SET name = ?, color_hex = ? WHERE id = ?;
 deleteCategoryById:
 DELETE FROM CategoryEntity WHERE id = ?;
 
+deleteAllCategories:
+DELETE FROM CategoryEntity;
+
 -- Year queries
 insertYear:
-INSERT INTO YearEntity(uuid, name, user_id)
+INSERT INTO YearEntity(uuid, name, user_uuid)
 VALUES (?, ?, ?);
 
 selectAllYears:
@@ -108,14 +108,17 @@ SELECT * FROM YearEntity WHERE id = ?;
 selectYearByUuid:
 SELECT * FROM YearEntity WHERE uuid = ?;
 
-selectYearsByUserId:
-SELECT * FROM YearEntity WHERE user_id = ?;
+selectYearsByUserUuid:
+SELECT * FROM YearEntity WHERE user_uuid = ?;
 
 updateYear:
 UPDATE YearEntity SET name = ? WHERE id = ?;
 
 deleteYearById:
 DELETE FROM YearEntity WHERE id = ?;
+
+deleteAllYears:
+DELETE FROM YearEntity;
 
 -- Month queries
 insertMonth:
@@ -143,6 +146,9 @@ UPDATE MonthEntity SET income = ?, expense = ?, balance = ? WHERE id = ?;
 deleteMonthById:
 DELETE FROM MonthEntity WHERE id = ?;
 
+deleteAllMonths:
+DELETE FROM MonthEntity;
+
 -- Entry queries
 insertEntry:
 INSERT INTO EntryEntity(uuid, name, value, date, repeat, type, month_id, category_id)
@@ -160,6 +166,24 @@ SELECT * FROM EntryEntity WHERE uuid = ?;
 selectEntriesByMonthId:
 SELECT * FROM EntryEntity WHERE month_id = ?;
 
+selectEntriesWithCategoryByMonthId:
+SELECT
+    EntryEntity.id,
+    EntryEntity.uuid,
+    EntryEntity.name,
+    EntryEntity.value,
+    EntryEntity.date,
+    EntryEntity.repeat,
+    EntryEntity.type,
+    EntryEntity.month_id,
+    EntryEntity.category_id,
+    CategoryEntity.id AS category_id_,
+    CategoryEntity.name AS category_name,
+    CategoryEntity.color_hex AS category_color_hex
+FROM EntryEntity
+JOIN CategoryEntity ON EntryEntity.category_id = CategoryEntity.id
+WHERE EntryEntity.month_id = ?;
+
 selectEntriesByCategoryId:
 SELECT * FROM EntryEntity WHERE category_id = ?;
 
@@ -174,6 +198,9 @@ DELETE FROM EntryEntity WHERE id = ?;
 
 deleteEntriesByMonthId:
 DELETE FROM EntryEntity WHERE month_id = ?;
+
+deleteAllEntries:
+DELETE FROM EntryEntity;
 
 -- Aggregation queries
 sumIncomeByMonthId:
