@@ -67,6 +67,19 @@ val currentMonth: String
 
 fun getCurrentDate(): String = getCurrentDateString()
 
+/**
+ * Parses date string in "dd/MM/yyyy" format. Returns (day, month, year) or null if invalid.
+ */
+fun parseDateDDMMYYYY(date: String): Triple<Int, Int, Int>? {
+    val parts = date.split("/")
+    if (parts.size != 3) return null
+    val day = parts[0].toIntOrNull() ?: return null
+    val month = parts[1].toIntOrNull() ?: return null
+    val year = parts[2].toIntOrNull() ?: return null
+    if (month !in 1..12) return null
+    return Triple(day, month, year)
+}
+
 fun processMonthDataByExpense(month: Month): Map<Category, Double> {
     val expenseEntries = month.entries.filter { it.type == EntryType.EXPENSE }
     return expenseEntries
