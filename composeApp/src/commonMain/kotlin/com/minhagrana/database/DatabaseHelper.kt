@@ -25,9 +25,6 @@ class DatabaseHelper(
         queries.insertUser(
             uuid = user.uuid,
             name = user.name,
-            email = user.email,
-            password = user.password,
-            balance_visibility = user.balanceVisibility,
         )
         return queries.lastInsertRowId().executeAsOne()
     }
@@ -46,10 +43,7 @@ class DatabaseHelper(
     suspend fun updateUser(user: User) {
         queries.updateUser(
             name = user.name,
-            email = user.email,
-            password = user.password,
-            balance_visibility = user.balanceVisibility,
-            id = user.id.toLong(),
+            uuid = user.uuid,
         )
     }
 
@@ -58,8 +52,11 @@ class DatabaseHelper(
     }
 
     suspend fun deleteAllData() {
-        getAllUsers().forEach { deleteUser(it.id) }
-        getAllCategories().forEach { queries.deleteCategoryById(it.id.toLong()) }
+        queries.deleteAllEntries()
+        queries.deleteAllMonths()
+        queries.deleteAllYears()
+        queries.deleteAllCategories()
+        queries.deleteAllUsers()
     }
 
     // ==================== CATEGORY ====================
@@ -93,19 +90,19 @@ class DatabaseHelper(
 
     suspend fun insertYear(
         year: Year,
-        userId: Long,
+        userUuid: String,
     ): Long {
         queries.insertYear(
             uuid = year.uuid,
             name = year.name,
-            user_id = userId,
+            user_uuid = userUuid,
         )
         return queries.lastInsertRowId().executeAsOne()
     }
 
-    fun getYearsByUserIdFlow(userId: Long): Flow<List<Year>> =
+    fun getYearsByUserUuidFlow(userUuid: String): Flow<List<Year>> =
         queries
-            .selectYearsByUserId(userId)
+            .selectYearsByUserUuid(userUuid)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { list -> list.map { it.toYear(emptyList()) } }
@@ -187,17 +184,18 @@ class DatabaseHelper(
 
     fun getEntriesByMonthIdFlow(monthId: Long): Flow<List<Entry>> =
         queries
-            .selectEntriesByMonthId(monthId)
+            .selectEntriesWithCategoryByMonthId(monthId)
             .asFlow()
             .mapToList(Dispatchers.IO)
-            .map { list ->
-                list.map { entity ->
-                    val category = getCategoryById(entity.category_id.toInt()) ?: Category()
-                    entity.toEntry(category)
-                }
-            }
+            .map { list -> list.map { it.toEntryWithCategory() } }
 
     suspend fun getEntriesByMonthId(monthId: Long): List<EntryEntity> = queries.selectEntriesByMonthId(monthId).executeAsList()
+
+    suspend fun getEntryByUuid(uuid: String): Entry? {
+        val entity = queries.selectEntryByUuid(uuid).executeAsOneOrNull() ?: return null
+        val category = getCategoryById(entity.category_id.toInt()) ?: Category()
+        return entity.toEntry(category)
+    }
 
     suspend fun updateEntry(entry: Entry) {
         queries.updateEntry(
@@ -228,12 +226,8 @@ class DatabaseHelper(
 
     private fun UserEntity.toUser(): User =
         User(
-            id = id.toInt(),
             uuid = uuid,
             name = name,
-            email = email,
-            password = password,
-            balanceVisibility = balance_visibility,
         )
 
     private fun CategoryEntity.toCategory(): Category =
@@ -270,9 +264,33 @@ class DatabaseHelper(
             value = value_,
             date = date,
             repeat = repeat.toInt(),
-            type = EntryType.valueOf(type),
+            type = parseEntryType(type),
             category = category,
         )
+
+    private fun SelectEntriesWithCategoryByMonthId.toEntryWithCategory(): Entry =
+        Entry(
+            id = id.toInt(),
+            uuid = uuid,
+            name = name,
+            value = value_,
+            date = date,
+            repeat = repeat.toInt(),
+            type = parseEntryType(type),
+            category =
+                Category(
+                    id = category_id_.toInt(),
+                    name = category_name,
+                    color = getDefaultColor(category_name),
+                ),
+        )
+
+    private fun parseEntryType(raw: String): EntryType =
+        try {
+            EntryType.valueOf(raw)
+        } catch (_: IllegalArgumentException) {
+            EntryType.EXPENSE
+        }
 
     private fun colorToHex(color: androidx.compose.ui.graphics.Color): String {
         val red = (color.red * 255).toInt()
