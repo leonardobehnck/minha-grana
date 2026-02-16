@@ -13,8 +13,6 @@ O app permite registrar lançamentos (receitas e despesas) por categoria, visual
 - **Koin** – injeção de dependência (commonMain, Android, iOS)
 - **Kotlinx Serialization** – rotas e modelos serializáveis
 - **Navigation Compose** – navegação com rotas tipadas
-- **Kotlinx DateTime** – datas
-- **Compottie** – Lottie (quando usado)
 
 ## Estrutura do projeto
 
@@ -31,7 +29,7 @@ O app permite registrar lançamentos (receitas e despesas) por categoria, visual
 
 Schema em `composeApp/src/commonMain/sqldelight/com/minhagrana/database/MinhaGranaDatabase.sq`:
 
-- **UserEntity** – usuário (uuid, nome, email, senha, visibilidade do saldo)
+- **UserEntity** – usuário (uuid, nome)
 - **CategoryEntity** – categorias (nome, cor em hex)
 - **YearEntity** – ano (uuid, nome, user_id)
 - **MonthEntity** – mês (uuid, nome, income, expense, balance, year_id)
@@ -70,8 +68,7 @@ Ou use a run configuration do IDE.
 
 ### iOS
 
-Use a run configuration do IDE ou abra a pasta [iosApp](./iosApp) no Xcode e execute de lá.
+Use a run configuration do IDE ou abra a pasta [iosApp](./iosApp) no Xcode e execute.
 
 ---
 
-Referência: [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html).
