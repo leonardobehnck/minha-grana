@@ -13,7 +13,6 @@ class UserRepositoryImpl(
 ) : UserRepository {
     companion object {
         private const val DEFAULT_USER_NAME = "Usuário Local"
-        private const val DEFAULT_USER_EMAIL = "local@minhagrana.app"
     }
 
     override fun getAllUsersFlow(): Flow<List<User>> = databaseHelper.getAllUsersFlow()
@@ -31,19 +30,18 @@ class UserRepositoryImpl(
             User(
                 uuid = Uuid.random().toString(),
                 name = DEFAULT_USER_NAME,
-                email = DEFAULT_USER_EMAIL,
-                password = "",
-                balanceVisibility = true,
             )
-        val userId = databaseHelper.insertUser(newUser)
-        return newUser.copy(id = userId.toInt())
+        databaseHelper.insertUser(newUser)
+        return newUser
     }
 
     override suspend fun insertUser(user: User): Long = databaseHelper.insertUser(user)
 
     override suspend fun updateUser(user: User) = databaseHelper.updateUser(user)
 
-    override suspend fun deleteUser(id: Int) = databaseHelper.deleteUser(id)
+    override suspend fun deleteUser(uuid: String) {
+        databaseHelper.deleteAllData()
+    }
 
     override suspend fun deleteAllData() = databaseHelper.deleteAllData()
 }
