@@ -35,10 +35,10 @@ class YearRepositoryImpl(
             )
     }
 
-    override fun getYearsByUserIdFlow(userId: Long): Flow<List<Year>> = databaseHelper.getYearsByUserIdFlow(userId)
+    override fun getYearsByUserUuidFlow(userUuid: String): Flow<List<Year>> = databaseHelper.getYearsByUserUuidFlow(userUuid)
 
-    override suspend fun getAllYears(userId: Long): List<Year> {
-        val years = databaseHelper.getYearsByUserIdFlow(userId).first()
+    override suspend fun getAllYears(userUuid: String): List<Year> {
+        val years = databaseHelper.getYearsByUserUuidFlow(userUuid).first()
         return years.map { year ->
             val months = monthRepository.getMonthsByYearId(year.id.toLong())
             year.copy(months = months)
@@ -71,12 +71,15 @@ class YearRepositoryImpl(
         )
     }
 
-    @OptIn(ExperimentalUuidApi::class)
-    override suspend fun getCurrentYearOrCreate(userId: Long): Year {
-        val currentYear = currentYear().toString()
+    override suspend fun getCurrentYearOrCreate(userUuid: String): Year =
+        getYearOrCreate(userUuid, currentYear())
 
-        val existingYears = databaseHelper.getYearsByUserIdFlow(userId).first()
-        val existingYear = existingYears.find { it.name == currentYear }
+    @OptIn(ExperimentalUuidApi::class)
+    override suspend fun getYearOrCreate(userUuid: String, yearNumber: Int): Year {
+        val yearName = yearNumber.toString()
+
+        val existingYears = databaseHelper.getYearsByUserUuidFlow(userUuid).first()
+        val existingYear = existingYears.find { it.name == yearName }
 
         if (existingYear != null) {
             var months = monthRepository.getMonthsByYearId(existingYear.id.toLong())
@@ -96,10 +99,10 @@ class YearRepositoryImpl(
         val newYear =
             Year(
                 uuid = Uuid.random().toString(),
-                name = currentYear,
+                name = yearName,
                 months = emptyList(),
             )
-        val yearId = databaseHelper.insertYear(newYear, userId)
+        val yearId = databaseHelper.insertYear(newYear, userUuid)
 
         val months = createMonthsForYear(yearId)
 
@@ -130,8 +133,8 @@ class YearRepositoryImpl(
 
     override suspend fun insertYear(
         year: Year,
-        userId: Long,
-    ): Long = databaseHelper.insertYear(year, userId)
+        userUuid: String,
+    ): Long = databaseHelper.insertYear(year, userUuid)
 
     override suspend fun deleteYear(id: Int) = databaseHelper.deleteYear(id)
 }
