@@ -56,7 +56,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.compottie)
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
         }
