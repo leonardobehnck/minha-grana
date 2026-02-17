@@ -80,7 +80,7 @@ private fun HomeContent(
 ) {
     val currentMonthIndex = currentMonthNumber() - 1
     val month = year.months.getOrNull(currentMonthIndex) ?: year.months.firstOrNull() ?: Month()
-    val totalBalance = year.months.sumOf { it.balance }
+    val totalBalance = month.balance
 
     Column(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),

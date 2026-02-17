@@ -40,7 +40,6 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 val user = databaseInitializer.initialize()
-
                 val currentYear = yearRepository.getCurrentYearOrCreate(user.uuid)
                 val yearWithMonths = yearRepository.getYearById(currentYear.id.toLong())
 
