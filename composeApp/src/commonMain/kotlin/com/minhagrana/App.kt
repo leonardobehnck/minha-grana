@@ -368,7 +368,9 @@ sealed class EntriesRoute {
     data object Entries : EntriesRoute()
 
     @Serializable
-    data class EditEntry(val entryUuid: String) : EntriesRoute()
+    data class EditEntry(
+        val entryUuid: String,
+    ) : EntriesRoute()
 
     @Serializable
     data object AnnualEntries : EntriesRoute()
