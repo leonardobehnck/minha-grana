@@ -31,7 +31,7 @@ fun Header3(
             modifier
                 .fillMaxWidth()
                 .height(100.dp)
-                .noRippleClickable{ onProfileSelected() }
+                .noRippleClickable { onProfileSelected() }
                 .background(MaterialTheme.colorScheme.primary),
     ) {
         Row {
