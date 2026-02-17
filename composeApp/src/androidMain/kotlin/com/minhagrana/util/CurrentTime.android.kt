@@ -20,6 +20,9 @@ actual fun currentYear(): Int =
 actual fun getCurrentDateString(): String {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     val day = now.dayOfMonth.toString().padStart(2, '0')
-    val month = now.month.number.toString().padStart(2, '0')
+    val month =
+        now.month.number
+            .toString()
+            .padStart(2, '0')
     return "$day/$month/${now.year}"
 }
