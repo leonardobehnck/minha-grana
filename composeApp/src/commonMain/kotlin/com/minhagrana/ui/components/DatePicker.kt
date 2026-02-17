@@ -121,7 +121,10 @@ fun DatePicker(
                                         val instant = Instant.fromEpochMilliseconds(millis)
                                         val localDate = instant.toLocalDateTime(TimeZone.UTC).date
                                         val day = localDate.dayOfMonth.toString().padStart(2, '0')
-                                        val month = localDate.month.number.toString().padStart(2, '0')
+                                        val month =
+                                            localDate.month.number
+                                                .toString()
+                                                .padStart(2, '0')
                                         val year = localDate.year
                                         selectedDate = "$day/$month/$year"
                                         onDateSelected(selectedDate)
