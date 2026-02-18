@@ -45,6 +45,7 @@ import com.minhagrana.ui.presentation.home.HomeScreen
 import com.minhagrana.ui.presentation.newentry.NewEntryScreen
 import com.minhagrana.ui.presentation.onboarding.WelcomeScreen
 import com.minhagrana.ui.presentation.profile.ProfileScreen
+import com.minhagrana.ui.presentation.profile.ProfileSuccessScreen
 import com.minhagrana.ui.theme.AppTheme
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
@@ -239,11 +240,23 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 },
                 onSaveProfileSelected = {
-                    navController.navigate(HomeRoute.Home)
+                    navController.navigate(HomeRoute.ProfileSuccess) {
+                        popUpTo(HomeRoute.Profile) { inclusive = true }
+                    }
                 },
                 onDeleteAccountSelected = {
                     navController.navigate(OnboardingRoute.Welcome) {
                         popUpTo(OnboardingRoute.Welcome) { inclusive = true }
+                    }
+                },
+            )
+        }
+        composable<HomeRoute.ProfileSuccess> {
+            ProfileSuccessScreen(
+                onContinue = {
+                    navController.navigate(HomeRoute.Home) {
+                        popUpTo(HomeRoute.Home) { inclusive = true }
+                        launchSingleTop = true
                     }
                 },
             )
@@ -348,6 +361,9 @@ sealed class HomeRoute {
 
     @Serializable
     data object Profile : HomeRoute()
+
+    @Serializable
+    data object ProfileSuccess : HomeRoute()
 }
 
 @Serializable
