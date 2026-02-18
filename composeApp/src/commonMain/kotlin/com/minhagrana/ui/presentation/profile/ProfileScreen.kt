@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,6 +67,12 @@ fun ProfileScreen(
             )
         }
 
+        is ProfileViewState.ProfileUpdated -> {
+            LaunchedEffect(Unit) {
+                onSaveProfileSelected()
+            }
+        }
+
         is ProfileViewState.Error -> {
             Error(message = currentState.message)
         }
@@ -87,72 +94,75 @@ private fun ProfileContent(
     onUpdateName: (String) -> Unit,
 ) {
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
-
     var name by remember(user) { mutableStateOf(TextFieldValue(user.name)) }
 
     LaunchedEffect(user) {
         name = TextFieldValue(user.name)
     }
 
-    Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-    ) {
-        AppBar(
-            title = "Minha conta",
-            navigateUp = navigateUp,
-        )
-
+    Scaffold(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+    ) { padding ->
         Column(
-            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
-        ) {
-            Header1(title = "Editar conta")
-            InputText(
-                title = "Nome",
-                textFieldValue = name,
-                onValueChange = { name = it },
-                keyboardOptions =
-                    KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next,
-                    ),
-            )
-        }
-
-        Text(
             modifier =
                 Modifier
-                    .align(Alignment.End)
-                    .padding(16.dp)
-                    .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
-            text = "Excluir conta",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.labelMedium,
-        )
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+        ) {
+            AppBar(
+                navigateUp = navigateUp,
+            )
 
-        PrimaryButton(
-            title = "Salvar",
-            enabled = name.text.isNotEmpty(),
-            onClick = {
-                onUpdateName(name.text)
-                onSaveProfileSelected()
-            },
-        )
+            Column(
+                modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
+            ) {
+                Header1(title = "Editar conta")
+                InputText(
+                    title = "Nome",
+                    textFieldValue = name,
+                    onValueChange = { name = it },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next,
+                        ),
+                )
+            }
 
-        Dialog(
-            title = "Deletar conta",
-            subtitle = "Tem certeza que deseja excluir sua conta?",
-            description = "Todos seus dados serão perdidos.",
-            actionButtonText = "Excluir",
-            dismissButtonText = "Cancelar",
-            onConfirmSelected = {
-                showDeleteAccountDialog = false
-                onConfirmDeleteAccount()
-            },
-            showBottomSheet = showDeleteAccountDialog,
-            onDismiss = { showDeleteAccountDialog = false },
-        )
+            Text(
+                modifier =
+                    Modifier
+                        .align(Alignment.End)
+                        .padding(16.dp)
+                        .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
+                text = "Excluir conta",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelMedium,
+            )
+
+            PrimaryButton(
+                title = "Salvar",
+                enabled = name.text.isNotEmpty(),
+                onClick = {
+                    onUpdateName(name.text)
+                    onSaveProfileSelected()
+                },
+            )
+
+            Dialog(
+                title = "Deletar conta",
+                subtitle = "Tem certeza que deseja excluir sua conta?",
+                description = "Todos seus dados serão perdidos.",
+                actionButtonText = "Excluir",
+                dismissButtonText = "Cancelar",
+                onConfirmSelected = {
+                    showDeleteAccountDialog = false
+                    onConfirmDeleteAccount()
+                },
+                showBottomSheet = showDeleteAccountDialog,
+                onDismiss = { showDeleteAccountDialog = false },
+            )
+        }
     }
 }
