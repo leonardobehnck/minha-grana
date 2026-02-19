@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -35,8 +34,6 @@ import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.logo
-import minhagrana.composeapp.generated.resources.logo_large
-import minhagrana.composeapp.generated.resources.logo_small
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -104,9 +101,10 @@ private fun WelcomeContent(
                     .background(MaterialTheme.colorScheme.surface),
         ) {
             Image(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .height(125.dp),
+                modifier =
+                    Modifier
+                        .padding(16.dp)
+                        .height(125.dp),
                 painter = painterResource(Res.drawable.logo),
                 contentDescription = "Logo MinhaGrana",
                 contentScale = ContentScale.Fit,
