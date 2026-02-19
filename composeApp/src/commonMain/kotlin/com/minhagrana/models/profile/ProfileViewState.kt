@@ -11,6 +11,10 @@ sealed class ProfileViewState {
         val user: User,
     ) : ProfileViewState()
 
+    data class ProfileUpdated(
+        val user: User,
+    ) : ProfileViewState()
+
     data class Error(
         val message: String,
     ) : ProfileViewState()

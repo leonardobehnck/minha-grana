@@ -60,7 +60,7 @@ class ProfileViewModel(
             try {
                 val updatedUser = currentState.user.copy(name = name.trim().ifEmpty { currentState.user.name })
                 userRepository.updateUser(updatedUser)
-                states.value = ProfileViewState.Success(updatedUser)
+                states.value = ProfileViewState.ProfileUpdated(updatedUser)
             } catch (e: Exception) {
                 states.value = ProfileViewState.Error(e.message ?: "Erro ao atualizar nome")
             }

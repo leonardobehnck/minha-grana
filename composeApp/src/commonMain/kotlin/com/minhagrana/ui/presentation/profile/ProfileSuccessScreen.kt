@@ -23,9 +23,7 @@ import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import minhagrana.composeapp.generated.resources.Res
 
 @Composable
-fun ProfileSuccessScreen(
-    onContinue: () -> Unit,
-) {
+fun ProfileSuccessScreen(onContinue: () -> Unit) {
     val composition by rememberLottieComposition {
         LottieCompositionSpec.JsonString(
             Res.readBytes("files/success_animation.json").decodeToString(),
@@ -41,12 +39,13 @@ fun ProfileSuccessScreen(
                 .padding(24.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+        ) {
             Image(
                 modifier = Modifier.size(200.dp),
                 painter =
