@@ -70,11 +70,11 @@ Acesso via `DatabaseHelper` e repositórios; inicialização (usuário/ano/mês 
 ./gradlew :composeApp:assembleDebug
 ```
 
-Ou use a run configuration do IDE.
+Use a run configuration do Android Studio.
 
 ### iOS
 
-Use a run configuration do IDE ou abra a pasta [iosApp](./iosApp) no Xcode e execute.
+Abra a pasta [iosApp](./iosApp) no Xcode e execute.
 
 ---
 
