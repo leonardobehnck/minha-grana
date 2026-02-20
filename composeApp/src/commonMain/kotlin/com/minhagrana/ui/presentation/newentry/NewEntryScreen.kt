@@ -15,12 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,57 +30,77 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.entities.Category
-import com.minhagrana.entities.Entry
-import com.minhagrana.entities.EntryType
-import com.minhagrana.models.repositories.EntryRepository
-import com.minhagrana.models.repositories.YearRepository
+import com.minhagrana.models.newentry.NewEntryFormState
+import com.minhagrana.models.newentry.NewEntryInteraction
+import com.minhagrana.models.newentry.NewEntryViewModel
+import com.minhagrana.models.newentry.NewEntryViewState
 import com.minhagrana.ui.components.BRLVisualTransformation
 import com.minhagrana.ui.components.BasicInputText
 import com.minhagrana.ui.components.DatePicker
 import com.minhagrana.ui.components.DialogCategory
-import com.minhagrana.ui.components.DialogRepeat
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.Link
+import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.components.SelectorEntry
 import com.minhagrana.ui.getCurrentDate
-import com.minhagrana.ui.parseBRLInputToDouble
-import com.minhagrana.ui.parseDateDDMMYYYY
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun NewEntryScreen(
     onEntrySaved: () -> Unit,
-    databaseInitializer: DatabaseInitializer = koinInject(),
-    yearRepository: YearRepository = koinInject(),
-    entryRepository: EntryRepository = koinInject(),
+    viewModel: NewEntryViewModel = koinInject(),
 ) {
-    var entryName by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf(getCurrentDate()) }
-    var selectedCategory by remember { mutableStateOf<Category?>(null) }
-    var selectedRepeat by remember { mutableIntStateOf(1) }
+    val state by viewModel.bind().collectAsState()
+
+    when (state) {
+        is NewEntryViewState.Loading -> {
+            ProgressBar()
+        }
+
+        is NewEntryViewState.Success -> {
+            NewEntryContent(
+                isSaving = state is NewEntryViewState.Loading,
+                errorMessage = (state as? NewEntryViewState.Error)?.message,
+                onSaveClicked = { form -> viewModel.interact(NewEntryInteraction.OnSaveClicked(form)) },
+            )
+        }
+
+        is NewEntryViewState.EntrySaved -> {
+            LaunchedEffect(Unit) {
+                onEntrySaved()
+            }
+        }
+
+        is NewEntryViewState.Error -> {
+            Text(text = (state as NewEntryViewState.Error).message)
+        }
+
+        is NewEntryViewState.Idle -> {
+            viewModel.interact(NewEntryInteraction.OnScreenOpened)
+        }
+    }
+}
+
+@Composable
+private fun NewEntryContent(
+    isSaving: Boolean,
+    errorMessage: String?,
+    onSaveClicked: (NewEntryFormState) -> Unit,
+) {
+    val openCategoryDialog = remember { mutableStateOf(false) }
+
+    var entryName by rememberSaveable { mutableStateOf("") }
+    var selectedDate by rememberSaveable { mutableStateOf(getCurrentDate()) }
+    var selectedCategory by rememberSaveable { mutableStateOf<Category?>(null) }
     var selectedEntryPositive by rememberSaveable { mutableStateOf(false) }
     var selectedEntryNegative by rememberSaveable { mutableStateOf(true) }
-    var isSaving by remember { mutableStateOf(false) }
-
-    val openCategoryDialog = remember { mutableStateOf(false) }
-    val openRepeatDialog = remember { mutableStateOf(false) }
 
     var value by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
     }
-
-    val scope = rememberCoroutineScope()
 
     Column(
         modifier =
@@ -97,9 +118,19 @@ fun NewEntryScreen(
                 title = "Adicionar lançamento",
             )
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier =
+                    Modifier
+                        .background(MaterialTheme.colorScheme.surfaceBright)
+                        .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+
                 BasicInputText(
                     hint = "Nome",
                     value = entryName,
@@ -150,10 +181,7 @@ fun NewEntryScreen(
                     maxLength = 11,
                     textFieldValue = value,
                     onValueChange = {
-                        value =
-                            it.copy(
-                                selection = TextRange(it.text.length),
-                            )
+                        value = it.copy(selection = TextRange(it.text.length))
                     },
                     visualTransformation = BRLVisualTransformation(),
                     keyboardOptions =
@@ -173,14 +201,6 @@ fun NewEntryScreen(
                     color = MaterialTheme.colorScheme.onSecondary,
                     onClick = { openCategoryDialog.value = true },
                 )
-
-                Link(
-                    title = "Repetir",
-                    iconRightVisibility = true,
-                    result = if (selectedRepeat <= 1) "" else "${selectedRepeat}x",
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    onClick = { openRepeatDialog.value = true },
-                )
             }
 
             when {
@@ -191,15 +211,6 @@ fun NewEntryScreen(
                             openCategoryDialog.value = false
                         },
                         onDismissRequest = { openCategoryDialog.value = false },
-                    )
-
-                openRepeatDialog.value ->
-                    DialogRepeat(
-                        onItemSelected = {
-                            selectedRepeat = it
-                            openRepeatDialog.value = false
-                        },
-                        onDismissRequest = { openRepeatDialog.value = false },
                     )
             }
         }
@@ -214,44 +225,16 @@ fun NewEntryScreen(
                 title = if (isSaving) "Salvando..." else "Adicionar",
                 onClick = {
                     if (isSaving) return@SecondaryButton
-                    val parsed = parseDateDDMMYYYY(selectedDate)
-                    if (parsed == null) return@SecondaryButton
 
-                    val (_, monthNumber, yearNumber) = parsed
-                    isSaving = true
-
-                    val entryValue = parseBRLInputToDouble(value.text)
-                    val entry =
-                        Entry(
-                            uuid = Uuid.random().toString(),
-                            name = entryName.ifBlank { "Novo lançamento" },
-                            value = entryValue,
+                    onSaveClicked(
+                        NewEntryFormState(
+                            name = entryName,
                             date = selectedDate,
-                            repeat = selectedRepeat,
-                            type = if (selectedEntryPositive) EntryType.INCOME else EntryType.EXPENSE,
-                            category = selectedCategory ?: Category(),
-                        )
-
-                    scope.launch {
-                        try {
-                            val saved =
-                                withContext(Dispatchers.IO) {
-                                    val user = databaseInitializer.initialize()
-                                    val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
-                                    val month = year.months.getOrNull(monthNumber - 1)
-                                    val monthId = month?.id?.toLong()
-                                    if (monthId != null) {
-                                        entryRepository.insertEntry(entry, monthId)
-                                        true
-                                    } else {
-                                        false
-                                    }
-                                }
-                            if (saved) onEntrySaved()
-                        } finally {
-                            isSaving = false
-                        }
-                    }
+                            category = selectedCategory,
+                            isIncome = selectedEntryPositive,
+                            valueText = value.text,
+                        ),
+                    )
                 },
             )
         }
