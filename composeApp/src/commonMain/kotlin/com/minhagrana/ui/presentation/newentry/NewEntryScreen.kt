@@ -43,6 +43,7 @@ import com.minhagrana.ui.components.DialogCategory
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.Link
+import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.components.SelectorEntry
@@ -225,11 +226,9 @@ private fun NewEntryContent(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 8.dp),
         ) {
-            SecondaryButton(
+            PrimaryButton(
                 title = if (isSaving) "Salvando..." else "Adicionar",
                 onClick = {
-                    if (isSaving) return@SecondaryButton
-
                     onSaveClicked(
                         NewEntryFormState(
                             name = entryName,

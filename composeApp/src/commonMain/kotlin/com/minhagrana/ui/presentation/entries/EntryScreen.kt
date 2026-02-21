@@ -30,6 +30,7 @@ import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.Link
 import com.minhagrana.ui.components.NoConnectivity
+import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.parseBRLInputToDouble
@@ -177,7 +178,7 @@ private fun EntryContent(
                     )
             }
         }
-        SecondaryButton(
+        PrimaryButton(
             title = "Salvar",
             onClick = {
                 val updatedEntry =
