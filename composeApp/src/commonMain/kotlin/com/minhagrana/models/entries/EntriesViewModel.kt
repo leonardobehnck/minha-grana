@@ -66,7 +66,7 @@ class EntriesViewModel(
             try {
                 if (currentYearId <= 0) {
                     val user = databaseInitializer.initialize()
-                    val year = yearRepository.getCurrentYearOrCreate(user.id.toLong())
+                    val year = yearRepository.getCurrentYearOrCreate(user.uuid)
                     currentYearId = year.id.toLong()
                     months = year.months
                     if (currentMonthUuid == null && months.isNotEmpty()) {

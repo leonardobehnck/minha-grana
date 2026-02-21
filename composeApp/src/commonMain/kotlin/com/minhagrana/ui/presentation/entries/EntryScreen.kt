@@ -27,7 +27,6 @@ import com.minhagrana.ui.components.AppBar
 import com.minhagrana.ui.components.DatePicker
 import com.minhagrana.ui.components.Dialog
 import com.minhagrana.ui.components.DialogCategory
-import com.minhagrana.ui.components.DialogRepeat
 import com.minhagrana.ui.components.EditItemHeader
 import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.Header1
