@@ -209,6 +209,16 @@ class DatabaseHelper(
         )
     }
 
+    suspend fun updateEntryMonthId(
+        entryId: Int,
+        monthId: Long,
+    ) {
+        queries.updateEntryMonthId(
+            month_id = monthId,
+            id = entryId.toLong(),
+        )
+    }
+
     suspend fun deleteEntry(id: Int) {
         queries.deleteEntryById(id.toLong())
     }
