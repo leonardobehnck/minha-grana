@@ -99,8 +99,8 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
 
     val showBottomNav =
         currentDestination?.hasRoute(HomeRoute.Home::class) == true ||
-            currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
-            currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
+                currentDestination?.hasRoute(EntriesRoute.Entries::class) == true ||
+                currentDestination?.hasRoute(NewEntryRoute.NewEntry::class) == true
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -198,7 +198,7 @@ fun NavGraphBuilder.rootNavGraph(navController: NavHostController) {
             when (state) {
                 is RootViewState.Idle,
                 is RootViewState.Loading,
-                -> {
+                    -> {
                     ProgressBar()
                 }
                 else -> { }
@@ -308,7 +308,11 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                         popUpTo(EntriesRoute.Entries) { inclusive = true }
                     }
                 },
-                onEntryDeleted = {},
+                onEntryDeleted = {
+                    navController.navigate(EntriesRoute.Entries) {
+                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    }
+                },
             )
         }
         composable<EntriesRoute.AnnualEntries> {
