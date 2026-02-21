@@ -40,11 +40,11 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun DatePicker(
     iconRightVisibility: Boolean = true,
+    selectedDate: String = getCurrentDate(),
     onDateSelected: (String) -> Unit,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
-    var selectedDate by rememberSaveable { mutableStateOf(getCurrentDate()) }
 
     Row(
         modifier =
@@ -126,8 +126,7 @@ fun DatePicker(
                                                 .toString()
                                                 .padStart(2, '0')
                                         val year = localDate.year
-                                        selectedDate = "$day/$month/$year"
-                                        onDateSelected(selectedDate)
+                                        onDateSelected("$day/$month/$year")
                                         showDatePicker = false
                                     }
                                 },
