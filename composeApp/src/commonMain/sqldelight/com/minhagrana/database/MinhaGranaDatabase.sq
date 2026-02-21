@@ -193,6 +193,9 @@ SELECT * FROM EntryEntity WHERE type = ?;
 updateEntry:
 UPDATE EntryEntity SET name = ?, value = ?, date = ?, repeat = ?, type = ?, category_id = ? WHERE id = ?;
 
+updateEntryMonthId:
+UPDATE EntryEntity SET month_id = ? WHERE id = ?;
+
 deleteEntryById:
 DELETE FROM EntryEntity WHERE id = ?;
 
