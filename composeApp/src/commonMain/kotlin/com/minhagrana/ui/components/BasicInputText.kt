@@ -30,7 +30,7 @@ fun BasicInputText(
     maxLength: Int = 25,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     textColor: Color = MaterialTheme.colorScheme.onBackground,
-    textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
