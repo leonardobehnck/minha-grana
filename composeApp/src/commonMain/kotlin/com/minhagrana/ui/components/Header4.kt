@@ -36,7 +36,7 @@ fun Header4(
 @Composable
 fun Header4Preview() {
     AppTheme {
-        Header1(
+        Header4(
             title = "Meu Dinheiro",
         )
     }
