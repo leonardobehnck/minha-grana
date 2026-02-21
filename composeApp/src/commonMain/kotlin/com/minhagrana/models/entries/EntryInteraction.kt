@@ -3,12 +3,13 @@ package com.minhagrana.models.entries
 import com.minhagrana.entities.Entry
 
 sealed class EntryInteraction {
-    data class OnEntrySelected(
-        val entry: Entry,
+
+    data class OnScreenOpened(
+        val entryUuid: String,
     ) : EntryInteraction()
 
-    data class OnNewEntry(
-        val monthId: Long,
+    data class OnEntrySelected(
+        val entry: Entry,
     ) : EntryInteraction()
 
     data class OnEntryUpdated(

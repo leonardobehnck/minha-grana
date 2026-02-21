@@ -40,8 +40,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun EntryScreen(
-    entry: Entry? = null,
-    monthId: Long = -1,
+    entryUuid: String,
     navigateUp: () -> Unit,
     onSaveEntrySelected: () -> Unit,
     onEntryDeleted: () -> Unit,
@@ -49,17 +48,11 @@ fun EntryScreen(
 ) {
     val state by viewModel.bind().collectAsState()
 
-    LaunchedEffect(entry, monthId) {
-        viewModel.setMonthId(monthId)
-        if (entry != null) {
-            viewModel.interact(EntryInteraction.OnEntrySelected(entry))
-        } else {
-            viewModel.interact(EntryInteraction.OnNewEntry(monthId))
-        }
-    }
-
     when (val currentState = state) {
-        is EntryViewState.Idle,
+        is EntryViewState.Idle -> {
+            viewModel.interact(EntryInteraction.OnScreenOpened(entryUuid))
+        }
+
         is EntryViewState.Loading,
         -> {
             ProgressBar()
@@ -86,7 +79,7 @@ fun EntryScreen(
 
         is EntryViewState.NoConnection -> {
             NoConnectivity {
-                entry?.let { viewModel.interact(EntryInteraction.OnEntrySelected(it)) }
+                viewModel.interact(EntryInteraction.OnScreenOpened(entryUuid))
             }
         }
     }
@@ -116,7 +109,6 @@ private fun EntryContent(
 
     val showBottomSheetDelete = remember { mutableStateOf(false) }
     val showBottomSheetCategory = remember { mutableStateOf(false) }
-    val showBottomSheetRepeat = remember { mutableStateOf(false) }
 
     Column {
         AppBar(
@@ -152,20 +144,16 @@ private fun EntryContent(
                 Column(
                     modifier = Modifier.padding(start = 48.dp),
                 ) {
-                    DatePicker(onDateSelected = { entryDate = it })
+                    DatePicker(
+                        selectedDate = entryDate,
+                        onDateSelected = { entryDate = it },
+                    )
                     Link(
                         title = "Categoria",
                         iconRightVisibility = true,
                         result = entryCategory,
                         color = MaterialTheme.colorScheme.onSecondary,
                         onClick = { showBottomSheetCategory.value = true },
-                    )
-                    Link(
-                        title = "Repetir",
-                        iconRightVisibility = true,
-                        result = if (entryRepeat <= 1) "" else "${entryRepeat}x",
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        onClick = { showBottomSheetRepeat.value = true },
                     )
                 }
             }
@@ -192,14 +180,6 @@ private fun EntryContent(
                         },
                     )
 
-                showBottomSheetRepeat.value ->
-                    DialogRepeat(
-                        onDismissRequest = { showBottomSheetRepeat.value = false },
-                        onItemSelected = {
-                            entryRepeat = it
-                            showBottomSheetRepeat.value = false
-                        },
-                    )
             }
         }
         SecondaryButton(
