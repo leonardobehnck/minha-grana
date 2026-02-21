@@ -18,7 +18,7 @@ class AnnualBalanceViewModel(
     private val interactions = Channel<AnnualBalanceInteraction>(Channel.UNLIMITED)
     private val states = MutableStateFlow<AnnualBalanceViewState>(AnnualBalanceViewState.Idle)
 
-    private var currentUserId: Long = -1
+    private var currentUserUuid: String? = null
     private var years: List<Year> = emptyList()
     private var currentYearIndex: Int = 0
 
@@ -47,12 +47,12 @@ class AnnualBalanceViewModel(
         viewModelScope.launch {
             try {
                 val user = databaseInitializer.initialize()
-                currentUserId = user.id.toLong()
+                currentUserUuid = user.uuid
 
-                years = yearRepository.getAllYears(currentUserId)
+                years = yearRepository.getAllYears(user.uuid)
 
                 if (years.isEmpty()) {
-                    val currentYear = yearRepository.getCurrentYearOrCreate(currentUserId)
+                    val currentYear = yearRepository.getCurrentYearOrCreate(user.uuid)
                     years = listOf(currentYear)
                 }
 
