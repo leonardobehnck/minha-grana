@@ -37,7 +37,6 @@ class EntryViewModel(
         }
     }
 
-
     init {
         viewModelScope.launch {
             loadCategories()
@@ -89,7 +88,6 @@ class EntryViewModel(
             }
         }
     }
-
 
     private fun deleteEntry() {
         states.value = EntryViewState.Loading

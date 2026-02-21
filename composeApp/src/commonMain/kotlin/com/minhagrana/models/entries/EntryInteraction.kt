@@ -3,7 +3,6 @@ package com.minhagrana.models.entries
 import com.minhagrana.entities.Entry
 
 sealed class EntryInteraction {
-
     data class OnScreenOpened(
         val entryUuid: String,
     ) : EntryInteraction()
