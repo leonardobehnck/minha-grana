@@ -1,10 +1,10 @@
 # Minha Grana
 
-App de controle financeiro pessoal em **Kotlin Multiplatform**, com UI em Compose Multiplatform, rodando em **Android** e **iOS**.
+A personal finance app built with **Kotlin Multiplatform**, using Compose Multiplatform for the UI, running on **Android** and **iOS**.
 
-## Visão geral
+## Overview
 
-O app permite registrar lançamentos (receitas e despesas) por categoria, visualizar saldo por mês/ano, e acompanhar o resumo na home com gráfico de pizza por categoria. Os dados ficam em SQLite local (SQLDelight), com repositórios e ViewModels compartilhados.
+The app allows users to record entries (income and expenses) by category, view balances by month/year, and track a summary on the home screen with a pie chart by category. Data is stored locally in SQLite (SQLDelight), with shared repositories and ViewModels.
 
 ---
 
@@ -12,15 +12,15 @@ O app permite registrar lançamentos (receitas e despesas) por categoria, visual
 
 ### Home
 
-### New Entry (Nova entrada)
+### New Entry
 
-### Entries (Lançamentos)
+### Entries
 
-### Entry (Editar lançamento)
+### Entry (Edit)
 
-### Annual Balance (Saldo anual)
+### Annual Balance
 
-### Navegação
+### Navigation
 
 
 ---
@@ -34,35 +34,35 @@ https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyos
 ## Stack
 
 - **Kotlin Multiplatform** + **Compose Multiplatform** (Material 3)
-- **SQLDelight** – banco SQLite e queries type-safe
-- **Koin** – injeção de dependência (commonMain, Android, iOS)
-- **Kotlinx Serialization** – rotas e modelos serializáveis
-- **Navigation Compose** – navegação com rotas tipadas
+- **SQLDelight** – local SQLite database with type-safe queries
+- **Koin** – dependency injection (commonMain, Android, iOS)
+- **Kotlinx Serialization** – serializable routes and models
+- **Navigation Compose** – typed route navigation
 
-## Estrutura do projeto
+## Project Structure
 
-- **[composeApp](./composeApp)** – módulo KMP compartilhado:
-  - **commonMain** – lógica, UI, DB, repositórios, ViewModels, temas
-  - **androidMain** – `MainActivity`, driver SQLDelight Android, `CurrentTime`, DI Android
-  - **iosMain** – `MainViewController`, driver SQLDelight iOS, `CurrentTime`, DI iOS
-- **[iosApp](./iosApp)** – app iOS (entry point e integração com Compose)
+- **[composeApp](./composeApp)** – shared KMP module:
+  - **commonMain** – logic, UI, DB, repositories, ViewModels, themes
+  - **androidMain** – `MainActivity`, SQLDelight Android driver, `CurrentTime`, Android DI
+  - **iosMain** – `MainViewController`, SQLDelight iOS driver, `CurrentTime`, iOS DI
+- **[iosApp](./iosApp)** – iOS app (entry point and Compose integration)
 
-### Pacotes principais (commonMain)
+### Main Packages (commonMain)
 
 
-### Banco de dados (SQLDelight)
+### Database (SQLDelight)
 
-Schema em `composeApp/src/commonMain/sqldelight/com/minhagrana/database/MinhaGranaDatabase.sq`:
+Schema at `composeApp/src/commonMain/sqldelight/com/minhagrana/database/MinhaGranaDatabase.sq`:
 
-- **UserEntity** – usuário (uuid, nome)
-- **CategoryEntity** – categorias (nome, cor em hex)
-- **YearEntity** – ano (uuid, nome, user_id)
-- **MonthEntity** – mês (uuid, nome, income, expense, balance, year_id)
-- **EntryEntity** – lançamento (uuid, nome, valor, data, repeat, type, month_id, category_id)
+- **UserEntity**
+- **CategoryEntity**
+- **YearEntity** 
+- **MonthEntity** 
+- **EntryEntity** 
 
-Acesso via `DatabaseHelper` e repositórios; inicialização (usuário/ano/mês padrão, categorias) em `DatabaseInitializer`.
+Accessed via `DatabaseHelper` and repositories; initialization (default user/year/months, categories) handled by `DatabaseInitializer`.
 
-## Build e execução
+## Build and Run
 
 ### Android
 
@@ -70,11 +70,11 @@ Acesso via `DatabaseHelper` e repositórios; inicialização (usuário/ano/mês 
 ./gradlew :composeApp:assembleDebug
 ```
 
-Use a run configuration do Android Studio.
+Use the Android Studio run configuration.
 
 ### iOS
 
-Abra a pasta [iosApp](./iosApp) no Xcode e execute.
+Open the [iosApp](./iosApp) folder in Xcode and run.
 
 ---
 
