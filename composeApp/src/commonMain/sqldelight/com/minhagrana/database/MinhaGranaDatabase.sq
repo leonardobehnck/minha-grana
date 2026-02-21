@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS EntryEntity (
     name TEXT NOT NULL,
     value REAL NOT NULL,
     date TEXT NOT NULL,
-    repeat INTEGER NOT NULL DEFAULT 1,
     type TEXT NOT NULL,
     month_id INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
@@ -151,8 +150,8 @@ DELETE FROM MonthEntity;
 
 -- Entry queries
 insertEntry:
-INSERT INTO EntryEntity(uuid, name, value, date, repeat, type, month_id, category_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO EntryEntity(uuid, name, value, date, type, month_id, category_id)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
 selectAllEntries:
 SELECT * FROM EntryEntity;
@@ -173,7 +172,6 @@ SELECT
     EntryEntity.name,
     EntryEntity.value,
     EntryEntity.date,
-    EntryEntity.repeat,
     EntryEntity.type,
     EntryEntity.month_id,
     EntryEntity.category_id,
@@ -191,7 +189,7 @@ selectEntriesByType:
 SELECT * FROM EntryEntity WHERE type = ?;
 
 updateEntry:
-UPDATE EntryEntity SET name = ?, value = ?, date = ?, repeat = ?, type = ?, category_id = ? WHERE id = ?;
+UPDATE EntryEntity SET name = ?, value = ?, date = ?, type = ?, category_id = ? WHERE id = ?;
 
 updateEntryMonthId:
 UPDATE EntryEntity SET month_id = ? WHERE id = ?;

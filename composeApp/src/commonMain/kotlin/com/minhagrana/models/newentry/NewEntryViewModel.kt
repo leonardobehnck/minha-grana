@@ -63,7 +63,6 @@ class NewEntryViewModel(
                 name = form.name.ifBlank { "Novo lançamento" },
                 value = entryValue,
                 date = form.date,
-                repeat = form.repeat,
                 type = if (form.isIncome) EntryType.INCOME else EntryType.EXPENSE,
                 category = form.category ?: com.minhagrana.entities.Category(),
             )

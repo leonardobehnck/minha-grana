@@ -174,7 +174,6 @@ class DatabaseHelper(
             name = entry.name,
             value_ = entry.value,
             date = entry.date,
-            repeat = entry.repeat.toLong(),
             type = entry.type.name,
             month_id = monthId,
             category_id = entry.category.id.toLong(),
@@ -202,7 +201,6 @@ class DatabaseHelper(
             name = entry.name,
             value_ = entry.value,
             date = entry.date,
-            repeat = entry.repeat.toLong(),
             type = entry.type.name,
             category_id = entry.category.id.toLong(),
             id = entry.id.toLong(),
@@ -273,7 +271,6 @@ class DatabaseHelper(
             name = name,
             value = value_,
             date = date,
-            repeat = repeat.toInt(),
             type = parseEntryType(type),
             category = category,
         )
@@ -285,7 +282,6 @@ class DatabaseHelper(
             name = name,
             value = value_,
             date = date,
-            repeat = repeat.toInt(),
             type = parseEntryType(type),
             category =
                 Category(

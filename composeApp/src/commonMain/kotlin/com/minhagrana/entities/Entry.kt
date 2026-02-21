@@ -22,8 +22,6 @@ data class Entry(
     val value: Double = 18850.0,
     @SerialName("date")
     val date: String = currentMonth,
-    @SerialName("repeat")
-    val repeat: Int = 1,
     @SerialName("type")
     val type: EntryType = EntryType.EXPENSE,
     @SerialName("category")

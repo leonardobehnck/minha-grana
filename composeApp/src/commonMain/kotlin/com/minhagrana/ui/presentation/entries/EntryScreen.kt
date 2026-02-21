@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -102,7 +101,6 @@ private fun EntryContent(
     }
     var entryCategory by remember { mutableStateOf(entry.category.name) }
     var entryDate by remember { mutableStateOf(entry.date) }
-    var entryRepeat by remember { mutableIntStateOf(entry.repeat) }
     var entryType by remember { mutableStateOf(entry.type) }
 
     val showBottomSheetDelete = remember { mutableStateOf(false) }
@@ -187,7 +185,6 @@ private fun EntryContent(
                         name = entryNameValue,
                         value = parseBRLInputToDouble(entryValue),
                         date = entryDate,
-                        repeat = entryRepeat,
                         type = entryType,
                         category = category,
                     )

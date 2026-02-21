@@ -6,7 +6,6 @@ data class NewEntryFormState(
     val name: String = "",
     val date: String,
     val category: Category? = null,
-    val repeat: Int = 1,
     val isIncome: Boolean = false,
     val valueText: String = "",
 )

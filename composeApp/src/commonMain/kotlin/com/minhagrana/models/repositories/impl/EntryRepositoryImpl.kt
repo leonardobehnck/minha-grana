@@ -24,7 +24,6 @@ class EntryRepositoryImpl(
                 name = entity.name,
                 value = entity.value_,
                 date = entity.date,
-                repeat = entity.repeat.toInt(),
                 type = EntryType.valueOf(entity.type),
                 category = category,
             )
