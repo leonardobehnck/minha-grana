@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -120,7 +121,7 @@ private fun NewEntryContent(
             Column(
                 modifier =
                     Modifier
-                        .background(MaterialTheme.colorScheme.surfaceBright)
+                        .background(Color.White)
                         .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -192,7 +193,10 @@ private fun NewEntryContent(
                     hint = "R$0,00",
                 )
 
-                DatePicker(onDateSelected = { selectedDate = it })
+                DatePicker(
+                    selectedDate = selectedDate,
+                    onDateSelected = { selectedDate = it },
+                )
 
                 Link(
                     title = "Categoria",
