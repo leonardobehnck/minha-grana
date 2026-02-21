@@ -31,7 +31,7 @@ class EntryRepositoryImpl(
         }
     }
 
-    override suspend fun getEntryByUuid(uuid: String): Entry? = null
+    override suspend fun getEntryByUuid(uuid: String): Entry? = databaseHelper.getEntryByUuid(uuid)
 
     override suspend fun insertEntry(
         entry: Entry,
@@ -44,6 +44,14 @@ class EntryRepositoryImpl(
 
     override suspend fun updateEntry(entry: Entry) {
         databaseHelper.updateEntry(entry)
+    }
+
+    override suspend fun moveEntryToMonth(
+        entryId: Int,
+        monthId: Long,
+    ) {
+        databaseHelper.updateEntryMonthId(entryId, monthId)
+        monthRepository.recalculateMonthTotals(monthId)
     }
 
     override suspend fun deleteEntry(id: Int) {

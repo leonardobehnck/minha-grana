@@ -17,5 +17,10 @@ interface EntryRepository {
 
     suspend fun updateEntry(entry: Entry)
 
+    suspend fun moveEntryToMonth(
+        entryId: Int,
+        monthId: Long,
+    )
+
     suspend fun deleteEntry(id: Int)
 }
