@@ -45,13 +45,9 @@ class OnboardingViewModel(
                     User(
                         uuid = Uuid.random().toString(),
                         name = name.trim().ifEmpty { "Usuário" },
-                        email = "",
-                        password = "",
-                        balanceVisibility = true,
                     )
-                val id = userRepository.insertUser(user)
-                val createdUser = user.copy(id = id.toInt())
-                states.value = OnboardingViewState.Success(createdUser)
+                userRepository.insertUser(user)
+                states.value = OnboardingViewState.Success(user)
             } catch (e: Exception) {
                 states.value = OnboardingViewState.Error(e.message ?: "Erro ao criar usuário")
             }
