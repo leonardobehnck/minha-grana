@@ -14,7 +14,10 @@ interface YearRepository {
 
     suspend fun getCurrentYearOrCreate(userUuid: String): Year
 
-    suspend fun getYearOrCreate(userUuid: String, yearNumber: Int): Year
+    suspend fun getYearOrCreate(
+        userUuid: String,
+        yearNumber: Int,
+    ): Year
 
     suspend fun insertYear(
         year: Year,

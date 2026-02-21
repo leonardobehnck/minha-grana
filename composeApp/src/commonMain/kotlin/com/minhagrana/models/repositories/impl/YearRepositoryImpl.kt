@@ -71,11 +71,13 @@ class YearRepositoryImpl(
         )
     }
 
-    override suspend fun getCurrentYearOrCreate(userUuid: String): Year =
-        getYearOrCreate(userUuid, currentYear())
+    override suspend fun getCurrentYearOrCreate(userUuid: String): Year = getYearOrCreate(userUuid, currentYear())
 
     @OptIn(ExperimentalUuidApi::class)
-    override suspend fun getYearOrCreate(userUuid: String, yearNumber: Int): Year {
+    override suspend fun getYearOrCreate(
+        userUuid: String,
+        yearNumber: Int,
+    ): Year {
         val yearName = yearNumber.toString()
 
         val existingYears = databaseHelper.getYearsByUserUuidFlow(userUuid).first()
