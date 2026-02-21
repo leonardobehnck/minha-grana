@@ -11,6 +11,7 @@ import com.minhagrana.models.repositories.impl.EntryRepositoryImpl
 import com.minhagrana.models.repositories.impl.MonthRepositoryImpl
 import com.minhagrana.models.repositories.impl.UserRepositoryImpl
 import com.minhagrana.models.repositories.impl.YearRepositoryImpl
+import com.minhagrana.models.services.MonthResolver
 import org.koin.dsl.module
 
 val repositoryModule =
@@ -21,4 +22,5 @@ val repositoryModule =
         single<YearRepository> { YearRepositoryImpl(get(), get(), get()) }
         single<EntryRepository> { EntryRepositoryImpl(get(), get()) }
         single { DatabaseInitializer(get(), get(), get()) }
+        single { MonthResolver(get(), get()) }
     }
