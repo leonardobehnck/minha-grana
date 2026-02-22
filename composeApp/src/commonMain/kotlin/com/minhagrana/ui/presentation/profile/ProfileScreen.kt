@@ -117,10 +117,11 @@ private fun ProfileContent(
             )
 
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .background(Color.White)
-                    .verticalScroll(rememberScrollState()),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .background(Color.White)
+                        .verticalScroll(rememberScrollState()),
             ) {
                 Header1(title = "Editar conta")
                 InputText(
