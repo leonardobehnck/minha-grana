@@ -134,7 +134,7 @@ selectMonthByUuid:
 SELECT * FROM MonthEntity WHERE uuid = ?;
 
 selectMonthsByYearId:
-SELECT * FROM MonthEntity WHERE year_id = ?;
+SELECT * FROM MonthEntity WHERE year_id = ? ORDER BY id;
 
 updateMonth:
 UPDATE MonthEntity SET name = ?, income = ?, expense = ?, balance = ? WHERE id = ?;
