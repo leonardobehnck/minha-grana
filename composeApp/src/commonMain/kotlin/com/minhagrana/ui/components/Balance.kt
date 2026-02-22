@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.minhagrana.ui.balanceColor
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
 import minhagrana.composeapp.generated.resources.Res
@@ -54,7 +55,7 @@ fun Balance(
                 )
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    color = if (balanceValue > 0)MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                    color = balanceColor(balanceValue),
                     text = if (isBalanceVisible) formatDoubleToBRL(balanceValue) else "R$ *****",
                 )
             }

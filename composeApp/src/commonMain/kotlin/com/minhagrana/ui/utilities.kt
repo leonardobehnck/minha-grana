@@ -1,20 +1,14 @@
 package com.minhagrana.ui
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
 import com.minhagrana.util.currentMonthNumber
 import com.minhagrana.util.getCurrentDateString
 
-fun isValidEmail(email: String): Boolean {
-    val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
-    return email.matches(emailRegex)
-}
-
-/**
- * Parses the raw input from a BRL-formatted field (BRLVisualTransformation).
- * The field stores digits as centavos (e.g. "500" = R$ 5,00). Returns value in reais.
- */
 fun parseBRLInputToDouble(text: String): Double {
     val digits = text.filter { it.isDigit() }
     if (digits.isEmpty()) return 0.0
@@ -46,6 +40,14 @@ fun formatDoubleToBRL(value: Double): String {
     return "${sign}R$ $intStr,$decStr"
 }
 
+@Composable
+fun balanceColor(value: Double): Color =
+    when {
+        value < 0 -> MaterialTheme.colorScheme.error
+        value == 0.0 -> MaterialTheme.colorScheme.onSurfaceVariant
+        else -> MaterialTheme.colorScheme.primary
+    }
+
 private val monthNamesPtBr =
     listOf(
         "Janeiro",
@@ -67,9 +69,6 @@ val currentMonth: String
 
 fun getCurrentDate(): String = getCurrentDateString()
 
-/**
- * Parses date string in "dd/MM/yyyy" format. Returns (day, month, year) or null if invalid.
- */
 fun parseDateDDMMYYYY(date: String): Triple<Int, Int, Int>? {
     val parts = date.split("/")
     if (parts.size != 3) return null
