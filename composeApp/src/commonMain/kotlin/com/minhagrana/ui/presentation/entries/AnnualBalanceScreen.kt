@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.minhagrana.entities.Month
 import com.minhagrana.entities.Year
 import com.minhagrana.models.annualbalance.AnnualBalanceInteraction
 import com.minhagrana.models.annualbalance.AnnualBalanceViewModel
@@ -35,7 +34,7 @@ import org.koin.compose.koinInject
 @Composable
 fun AnnualBalanceScreen(
     navigateUp: () -> Unit,
-    onMonthSelected: (Month) -> Unit,
+    onMonthSelected: (String, Long) -> Unit,
     viewModel: AnnualBalanceViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
@@ -75,7 +74,7 @@ fun AnnualBalanceScreen(
 private fun AnnualBalanceContent(
     year: Year,
     navigateUp: () -> Unit,
-    onMonthSelected: (Month) -> Unit,
+    onMonthSelected: (String, Long) -> Unit,
     onNextYear: () -> Unit,
     onPreviousYear: () -> Unit,
 ) {
@@ -124,7 +123,7 @@ private fun AnnualBalanceContent(
                         BalanceCard(
                             title = month.name,
                             balanceValue = month.balance,
-                            onClick = { onMonthSelected(month) },
+                            onClick = { onMonthSelected(month.uuid, year.id.toLong()) },
                         )
                     }
                 }

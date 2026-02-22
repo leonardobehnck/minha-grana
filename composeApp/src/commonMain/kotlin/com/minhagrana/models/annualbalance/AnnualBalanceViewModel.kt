@@ -49,7 +49,10 @@ class AnnualBalanceViewModel(
                 val user = databaseInitializer.initialize()
                 currentUserUuid = user.uuid
 
-                years = yearRepository.getAllYears(user.uuid)
+                years =
+                    yearRepository
+                        .getAllYears(user.uuid)
+                        .sortedBy { it.name.toIntOrNull() ?: Int.MIN_VALUE }
 
                 if (years.isEmpty()) {
                     val currentYear = yearRepository.getCurrentYearOrCreate(user.uuid)

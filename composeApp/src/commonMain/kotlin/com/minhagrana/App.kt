@@ -92,7 +92,7 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
             ),
             BottomNavigationItem(
                 label = "Entries",
-                route = EntriesRoute.Entries,
+                route = EntriesRoute.Entries(),
                 customIconRes = Res.drawable.ic_report,
             ),
         )
@@ -271,8 +271,8 @@ fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
         composable<NewEntryRoute.NewEntry> {
             NewEntryScreen(
                 onEntrySaved = {
-                    navController.navigate(EntriesRoute.Entries) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    navController.navigate(EntriesRoute.Entries()) {
+                        popUpTo(EntriesRoute.Entries()) { inclusive = true }
                     }
                 },
             )
@@ -282,16 +282,18 @@ fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
 
 fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
     navigation<EntriesRoute.Root>(
-        startDestination = EntriesRoute.Entries,
+        startDestination = EntriesRoute.Entries(),
     ) {
         composable<EntriesRoute.Entries> {
             EntriesScreen(
+                monthUuid = it.toRoute<EntriesRoute.Entries>().monthUuid,
+                yearId = it.toRoute<EntriesRoute.Entries>().yearId ?: -1,
                 onEntriesByYearSelected = {
                     navController.navigate(EntriesRoute.AnnualEntries)
                 },
                 onEntrySelected = { entry ->
                     navController.navigate(EntriesRoute.EditEntry(entryUuid = entry.uuid)) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = false }
+                        popUpTo(EntriesRoute.Entries()) { inclusive = false }
                     }
                 },
             )
@@ -304,13 +306,13 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                     navController.navigateUp()
                 },
                 onSaveEntrySelected = {
-                    navController.navigate(EntriesRoute.Entries) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    navController.navigate(EntriesRoute.Entries()) {
+                        popUpTo(EntriesRoute.Entries()) { inclusive = true }
                     }
                 },
                 onEntryDeleted = {
-                    navController.navigate(EntriesRoute.Entries) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = true }
+                    navController.navigate(EntriesRoute.Entries()) {
+                        popUpTo(EntriesRoute.Entries()) { inclusive = true }
                     }
                 },
             )
@@ -320,9 +322,14 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                 navigateUp = {
                     navController.navigateUp()
                 },
-                onMonthSelected = { month ->
-                    navController.navigate(EntriesRoute.Entries) {
-                        popUpTo(EntriesRoute.Entries) { inclusive = false }
+                onMonthSelected = { monthUuid, yearId ->
+                    navController.navigate(
+                        EntriesRoute.Entries(
+                            monthUuid = monthUuid,
+                            yearId = yearId,
+                        ),
+                    ) {
+                        popUpTo(EntriesRoute.Entries()) { inclusive = false }
                     }
                 },
             )
@@ -385,7 +392,10 @@ sealed class EntriesRoute {
     data object Root : EntriesRoute()
 
     @Serializable
-    data object Entries : EntriesRoute()
+    data class Entries(
+        val monthUuid: String? = null,
+        val yearId: Long? = null,
+    ) : EntriesRoute()
 
     @Serializable
     data class EditEntry(

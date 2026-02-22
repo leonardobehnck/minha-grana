@@ -32,7 +32,6 @@ import com.minhagrana.ui.components.Link
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
-import com.minhagrana.ui.components.SecondaryButton
 import com.minhagrana.ui.parseBRLInputToDouble
 import org.koin.compose.koinInject
 

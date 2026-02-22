@@ -55,7 +55,7 @@ fun BalanceCard(
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (balanceValue > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                     text = formatDoubleToBRL(balanceValue),
                 )
                 Text(
