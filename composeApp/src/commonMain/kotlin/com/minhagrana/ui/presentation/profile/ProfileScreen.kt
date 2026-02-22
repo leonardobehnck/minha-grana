@@ -120,7 +120,7 @@ private fun ProfileContent(
                 modifier =
                     Modifier
                         .weight(1f)
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.surface)
                         .verticalScroll(rememberScrollState()),
             ) {
                 Header1(title = "Editar conta")

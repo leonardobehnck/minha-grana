@@ -121,7 +121,7 @@ private fun NewEntryContent(
             Column(
                 modifier =
                     Modifier
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.surface)
                         .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
