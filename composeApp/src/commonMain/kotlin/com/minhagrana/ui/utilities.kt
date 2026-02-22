@@ -48,24 +48,25 @@ fun balanceColor(value: Double): Color =
         else -> MaterialTheme.colorScheme.primary
     }
 
-private val monthNamesPtBr =
-    listOf(
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro",
-    )
+fun monthNamePtBr(month: Int): String =
+    when (month) {
+        1 -> "Janeiro"
+        2 -> "Fevereiro"
+        3 -> "Março"
+        4 -> "Abril"
+        5 -> "Maio"
+        6 -> "Junho"
+        7 -> "Julho"
+        8 -> "Agosto"
+        9 -> "Setembro"
+        10 -> "Outubro"
+        11 -> "Novembro"
+        12 -> "Dezembro"
+        else -> throw IllegalArgumentException("Invalid month number: $month")
+    }
 
 val currentMonth: String
-    get() = monthNamesPtBr.getOrElse(currentMonthNumber() - 1) { "Null" }
+    get() = monthNamePtBr(currentMonthNumber())
 
 fun getCurrentDate(): String = getCurrentDateString()
 
