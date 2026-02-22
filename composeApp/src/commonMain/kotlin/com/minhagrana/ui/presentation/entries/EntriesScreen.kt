@@ -1,5 +1,15 @@
 package com.minhagrana.ui.presentation.entries
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -50,6 +63,8 @@ fun EntriesScreen(
         viewModel.interact(EntriesInteraction.OnMonthSelected)
     }
 
+    var slideDirection by remember { mutableIntStateOf(1) }
+
     when (val currentState = state) {
         is EntriesViewState.Idle,
         is EntriesViewState.Loading,
@@ -60,10 +75,17 @@ fun EntriesScreen(
         is EntriesViewState.Success -> {
             EntriesContent(
                 month = currentState.month,
+                slideDirection = slideDirection,
                 onEntrySelected = onEntrySelected,
                 onEntriesByYearSelected = onEntriesByYearSelected,
-                onNextMonth = { viewModel.interact(EntriesInteraction.OnNextMonthSelected("")) },
-                onPreviousMonth = { viewModel.interact(EntriesInteraction.OnPreviousYearSelected("")) },
+                onNextMonth = {
+                    slideDirection = 1
+                    viewModel.interact(EntriesInteraction.OnNextMonthSelected(""))
+                },
+                onPreviousMonth = {
+                    slideDirection = -1
+                    viewModel.interact(EntriesInteraction.OnPreviousYearSelected(""))
+                },
             )
         }
 
@@ -80,6 +102,7 @@ fun EntriesScreen(
 @Composable
 private fun EntriesContent(
     month: Month,
+    slideDirection: Int,
     onEntrySelected: (Entry) -> Unit,
     onEntriesByYearSelected: () -> Unit,
     onNextMonth: () -> Unit,
@@ -91,8 +114,7 @@ private fun EntriesContent(
         Column(
             modifier =
                 Modifier
-                    .padding(padding)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(padding),
         ) {
             Header1(
                 title = "Meu balanço",
@@ -105,40 +127,65 @@ private fun EntriesContent(
                 month = month.name,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Column(
-                modifier =
-                    Modifier
-                        .padding(bottom = 30.dp)
-                        .fillMaxSize(),
-            ) {
-                if (month.entries.isEmpty()) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(32.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "Nenhum lançamento neste mês",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary,
+            AnimatedContent(
+                targetState = month,
+                transitionSpec = {
+                    (slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth * slideDirection },
+                        animationSpec = tween(300, easing = FastOutSlowInEasing),
+                    ) + fadeIn(animationSpec = tween(300)))
+                        .togetherWith(
+                            slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> -fullWidth * slideDirection },
+                                animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            ) + fadeOut(animationSpec = tween(300)),
                         )
-                    }
-                } else {
-                    month.entries.forEach { entry ->
-                        EntryItem(
-                            entry = entry,
-                            onClick = { onEntrySelected(entry) },
-                        )
-                    }
-                }
+                },
+                label = "month_content",
+            ) { targetMonth ->
                 Column(
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier =
+                        Modifier
+                            .padding(bottom = 30.dp)
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
                 ) {
-                    BalanceItem(
-                        month = month,
-                    )
+                    if (targetMonth.entries.isEmpty()) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(32.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "Nenhum lançamento neste mês",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                            )
+                        }
+                    } else {
+                        targetMonth.entries.forEachIndexed { index, entry ->
+                            AnimatedVisibility(
+                                visible = true,
+                                enter =
+                                    fadeIn(animationSpec = tween(300, delayMillis = index * 50)) +
+                                        expandVertically(animationSpec = tween(300, delayMillis = index * 50)),
+                            ) {
+                                EntryItem(
+                                    entry = entry,
+                                    onClick = { onEntrySelected(entry) },
+                                )
+                            }
+                        }
+                    }
+                    Column(
+                        modifier = Modifier.padding(top = 20.dp),
+                    ) {
+                        BalanceItem(
+                            month = targetMonth,
+                        )
+                    }
                 }
             }
         }

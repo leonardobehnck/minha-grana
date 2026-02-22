@@ -1,9 +1,13 @@
 package com.minhagrana
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -156,6 +160,30 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
             NavHost(
                 navController = navController,
                 startDestination = RootRoute.Root,
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300, easing = FastOutSlowInEasing),
+                    ) + fadeIn(animationSpec = tween(300))
+                },
+                exitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> -fullWidth / 3 },
+                        animationSpec = tween(300, easing = FastOutSlowInEasing),
+                    ) + fadeOut(animationSpec = tween(300))
+                },
+                popEnterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth / 3 },
+                        animationSpec = tween(300, easing = FastOutSlowInEasing),
+                    ) + fadeIn(animationSpec = tween(300))
+                },
+                popExitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300, easing = FastOutSlowInEasing),
+                    ) + fadeOut(animationSpec = tween(300))
+                },
             ) {
                 rootNavGraph(navController = navController)
                 onboardingNavGraph(navController = navController)
@@ -227,7 +255,12 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
     navigation<HomeRoute.Root>(
         startDestination = HomeRoute.Home,
     ) {
-        composable<HomeRoute.Home> {
+        composable<HomeRoute.Home>(
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(200)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(300)) },
+            popExitTransition = { fadeOut(animationSpec = tween(200)) },
+        ) {
             HomeScreen(
                 onProfileSelected = {
                     navController.navigate(HomeRoute.Profile)
@@ -268,7 +301,12 @@ fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
     navigation<NewEntryRoute.Root>(
         startDestination = NewEntryRoute.NewEntry,
     ) {
-        composable<NewEntryRoute.NewEntry> {
+        composable<NewEntryRoute.NewEntry>(
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(200)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(300)) },
+            popExitTransition = { fadeOut(animationSpec = tween(200)) },
+        ) {
             NewEntryScreen(
                 onEntrySaved = {
                     navController.navigate(EntriesRoute.Entries()) {
@@ -284,7 +322,12 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
     navigation<EntriesRoute.Root>(
         startDestination = EntriesRoute.Entries(),
     ) {
-        composable<EntriesRoute.Entries> {
+        composable<EntriesRoute.Entries>(
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(200)) },
+            popEnterTransition = { fadeIn(animationSpec = tween(300)) },
+            popExitTransition = { fadeOut(animationSpec = tween(200)) },
+        ) {
             EntriesScreen(
                 monthUuid = it.toRoute<EntriesRoute.Entries>().monthUuid,
                 yearId = it.toRoute<EntriesRoute.Entries>().yearId ?: -1,
