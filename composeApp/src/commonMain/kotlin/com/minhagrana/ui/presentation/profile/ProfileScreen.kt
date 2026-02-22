@@ -2,6 +2,7 @@ package com.minhagrana.ui.presentation.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -115,7 +117,10 @@ private fun ProfileContent(
             )
 
             Column(
-                modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
+                modifier = Modifier
+                    .weight(1f)
+                    .background(Color.White)
+                    .verticalScroll(rememberScrollState()),
             ) {
                 Header1(title = "Editar conta")
                 InputText(
@@ -128,20 +133,21 @@ private fun ProfileContent(
                             imeAction = ImeAction.Next,
                         ),
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    modifier =
+                        Modifier
+                            .align(Alignment.End)
+                            .padding(16.dp)
+                            .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
+                    text = "Excluir conta",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.labelMedium,
+                )
             }
 
-            Text(
-                modifier =
-                    Modifier
-                        .align(Alignment.End)
-                        .padding(16.dp)
-                        .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
-                text = "Excluir conta",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelMedium,
-            )
-
             PrimaryButton(
+                modifier = Modifier.padding(top = 56.dp),
                 title = "Salvar",
                 enabled = name.text.isNotEmpty(),
                 onClick = {
