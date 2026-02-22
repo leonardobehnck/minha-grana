@@ -80,11 +80,11 @@ class EntriesViewModel(
 
                 val monthUuid = currentMonthUuid
                 if (monthUuid != null) {
-                    val month = monthRepository.getMonthByUuid(monthUuid)
-                    if (month != null) {
-                        currentMonthId = month.id.toLong()
+                    val monthEntity = monthRepository.getMonthByUuid(monthUuid)
+                    if (monthEntity != null) {
+                        currentMonthId = monthEntity.id.toLong()
                         currentMonthIndex = months.indexOfFirst { it.uuid == monthUuid }.takeIf { it >= 0 } ?: currentMonthIndex
-                        loadMonthWithEntries(month)
+                        loadMonthWithEntries(monthEntity)
                     } else {
                         states.value = EntriesViewState.Error("Mês não encontrado")
                     }
@@ -93,7 +93,8 @@ class EntriesViewModel(
                     currentMonthId = month.id.toLong()
                     currentMonthUuid = month.uuid
                     currentMonthIndex = 0
-                    loadMonthWithEntries(month)
+                    val monthEntity = monthRepository.getMonthByUuid(month.uuid) ?: month
+                    loadMonthWithEntries(monthEntity)
                 } else {
                     states.value = EntriesViewState.Error("Nenhum mês encontrado")
                 }
