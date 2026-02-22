@@ -97,7 +97,7 @@ class EntryViewModel(
                 if (entry != null) {
                     val monthId = monthResolver.resolveMonthId(entry.date)
                     entryRepository.deleteEntry(entry.id)
-                    monthRepository.recalculateMonthTotals(monthId)
+                    monthId?.let { monthRepository.recalculateMonthTotals(it) }
                     states.value = EntryViewState.Idle
                 } else {
                     states.value = EntryViewState.Error("Lançamento não encontrado")
