@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -25,10 +25,11 @@ actual fun KeyboardWarmup() {
         BasicTextField(
             value = text,
             onValueChange = { text = it },
-            modifier = Modifier
-                .size(1.dp)
-                .offset(x = (-9999).dp)
-                .focusRequester(focusRequester),
+            modifier =
+                Modifier
+                    .size(1.dp)
+                    .offset(x = (-9999).dp)
+                    .focusRequester(focusRequester),
         )
 
         LaunchedEffect(Unit) {

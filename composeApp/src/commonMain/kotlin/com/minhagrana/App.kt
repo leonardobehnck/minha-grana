@@ -22,6 +22,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -50,7 +51,6 @@ import com.minhagrana.ui.presentation.onboarding.WelcomeScreen
 import com.minhagrana.ui.presentation.profile.ProfileScreen
 import com.minhagrana.ui.presentation.profile.ProfileSuccessScreen
 import com.minhagrana.ui.theme.AppTheme
-import androidx.compose.runtime.LaunchedEffect
 import kotlinx.serialization.Serializable
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.compose_multiplatform
