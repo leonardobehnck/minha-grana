@@ -21,13 +21,14 @@ class DatabaseHelper(
 
     // ==================== USER ====================
 
-    suspend fun insertUser(user: User): Long {
-        queries.insertUser(
-            uuid = user.uuid,
-            name = user.name,
-        )
-        return queries.lastInsertRowId().executeAsOne()
-    }
+    suspend fun insertUser(user: User): Long =
+        database.transactionWithResult {
+            queries.insertUser(
+                uuid = user.uuid,
+                name = user.name,
+            )
+            queries.lastInsertRowId().executeAsOne()
+        }
 
     fun getAllUsersFlow(): Flow<List<User>> =
         queries
@@ -61,13 +62,14 @@ class DatabaseHelper(
 
     // ==================== CATEGORY ====================
 
-    suspend fun insertCategory(category: Category): Long {
-        queries.insertCategory(
-            name = category.name,
-            color_hex = colorToHex(category.color),
-        )
-        return queries.lastInsertRowId().executeAsOne()
-    }
+    suspend fun insertCategory(category: Category): Long =
+        database.transactionWithResult {
+            queries.insertCategory(
+                name = category.name,
+                color_hex = colorToHex(category.color),
+            )
+            queries.lastInsertRowId().executeAsOne()
+        }
 
     fun getAllCategoriesFlow(): Flow<List<Category>> =
         queries
@@ -91,14 +93,15 @@ class DatabaseHelper(
     suspend fun insertYear(
         year: Year,
         userUuid: String,
-    ): Long {
-        queries.insertYear(
-            uuid = year.uuid,
-            name = year.name,
-            user_uuid = userUuid,
-        )
-        return queries.lastInsertRowId().executeAsOne()
-    }
+    ): Long =
+        database.transactionWithResult {
+            queries.insertYear(
+                uuid = year.uuid,
+                name = year.name,
+                user_uuid = userUuid,
+            )
+            queries.lastInsertRowId().executeAsOne()
+        }
 
     fun getYearsByUserUuidFlow(userUuid: String): Flow<List<Year>> =
         queries
@@ -120,17 +123,18 @@ class DatabaseHelper(
     suspend fun insertMonth(
         month: Month,
         yearId: Long,
-    ): Long {
-        queries.insertMonth(
-            uuid = month.uuid,
-            name = month.name,
-            income = month.income,
-            expense = month.expense,
-            balance = month.balance,
-            year_id = yearId,
-        )
-        return queries.lastInsertRowId().executeAsOne()
-    }
+    ): Long =
+        database.transactionWithResult {
+            queries.insertMonth(
+                uuid = month.uuid,
+                name = month.name,
+                income = month.income,
+                expense = month.expense,
+                balance = month.balance,
+                year_id = yearId,
+            )
+            queries.lastInsertRowId().executeAsOne()
+        }
 
     fun getMonthsByYearIdFlow(yearId: Long): Flow<List<Month>> =
         queries
@@ -168,18 +172,19 @@ class DatabaseHelper(
     suspend fun insertEntry(
         entry: Entry,
         monthId: Long,
-    ): Long {
-        queries.insertEntry(
-            uuid = entry.uuid,
-            name = entry.name,
-            value_ = entry.value,
-            date = entry.date,
-            type = entry.type.name,
-            month_id = monthId,
-            category_id = entry.category.id.toLong(),
-        )
-        return queries.lastInsertRowId().executeAsOne()
-    }
+    ): Long =
+        database.transactionWithResult {
+            queries.insertEntry(
+                uuid = entry.uuid,
+                name = entry.name,
+                value_ = entry.value,
+                date = entry.date,
+                type = entry.type.name,
+                month_id = monthId,
+                category_id = entry.category.id.toLong(),
+            )
+            queries.lastInsertRowId().executeAsOne()
+        }
 
     fun getEntriesByMonthIdFlow(monthId: Long): Flow<List<Entry>> =
         queries
