@@ -130,16 +130,17 @@ private fun EntriesContent(
             AnimatedContent(
                 targetState = month,
                 transitionSpec = {
-                    (slideInHorizontally(
-                        initialOffsetX = { fullWidth -> fullWidth * slideDirection },
-                        animationSpec = tween(300, easing = FastOutSlowInEasing),
-                    ) + fadeIn(animationSpec = tween(300)))
-                        .togetherWith(
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> -fullWidth * slideDirection },
-                                animationSpec = tween(300, easing = FastOutSlowInEasing),
-                            ) + fadeOut(animationSpec = tween(300)),
-                        )
+                    (
+                        slideInHorizontally(
+                            initialOffsetX = { fullWidth -> fullWidth * slideDirection },
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                        ) + fadeIn(animationSpec = tween(300))
+                    ).togetherWith(
+                        slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> -fullWidth * slideDirection },
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                        ) + fadeOut(animationSpec = tween(300)),
+                    )
                 },
                 label = "month_content",
             ) { targetMonth ->
