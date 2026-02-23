@@ -1,10 +1,28 @@
 package com.minhagrana
 
 import androidx.compose.ui.window.ComposeUIViewController
+import com.minhagrana.database.DatabaseInitializer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import platform.UIKit.UITextField
 import platform.UIKit.UIViewController
 
+private object IosAppInitializer : KoinComponent {
+    private val databaseInitializer: DatabaseInitializer by inject()
+
+    fun initialize() {
+        CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
+            databaseInitializer.initialize(isDebug = true)
+        }
+    }
+}
+
 fun MainViewController(): UIViewController {
+    IosAppInitializer.initialize()
     val controller = ComposeUIViewController { App() }
 
     warmupKeyboard(controller)
