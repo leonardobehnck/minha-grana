@@ -24,11 +24,8 @@ class MainApplication : Application() {
             modules(androidModule, databaseModule, repositoryModule, viewModelModule)
         }
 
-        val isDebug = false
-        if (isDebug) {
-            CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-                get<DatabaseInitializer>(DatabaseInitializer::class.java).initialize(isDebug = true)
-            }
+        CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
+            get<DatabaseInitializer>(DatabaseInitializer::class.java).initialize(isDebug = true)
         }
     }
 }

@@ -6,7 +6,7 @@ import com.minhagrana.models.repositories.MonthRepository
 import com.minhagrana.models.repositories.YearRepository
 
 object DebugSeedTemplate {
-    const val ENABLED: Boolean = false
+    const val ENABLED: Boolean = true
     const val VERSION: Int = 0
 
     suspend fun run(
