@@ -37,7 +37,7 @@ fun BalanceCard(
                 .clickable { onClick() }
                 .fillMaxWidth(),
     ) {
-        Column(modifier = Modifier.weight(1f),) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 modifier = Modifier.padding(start = 32.dp),
                 style = MaterialTheme.typography.bodyLarge,

@@ -1,11 +1,11 @@
 package com.minhagrana
 
 import android.app.Application
+import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.di.androidModule
 import com.minhagrana.di.databaseModule
 import com.minhagrana.di.repositoryModule
 import com.minhagrana.di.viewModelModule
-import com.minhagrana.database.DatabaseInitializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

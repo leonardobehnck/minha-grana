@@ -1,5 +1,13 @@
 package com.minhagrana.ui.presentation.entries
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,14 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -109,9 +109,16 @@ private fun AnnualBalanceContent(
             AnimatedContent(
                 targetState = year,
                 transitionSpec = {
-                    val slideDirection = if ((targetState.name.toIntOrNull()
-                            ?: 0) >= (initialState.name.toIntOrNull() ?: 0)
-                    ) 1 else -1
+                    val slideDirection =
+                        if ((
+                                targetState.name.toIntOrNull()
+                                    ?: 0
+                            ) >= (initialState.name.toIntOrNull() ?: 0)
+                        ) {
+                            1
+                        } else {
+                            -1
+                        }
                     (
                         slideInHorizontally(
                             initialOffsetX = { fullWidth -> fullWidth * slideDirection },
