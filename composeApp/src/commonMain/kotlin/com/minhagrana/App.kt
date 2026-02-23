@@ -70,7 +70,6 @@ fun App() {
                     .imePadding()
                     .background(MaterialTheme.colorScheme.background),
         ) {
-            KeyboardWarmup()
             val navController = rememberNavController()
             BottomNavigationBar(navController)
         }
