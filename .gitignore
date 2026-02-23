@@ -19,4 +19,6 @@ captures
 node_modules/
 docs/
 
-composeApp/src/commonMain/kotlin/com/minhagrana/database/DebugSeed.kt
+composeApp/src/androidMain/kotlin/com/minhagrana/database/DebugSeed.local.kt
+
+!composeApp/src/androidMain/kotlin/com/minhagrana/database/DebugSeed.local.kt
