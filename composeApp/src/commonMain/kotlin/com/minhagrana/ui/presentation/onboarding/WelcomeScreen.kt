@@ -119,6 +119,12 @@ private fun WelcomeContent(
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "Informe o seu nome",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
             if (errorMessage != null) {
                 Text(
                     text = errorMessage,
@@ -146,16 +152,4 @@ private fun WelcomeContent(
             onClick = { onCreateAccount(name.text) },
         )
     }
-}
-
-@Preview
-@Composable
-fun Preview() {
-    WelcomeContent(
-        name = TextFieldValue(""),
-        onNameChange = {},
-        errorMessage = null,
-        onCreateAccount = {},
-        padding = PaddingValues(0.dp),
-    )
 }
