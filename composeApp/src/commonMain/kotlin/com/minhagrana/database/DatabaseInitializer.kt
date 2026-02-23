@@ -31,6 +31,7 @@ class DatabaseInitializer(
         // Get or create current year with months
         yearRepository.getCurrentYearOrCreate(user.uuid)
 
+        // Seed debug data if enabled
         if (isDebug) {
             seedDebugDataIfEnabled(user.uuid)
         }
