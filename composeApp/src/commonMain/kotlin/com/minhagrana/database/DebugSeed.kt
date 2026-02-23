@@ -7,7 +7,6 @@ import com.minhagrana.models.repositories.YearRepository
 
 expect object DebugSeed {
     val ENABLED: Boolean
-    val VERSION: Int
 
     suspend fun run(
         userUuid: String,
