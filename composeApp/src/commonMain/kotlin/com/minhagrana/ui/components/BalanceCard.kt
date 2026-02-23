@@ -24,6 +24,7 @@ import com.minhagrana.ui.theme.AppTheme
 @Composable
 fun BalanceCard(
     title: String = "Outubro",
+    subtitle: String = "Entradas",
     balanceValue: Double = 4000.0,
     onClick: () -> Unit = {},
 ) {
@@ -62,7 +63,7 @@ fun BalanceCard(
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = "Entradas",
+                    text = subtitle,
                 )
             }
 
