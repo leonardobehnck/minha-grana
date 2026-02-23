@@ -21,6 +21,6 @@ val repositoryModule =
         single<MonthRepository> { MonthRepositoryImpl(get()) }
         single<YearRepository> { YearRepositoryImpl(get(), get(), get()) }
         single<EntryRepository> { EntryRepositoryImpl(get(), get()) }
-        single { DatabaseInitializer(get(), get(), get()) }
+        single { DatabaseInitializer(get(), get(), get(), get(), get()) }
         single { MonthResolver(get(), get()) }
     }
