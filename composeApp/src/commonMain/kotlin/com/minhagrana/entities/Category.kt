@@ -22,6 +22,7 @@ fun getDefaultColor(name: String): Color =
     when (name) {
         "Salário" -> categoryIncome
         "Transporte" -> categoryTransport
+        "Pet" -> categoryPet
         "Pets" -> categoryPet
         "Filhos" -> categoryBaby
         "Saúde" -> categoryHealth
