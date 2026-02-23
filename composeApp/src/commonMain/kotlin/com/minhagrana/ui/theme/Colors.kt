@@ -18,7 +18,7 @@ val categoryIncome = Color(0xFF17C747)
 val categoryTransport = Color(0xFFB33D3C)
 val categoryHealth = Color(0xFF08415C)
 val categoryBaby = Color(0xFFC0FDFB)
-val categoryPet = Color(0xFFB09E99)
+val categoryPet = Color(0xFF8B5CF6)
 
 val primaryLight = Color(0xFF17C747)
 val onPrimaryLight = Color(0xFFFFFFFF)
