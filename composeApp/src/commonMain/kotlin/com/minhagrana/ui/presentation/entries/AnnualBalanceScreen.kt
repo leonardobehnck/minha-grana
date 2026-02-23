@@ -150,7 +150,7 @@ private fun AnnualBalanceContent(
                         targetYear.months.forEach { month ->
                             BalanceCard(
                                 title = month.name,
-                                subtitle = "Balanço",
+                                subtitle = "saldo do mês",
                                 balanceValue = month.balance,
                                 onClick = { onMonthSelected(month.uuid, targetYear.id.toLong()) },
                             )

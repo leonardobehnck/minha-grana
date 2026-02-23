@@ -2,11 +2,14 @@ package com.minhagrana.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -28,7 +31,7 @@ fun BalanceCard(
     balanceValue: Double = 4000.0,
     onClick: () -> Unit = {},
 ) {
-    Column(
+    Row(
         modifier =
             Modifier
                 .padding(top = 4.dp, bottom = 4.dp)
@@ -36,37 +39,35 @@ fun BalanceCard(
                 .clickable { onClick() }
                 .fillMaxWidth(),
     ) {
-        Text(
-            modifier = Modifier.padding(top = 16.dp, start = 32.dp),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-            text = title,
-        )
-
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 32.dp),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                text = title,
+            )
+            Text(
+                modifier = Modifier.padding(start = 32.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                text = subtitle,
+            )
+        }
         Row(
             modifier =
                 Modifier
                     .padding(top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(
-                modifier =
-                    Modifier
-                        .padding(start = 32.dp)
-                        .weight(1f),
-            ) {
-                Text(
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = balanceColor(balanceValue),
-                    text = formatDoubleToBRL(balanceValue),
-                )
-                Text(
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    text = subtitle,
-                )
-            }
-
+            Text(
+                style = MaterialTheme.typography.bodyLarge,
+                color = balanceColor(balanceValue),
+                text = formatDoubleToBRL(balanceValue),
+            )
             Icon(
                 modifier =
                     Modifier
