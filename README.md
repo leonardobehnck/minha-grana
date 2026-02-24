@@ -27,7 +27,7 @@ The app allows users to record entries (income and expenses) by category, view b
 
 ## Figma
 
-https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyosJFd6sjFze-1
+[Figma file](https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyosJFd6sjFze-1)
 
 ---
 
