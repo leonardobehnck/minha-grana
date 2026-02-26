@@ -72,7 +72,8 @@ class NewEntryViewModel(
 
         viewModelScope.launch {
             try {
-                val user = databaseInitializer.initialize()
+                databaseInitializer.initialize()
+                val user = databaseInitializer.getUser()
                 val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
                 val monthName = monthNamePtBr(monthNumber)
                 val month = year.months.find { it.name == monthName }
