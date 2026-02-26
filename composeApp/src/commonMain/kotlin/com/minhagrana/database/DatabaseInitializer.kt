@@ -1,6 +1,5 @@
 package com.minhagrana.database
 
-import com.minhagrana.entities.User
 import com.minhagrana.entities.Year
 import com.minhagrana.models.repositories.CategoryRepository
 import com.minhagrana.models.repositories.EntryRepository
@@ -17,42 +16,22 @@ class DatabaseInitializer(
 ) {
     private var isInitialized = false
 
-    suspend fun initialize(isDebug: Boolean = false): User {
+    suspend fun initialize() {
         if (isInitialized) {
-            return userRepository.getOrCreateDefaultUser()
+            return
         }
 
         // Insert default categories if empty
         categoryRepository.insertDefaultCategoriesIfEmpty()
 
-        // Get or create default user
-        val user = userRepository.getOrCreateDefaultUser()
-
-        // Get or create current year with months
-        yearRepository.getCurrentYearOrCreate(user.uuid)
-
-        // Seed debug data if enabled
-        if (isDebug) {
-            seedDebugDataIfEnabled(user.uuid)
-        }
-
         isInitialized = true
-        return user
     }
 
-    private suspend fun seedDebugDataIfEnabled(userUuid: String) {
-        if (!DebugSeed.ENABLED) {
-            return
-        }
+    suspend fun getUserOrNull() = userRepository.getFirstUserOrNull()
 
-        DebugSeed.run(
-            userUuid = userUuid,
-            categoryRepository = categoryRepository,
-            entryRepository = entryRepository,
-            monthRepository = monthRepository,
-            yearRepository = yearRepository,
-            currentYear = com.minhagrana.util.currentYear(),
-        )
+    suspend fun onUserCreated(userUuid: String) {
+        initialize()
+        yearRepository.getCurrentYearOrCreate(userUuid)
     }
 
     suspend fun getCurrentYear(userUuid: String): Year = yearRepository.getCurrentYearOrCreate(userUuid)
