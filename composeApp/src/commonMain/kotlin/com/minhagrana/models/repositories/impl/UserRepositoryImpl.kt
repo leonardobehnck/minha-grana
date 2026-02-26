@@ -19,6 +19,8 @@ class UserRepositoryImpl(
 
     override suspend fun getUserByUuid(uuid: String): User? = databaseHelper.getUserByUuid(uuid)
 
+    override suspend fun getFirstUserOrNull(): User? = databaseHelper.getAllUsersFlow().first().firstOrNull()
+
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getOrCreateDefaultUser(): User {
         val existingUsers = databaseHelper.getAllUsersFlow().first()
