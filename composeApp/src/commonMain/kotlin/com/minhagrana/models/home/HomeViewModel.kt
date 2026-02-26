@@ -39,7 +39,8 @@ class HomeViewModel(
         states.value = HomeViewState.Loading
         viewModelScope.launch {
             try {
-                val user = databaseInitializer.initialize()
+                databaseInitializer.initialize()
+                val user = databaseInitializer.getUser()
                 val currentYear = yearRepository.getCurrentYearOrCreate(user.uuid)
                 val yearWithMonths = yearRepository.getYearById(currentYear.id.toLong())
 
