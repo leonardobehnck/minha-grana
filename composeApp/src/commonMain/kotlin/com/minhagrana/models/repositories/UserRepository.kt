@@ -8,6 +8,8 @@ interface UserRepository {
 
     suspend fun getUserByUuid(uuid: String): User?
 
+    suspend fun getFirstUserOrNull(): User?
+
     suspend fun getOrCreateDefaultUser(): User
 
     suspend fun insertUser(user: User): Long
