@@ -29,6 +29,8 @@ class DatabaseInitializer(
 
     suspend fun getUserOrNull() = userRepository.getFirstUserOrNull()
 
+    suspend fun getUser() = userRepository.getOrCreateDefaultUser()
+
     suspend fun onUserCreated(userUuid: String) {
         initialize()
         yearRepository.getCurrentYearOrCreate(userUuid)
