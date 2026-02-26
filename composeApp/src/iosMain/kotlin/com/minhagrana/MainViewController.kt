@@ -16,7 +16,7 @@ private object IosAppInitializer : KoinComponent {
 
     fun initialize() {
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-            databaseInitializer.initialize(isDebug = true)
+            databaseInitializer.initialize()
         }
     }
 }
