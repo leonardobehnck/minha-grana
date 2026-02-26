@@ -46,7 +46,8 @@ class AnnualBalanceViewModel(
         states.value = AnnualBalanceViewState.Loading
         viewModelScope.launch {
             try {
-                val user = databaseInitializer.initialize()
+                databaseInitializer.initialize()
+                val user = databaseInitializer.getUser()
                 currentUserUuid = user.uuid
 
                 years =
@@ -84,14 +85,13 @@ class AnnualBalanceViewModel(
     private fun loadCurrentYear() {
         viewModelScope.launch {
             try {
-                val year = years.getOrNull(currentYearIndex)
-                if (year != null) {
-                    val yearWithMonths = yearRepository.getYearById(year.id.toLong())
-                    if (yearWithMonths != null) {
-                        states.value = AnnualBalanceViewState.Success(yearWithMonths)
-                    } else {
-                        states.value = AnnualBalanceViewState.Error("Ano não encontrado")
-                    }
+                val yearWithMonths =
+                    years
+                        .getOrNull(currentYearIndex)
+                        ?.let { yearRepository.getYearById(it.id.toLong()) }
+
+                if (yearWithMonths != null) {
+                    states.value = AnnualBalanceViewState.Success(yearWithMonths)
                 } else {
                     states.value = AnnualBalanceViewState.Error("Ano não encontrado")
                 }
