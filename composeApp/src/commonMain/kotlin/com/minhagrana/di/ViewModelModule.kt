@@ -18,6 +18,6 @@ val viewModelModule =
         factory { EntriesViewModel(get(), get(), get(), get()) }
         factory { EntryViewModel(get(), get(), get(), get()) }
         factory { NewEntryViewModel(get(), get(), get()) }
-        factory { OnboardingViewModel(get()) }
+        factory { OnboardingViewModel(get(), get()) }
         factory { ProfileViewModel(get()) }
     }
