@@ -8,6 +8,12 @@ The app allows users to record entries (income and expenses) by category, view b
 
 ---
 
+## Figma
+
+<a href="https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyosJFd6sjFze-1" target="_blank" rel="noopener noreferrer">Figma file</a>
+
+---
+
 ## Screens
 
 ### Home
@@ -27,33 +33,6 @@ The app allows users to record entries (income and expenses) by category, view b
 | Android | iOS |
 | --- | --- |
 | <img src="./screenshots/android/android_entries.png" width="320" /> | <img src="./screenshots/ios/ios_entries.PNG" width="320" /> |
-
-### Entry (Edit)
-
-| Android | iOS |
-| --- | --- |
-| <img src="./screenshots/android/android_category.png" width="320" /> | <img src="./screenshots/ios/ios_year.PNG" width="320" /> |
-
-### Annual Balance
-
-| Android | iOS |
-| --- | --- |
-| <img src="./screenshots/android/android_year.png" width="320" /> | <img src="./screenshots/ios/ios_year.PNG" width="320" /> |
-
-### Navigation
-
-| Android | iOS |
-| --- | --- |
-| <img src="./screenshots/android/android_onboarding.png" width="320" /> | <img src="./screenshots/ios/ios_onboarding.PNG" width="320" /> |
-| <img src="./screenshots/android/android_profile.png" width="320" /> | <img src="./screenshots/ios/ios_profile.PNG" width="320" /> |
-| <img src="./screenshots/android/android_signout.png" width="320" /> | <img src="./screenshots/ios/ios_signout.PNG" width="320" /> |
-
-
----
-
-## Figma
-
-<a href="https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyosJFd6sjFze-1" target="_blank" rel="noopener noreferrer">Figma file</a>
 
 ---
 
