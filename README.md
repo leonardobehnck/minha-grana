@@ -10,6 +10,8 @@ The app allows users to record entries (income and expenses) by category, view b
 
 ## Figma
 
+This project was developed from a structured design system, including typography choices, a defined color palette, and a custom logo to ensure visual consistency across Android and iOS.
+
 <a href="https://www.figma.com/design/lBwuoc1jUqLHZgJ75wLBuG/minha-grana?m=auto&t=pOHWyosJFd6sjFze-1" target="_blank" rel="noopener noreferrer">Figma file</a>
 
 ---
