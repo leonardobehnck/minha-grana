@@ -25,7 +25,7 @@ class MainApplication : Application() {
         }
 
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-            get<DatabaseInitializer>(DatabaseInitializer::class.java).initialize(isDebug = true)
+            get<DatabaseInitializer>(DatabaseInitializer::class.java).initialize()
         }
     }
 }
