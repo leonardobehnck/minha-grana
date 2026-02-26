@@ -2,6 +2,7 @@ package com.minhagrana.models.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.entities.User
 import com.minhagrana.models.repositories.UserRepository
 import kotlinx.coroutines.channels.Channel
@@ -14,6 +15,7 @@ import kotlin.uuid.Uuid
 
 class OnboardingViewModel(
     private val userRepository: UserRepository,
+    private val databaseInitializer: DatabaseInitializer,
 ) : ViewModel() {
     private val interactions = Channel<OnboardingInteraction>(Channel.UNLIMITED)
     private val states = MutableStateFlow<OnboardingViewState>(OnboardingViewState.Idle)
@@ -47,6 +49,7 @@ class OnboardingViewModel(
                         name = name.trim().ifEmpty { "Usuário" },
                     )
                 userRepository.insertUser(user)
+                databaseInitializer.onUserCreated(userUuid = user.uuid)
                 states.value = OnboardingViewState.Success(user)
             } catch (e: Exception) {
                 states.value = OnboardingViewState.Error(e.message ?: "Erro ao criar usuário")
