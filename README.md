@@ -14,39 +14,39 @@ The app allows users to record entries (income and expenses) by category, view b
 
 | Android | iOS |
 | --- | --- |
-| ![Android Home](./screenshots/android/android_home.png) | ![iOS Home](./screenshots/ios/ios_home.PNG) |
+| <img src="./screenshots/android/android_home.png" width="320" /> | <img src="./screenshots/ios/ios_home.PNG" width="320" /> |
 
 ### New Entry
 
 | Android | iOS |
 | --- | --- |
-| ![Android New Entry](./screenshots/android/android_newentry.png) | ![iOS New Entry](./screenshots/ios/ios_newentry.PNG) |
+| <img src="./screenshots/android/android_newentry.png" width="320" /> | <img src="./screenshots/ios/ios_newentry.PNG" width="320" /> |
 
 ### Entries
 
 | Android | iOS |
 | --- | --- |
-| ![Android Entries](./screenshots/android/android_entries.png) | ![iOS Entries](./screenshots/ios/ios_entries.PNG) |
+| <img src="./screenshots/android/android_entries.png" width="320" /> | <img src="./screenshots/ios/ios_entries.PNG" width="320" /> |
 
 ### Entry (Edit)
 
 | Android | iOS |
 | --- | --- |
-| ![Android Category](./screenshots/android/android_category.png) | ![iOS Year](./screenshots/ios/ios_year.PNG) |
+| <img src="./screenshots/android/android_category.png" width="320" /> | <img src="./screenshots/ios/ios_year.PNG" width="320" /> |
 
 ### Annual Balance
 
 | Android | iOS |
 | --- | --- |
-| ![Android Year](./screenshots/android/android_year.png) | ![iOS Year](./screenshots/ios/ios_year.PNG) |
+| <img src="./screenshots/android/android_year.png" width="320" /> | <img src="./screenshots/ios/ios_year.PNG" width="320" /> |
 
 ### Navigation
 
 | Android | iOS |
 | --- | --- |
-| ![Android Onboarding](./screenshots/android/android_onboarding.png) | ![iOS Onboarding](./screenshots/ios/ios_onboarding.PNG) |
-| ![Android Profile](./screenshots/android/android_profile.png) | ![iOS Profile](./screenshots/ios/ios_profile.PNG) |
-| ![Android Sign out](./screenshots/android/android_signout.png) | ![iOS Sign out](./screenshots/ios/ios_signout.PNG) |
+| <img src="./screenshots/android/android_onboarding.png" width="320" /> | <img src="./screenshots/ios/ios_onboarding.PNG" width="320" /> |
+| <img src="./screenshots/android/android_profile.png" width="320" /> | <img src="./screenshots/ios/ios_profile.PNG" width="320" /> |
+| <img src="./screenshots/android/android_signout.png" width="320" /> | <img src="./screenshots/ios/ios_signout.PNG" width="320" /> |
 
 
 ---
