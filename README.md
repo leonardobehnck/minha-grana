@@ -12,15 +12,41 @@ The app allows users to record entries (income and expenses) by category, view b
 
 ### Home
 
+| Android | iOS |
+| --- | --- |
+| ![Android Home](./screenshots/android/android_home.png) | ![iOS Home](./screenshots/ios/ios_home.PNG) |
+
 ### New Entry
+
+| Android | iOS |
+| --- | --- |
+| ![Android New Entry](./screenshots/android/android_newentry.png) | ![iOS New Entry](./screenshots/ios/ios_newentry.PNG) |
 
 ### Entries
 
+| Android | iOS |
+| --- | --- |
+| ![Android Entries](./screenshots/android/android_entries.png) | ![iOS Entries](./screenshots/ios/ios_entries.PNG) |
+
 ### Entry (Edit)
+
+| Android | iOS |
+| --- | --- |
+| ![Android Category](./screenshots/android/android_category.png) | ![iOS Year](./screenshots/ios/ios_year.PNG) |
 
 ### Annual Balance
 
+| Android | iOS |
+| --- | --- |
+| ![Android Year](./screenshots/android/android_year.png) | ![iOS Year](./screenshots/ios/ios_year.PNG) |
+
 ### Navigation
+
+| Android | iOS |
+| --- | --- |
+| ![Android Onboarding](./screenshots/android/android_onboarding.png) | ![iOS Onboarding](./screenshots/ios/ios_onboarding.PNG) |
+| ![Android Profile](./screenshots/android/android_profile.png) | ![iOS Profile](./screenshots/ios/ios_profile.PNG) |
+| ![Android Sign out](./screenshots/android/android_signout.png) | ![iOS Sign out](./screenshots/ios/ios_signout.PNG) |
 
 
 ---
