@@ -15,7 +15,8 @@ class MonthResolver(
      */
     suspend fun resolveMonthId(dateString: String): Long? {
         val (_, monthNumber, yearNumber) = parseDateDDMMYYYY(dateString) ?: return null
-        val user = databaseInitializer.initialize()
+        databaseInitializer.initialize()
+        val user = databaseInitializer.getUser()
         val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
         val monthName = monthNamePtBr(monthNumber)
         return year.months
