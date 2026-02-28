@@ -124,7 +124,16 @@ private fun HomeContent(
                     modifier = Modifier.padding(bottom = 16.dp),
                     horizontalAlignment = Alignment.Start,
                 ) {
-                    expenseByCategory.keys.forEach { category ->
+                    val totalExpense = expenseByCategory.values.sum().takeIf { it > 0 } ?: 0.0
+
+                    expenseByCategory.entries.forEach { (category, value) ->
+                        val percentage =
+                            if (totalExpense > 0) {
+                                (value / totalExpense) * 100
+                            } else {
+                                0.0
+                            }
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
@@ -133,7 +142,7 @@ private fun HomeContent(
                             CircularIcon(color = category.color)
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
-                                text = category.name,
+                                text = "${category.name} - ${percentage.toInt()}%",
                             )
                         }
                     }
