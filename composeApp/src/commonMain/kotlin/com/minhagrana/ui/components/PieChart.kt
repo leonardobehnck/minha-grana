@@ -24,6 +24,11 @@ fun PieChart(reportItems: Map<Category, Double>) {
             emptyList()
         }
 
+    if (segments.isEmpty()) {
+        Empty()
+        return
+    }
+
     Canvas(
         modifier = Modifier.fillMaxSize(),
         onDraw = {

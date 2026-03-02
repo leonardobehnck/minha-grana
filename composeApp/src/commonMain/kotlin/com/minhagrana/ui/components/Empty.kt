@@ -22,10 +22,11 @@ fun Empty(message: String = "") {
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
-            text = "Nenhum registro encontrado",
+            text = message.ifBlank { "Nenhum registro encontrado" },
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
