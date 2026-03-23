@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.sqldelight)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.firebaseCrashlytics)
 }
 
 kotlin {
@@ -111,6 +112,7 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
     add("androidMainImplementation", platform(libs.firebase.bom))
     add("androidMainImplementation", libs.firebase.analytics)
+    add("androidMainImplementation", libs.firebase.crashlytics)
 }
 
 sqldelight {
