@@ -94,7 +94,7 @@ private fun NewEntryContent(
 
     var entryName by rememberSaveable { mutableStateOf("") }
     var selectedDate by rememberSaveable { mutableStateOf(getCurrentDate()) }
-    var selectedCategory by rememberSaveable { mutableStateOf<Category?>(null) }
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
     var selectedEntryPositive by rememberSaveable { mutableStateOf(false) }
     var selectedEntryNegative by rememberSaveable { mutableStateOf(true) }
 
