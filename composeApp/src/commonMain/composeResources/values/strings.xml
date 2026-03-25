@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Minha Grana</string>
+
+    <!-- Common -->
+    <string name="save">Salvar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="back">Voltar</string>
+    <string name="delete">Excluir</string>
+    <string name="name">Nome</string>
+    <string name="category">Categoria</string>
+    <string name="yes">Sim</string>
+    <string name="logo_content_description">Logo MinhaGrana</string>
+
+    <!-- Home -->
+    <string name="month_report">relatório do mês</string>
+
+    <!-- Onboarding / Welcome -->
+    <string name="welcome">Boas-vindas!</string>
+    <string name="enter_your_name">Informe o seu nome</string>
+    <string name="create_account">Criar conta</string>
+
+    <!-- Entries -->
+    <string name="my_balance">Meu balanço</string>
+    <string name="view_annual_balance">Ver balanço anual ></string>
+    <string name="no_entries_this_month">Nenhum lançamento neste mês</string>
+    <string name="month_balance">saldo do mês</string>
+    <string name="no_months_found">Nenhum mês encontrado</string>
+
+    <!-- New Entry -->
+    <string name="add_entry">Adicionar lançamento</string>
+    <string name="income">Entrada</string>
+    <string name="expense">Saída</string>
+    <string name="value">Valor</string>
+    <string name="currency_placeholder">R$0,00</string>
+    <string name="saving">Salvando...</string>
+    <string name="add">Adicionar</string>
+
+    <!-- Entry Detail -->
+    <string name="edit_entry">Editar lançamento</string>
+    <string name="delete_entry_title">Deletar este lançamento?</string>
+    <string name="delete_entry_message">Tem certeza que deseja excluir?</string>
+
+    <!-- Profile -->
+    <string name="edit_account">Editar conta</string>
+    <string name="delete_account">Excluir conta</string>
+    <string name="delete_account_title">Deletar conta</string>
+    <string name="delete_account_message">Tem certeza que deseja excluir sua conta?</string>
+    <string name="delete_account_warning">Todos seus dados serão perdidos.</string>
+    <string name="profile_updated">Perfil atualizado!</string>
+    <string name="profile_updated_animation">Profile updated animation</string>
+
+    <!-- Category Dialog -->
+    <string name="select_category">Selecionar categoria</string>
+
+    <!-- Components -->
+    <string name="no_records_found">Nenhum registro encontrado</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <!-- No Connectivity -->
+    <string name="no_connection">Sem conexão</string>
+    <string name="no_connection_message">Verifique sua conexão com a internet e tente novamente.</string>
+
+    <!-- Months -->
+    <string name="month_january">Janeiro</string>
+    <string name="month_february">Fevereiro</string>
+    <string name="month_march">Março</string>
+    <string name="month_april">Abril</string>
+    <string name="month_may">Maio</string>
+    <string name="month_june">Junho</string>
+    <string name="month_july">Julho</string>
+    <string name="month_august">Agosto</string>
+    <string name="month_september">Setembro</string>
+    <string name="month_october">Outubro</string>
+    <string name="month_november">Novembro</string>
+    <string name="month_december">Dezembro</string>
+</resources>
