@@ -2,7 +2,6 @@ package com.minhagrana.models.services
 
 import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.models.repositories.YearRepository
-import com.minhagrana.ui.monthNamePtBr
 import com.minhagrana.ui.parseDateDDMMYYYY
 
 class MonthResolver(
@@ -18,9 +17,8 @@ class MonthResolver(
         databaseInitializer.initialize()
         val user = databaseInitializer.getUser()
         val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
-        val monthName = monthNamePtBr(monthNumber)
         return year.months
-            .find { it.name == monthName }
+            .find { it.name == monthNumber.toString() }
             ?.id
             ?.toLong()
     }
