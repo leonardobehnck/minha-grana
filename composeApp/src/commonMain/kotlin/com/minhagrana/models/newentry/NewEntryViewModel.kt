@@ -7,7 +7,6 @@ import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
 import com.minhagrana.models.repositories.EntryRepository
 import com.minhagrana.models.repositories.YearRepository
-import com.minhagrana.ui.monthNamePtBr
 import com.minhagrana.ui.parseBRLInputToDouble
 import com.minhagrana.ui.parseDateDDMMYYYY
 import kotlinx.coroutines.channels.Channel
@@ -75,8 +74,7 @@ class NewEntryViewModel(
                 databaseInitializer.initialize()
                 val user = databaseInitializer.getUser()
                 val year = yearRepository.getYearOrCreate(user.uuid, yearNumber)
-                val monthName = monthNamePtBr(monthNumber)
-                val month = year.months.find { it.name == monthName }
+                val month = year.months.find { it.name == monthNumber.toString() }
                 val monthId = month?.id?.toLong()
 
                 if (monthId != null) {

@@ -18,21 +18,7 @@ class YearRepositoryImpl(
     private val entryRepository: EntryRepository,
 ) : YearRepository {
     companion object {
-        private val MONTH_NAMES =
-            listOf(
-                "Janeiro",
-                "Fevereiro",
-                "Março",
-                "Abril",
-                "Maio",
-                "Junho",
-                "Julho",
-                "Agosto",
-                "Setembro",
-                "Outubro",
-                "Novembro",
-                "Dezembro",
-            )
+        private val MONTH_NUMBERS = (1..12).map { it.toString() }
     }
 
     override fun getYearsByUserUuidFlow(userUuid: String): Flow<List<Year>> = databaseHelper.getYearsByUserUuidFlow(userUuid)
@@ -117,11 +103,11 @@ class YearRepositoryImpl(
     @OptIn(ExperimentalUuidApi::class)
     private suspend fun createMonthsForYear(yearId: Long): List<Month> {
         val months = mutableListOf<Month>()
-        MONTH_NAMES.forEach { monthName ->
+        MONTH_NUMBERS.forEach { monthNumber ->
             val month =
                 Month(
                     uuid = Uuid.random().toString(),
-                    name = monthName,
+                    name = monthNumber,
                     income = 0.0,
                     expense = 0.0,
                     balance = 0.0,

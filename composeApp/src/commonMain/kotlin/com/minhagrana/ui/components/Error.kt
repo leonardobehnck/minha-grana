@@ -18,10 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.logo
+import minhagrana.composeapp.generated.resources.logo_content_description
+import minhagrana.composeapp.generated.resources.something_went_wrong
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun Error(message: String = "Something went wrong") {
+fun Error(message: String = "") {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,12 +37,12 @@ fun Error(message: String = "Something went wrong") {
                     .height(100.dp)
                     .padding(bottom = 16.dp),
             painter = painterResource(Res.drawable.logo),
-            contentDescription = "Logo MinhaGrana",
+            contentDescription = stringResource(Res.string.logo_content_description),
             contentScale = ContentScale.Fit,
         )
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
-            text = message,
+            text = message.ifBlank { stringResource(Res.string.something_went_wrong) },
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge,

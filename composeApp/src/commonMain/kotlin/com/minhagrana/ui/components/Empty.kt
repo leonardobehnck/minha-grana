@@ -12,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.no_records_found
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Empty(message: String = "") {
@@ -22,7 +25,7 @@ fun Empty(message: String = "") {
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
-            text = message.ifBlank { "Nenhum registro encontrado" },
+            text = message.ifBlank { stringResource(Res.string.no_records_found) },
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge,

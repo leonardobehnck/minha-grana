@@ -15,6 +15,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.back
+import minhagrana.composeapp.generated.resources.no_connection
+import minhagrana.composeapp.generated.resources.no_connection_message
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun NoConnectivity(onClick: (() -> Unit)) {
@@ -25,7 +30,7 @@ fun NoConnectivity(onClick: (() -> Unit)) {
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
-            text = "Sem conexão",
+            text = stringResource(Res.string.no_connection),
             maxLines = 3,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -36,7 +41,7 @@ fun NoConnectivity(onClick: (() -> Unit)) {
 
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
-            text = "Verifique sua conexão com a internet e tente novamente.",
+            text = stringResource(Res.string.no_connection_message),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge,
@@ -45,7 +50,7 @@ fun NoConnectivity(onClick: (() -> Unit)) {
         Spacer(Modifier.height(16.dp))
         PrimaryButton(
             modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-            title = "Voltar",
+            title = stringResource(Res.string.back),
             onClick = onClick,
         )
     }

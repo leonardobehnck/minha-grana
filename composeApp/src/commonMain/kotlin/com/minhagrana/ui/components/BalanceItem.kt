@@ -17,6 +17,10 @@ import com.minhagrana.entities.Month
 import com.minhagrana.ui.balanceColor
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.expenses_label
+import minhagrana.composeapp.generated.resources.incomes_label
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BalanceItem(month: Month = Month()) {
@@ -47,7 +51,7 @@ fun BalanceItem(month: Month = Month()) {
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = "Entradas",
+                    text = stringResource(Res.string.incomes_label),
                 )
             }
 
@@ -66,7 +70,7 @@ fun BalanceItem(month: Month = Month()) {
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = "Saídas",
+                    text = stringResource(Res.string.expenses_label),
                 )
             }
         }

@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Categories
 import com.minhagrana.entities.Category
 import com.minhagrana.models.repositories.CategoryRepository
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.select_category
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -48,7 +51,7 @@ fun DialogCategory(
                     .padding(16.dp),
         ) {
             Header1(
-                title = "Selecionar categoria",
+                title = stringResource(Res.string.select_category),
             )
             if (categories.isEmpty()) {
                 Box(

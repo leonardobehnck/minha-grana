@@ -22,9 +22,13 @@ import com.minhagrana.ui.balanceColor
 import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
 import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.balance_hidden
+import minhagrana.composeapp.generated.resources.hide_balance
 import minhagrana.composeapp.generated.resources.ic_hide
 import minhagrana.composeapp.generated.resources.ic_unhide
+import minhagrana.composeapp.generated.resources.month_balance
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Balance(
@@ -51,12 +55,12 @@ fun Balance(
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = "saldo do mês",
+                    text = stringResource(Res.string.month_balance),
                 )
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
                     color = balanceColor(balanceValue),
-                    text = if (isBalanceVisible) formatDoubleToBRL(balanceValue) else "R$ *****",
+                    text = if (isBalanceVisible) formatDoubleToBRL(balanceValue) else stringResource(Res.string.balance_hidden),
                 )
             }
             Icon(
@@ -67,7 +71,7 @@ fun Balance(
                     } else {
                         painterResource(Res.drawable.ic_hide)
                     },
-                contentDescription = "hide balance",
+                contentDescription = stringResource(Res.string.hide_balance),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

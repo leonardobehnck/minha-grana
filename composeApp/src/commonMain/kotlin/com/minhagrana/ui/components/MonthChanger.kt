@@ -19,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.theme.AppTheme
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.next_month
+import minhagrana.composeapp.generated.resources.previous_month
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MonthChanger(
@@ -43,7 +47,7 @@ fun MonthChanger(
                     .noRippleClickable { onPreviousPressed() },
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
             tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = "Previous Month",
+            contentDescription = stringResource(Res.string.previous_month),
         )
         Text(
             text = month,
@@ -58,7 +62,7 @@ fun MonthChanger(
                     .noRippleClickable { onNextPressed() },
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = "Next Month",
+            contentDescription = stringResource(Res.string.next_month),
         )
     }
 }
@@ -70,7 +74,7 @@ fun PreviewMonthChanger() {
         MonthChanger(
             onNextPressed = {},
             onPreviousPressed = {},
-            month = "Janeiro",
+            month = "1",
         )
     }
 }
