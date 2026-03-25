@@ -22,8 +22,8 @@ import com.minhagrana.ui.formatDoubleToBRL
 
 @Composable
 fun BalanceCard(
-    title: String = "Outubro",
-    subtitle: String = "Entradas",
+    title: String = "",
+    subtitle: String = "",
     balanceValue: Double = 4000.0,
     onClick: () -> Unit = {},
 ) {
