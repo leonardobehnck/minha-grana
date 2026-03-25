@@ -54,6 +54,14 @@
     <!-- Category Dialog -->
     <string name="select_category">Select category</string>
 
+    <!-- Balance -->
+    <string name="incomes_label">Income</string>
+    <string name="expenses_label">Expenses</string>
+
+    <!-- Month Changer -->
+    <string name="previous_month">Previous month</string>
+    <string name="next_month">Next month</string>
+
     <!-- Components -->
     <string name="no_records_found">No records found</string>
     <string name="something_went_wrong">Something went wrong</string>

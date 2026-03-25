@@ -54,9 +54,17 @@
     <!-- Category Dialog -->
     <string name="select_category">Selecionar categoria</string>
 
+    <!-- Balance -->
+    <string name="incomes_label">Entradas</string>
+    <string name="expenses_label">Saídas</string>
+
+    <!-- Month Changer -->
+    <string name="previous_month">Mês anterior</string>
+    <string name="next_month">Próximo mês</string>
+
     <!-- Components -->
     <string name="no_records_found">Nenhum registro encontrado</string>
-    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong">Algo deu errado</string>
 
     <!-- No Connectivity -->
     <string name="no_connection">Sem conexão</string>
