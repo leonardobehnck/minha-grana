@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Minha Grana</string>
+
+    <!-- Common -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="name">Name</string>
+    <string name="category">Category</string>
+    <string name="yes">Yes</string>
+    <string name="logo_content_description">MinhaGrana Logo</string>
+
+    <!-- Home -->
+    <string name="month_report">month report</string>
+
+    <!-- Onboarding / Welcome -->
+    <string name="welcome">Welcome!</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="create_account">Create account</string>
+
+    <!-- Entries -->
+    <string name="my_balance">My balance</string>
+    <string name="view_annual_balance">View annual balance ></string>
+    <string name="no_entries_this_month">No entries this month</string>
+    <string name="month_balance">month balance</string>
+    <string name="no_months_found">No months found</string>
+
+    <!-- New Entry -->
+    <string name="add_entry">Add entry</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="value">Amount</string>
+    <string name="currency_placeholder">$0.00</string>
+    <string name="saving">Saving...</string>
+    <string name="add">Add</string>
+
+    <!-- Entry Detail -->
+    <string name="edit_entry">Edit entry</string>
+    <string name="delete_entry_title">Delete this entry?</string>
+    <string name="delete_entry_message">Are you sure you want to delete?</string>
+
+    <!-- Profile -->
+    <string name="edit_account">Edit account</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_title">Delete account</string>
+    <string name="delete_account_message">Are you sure you want to delete your account?</string>
+    <string name="delete_account_warning">All your data will be lost.</string>
+    <string name="profile_updated">Profile updated!</string>
+    <string name="profile_updated_animation">Profile updated animation</string>
+
+    <!-- Category Dialog -->
+    <string name="select_category">Select category</string>
+
+    <!-- Components -->
+    <string name="no_records_found">No records found</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <!-- No Connectivity -->
+    <string name="no_connection">No connection</string>
+    <string name="no_connection_message">Check your internet connection and try again.</string>
+
+    <!-- Months -->
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+</resources>
