@@ -14,9 +14,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.minhagrana.entities.CategorySaver
 import com.minhagrana.entities.Entry
 import com.minhagrana.models.entries.EntryInteraction
 import com.minhagrana.models.entries.EntryViewModel
@@ -98,7 +100,7 @@ private fun EntryContent(
     onSaveEntry: (Entry) -> Unit,
     onDeleteEntry: () -> Unit,
 ) {
-    var category by remember { mutableStateOf(entry.category) }
+    var category by rememberSaveable(stateSaver = CategorySaver) { mutableStateOf(entry.category) }
     var entryNameValue by remember { mutableStateOf(entry.name) }
     var entryValue by remember {
         mutableStateOf(

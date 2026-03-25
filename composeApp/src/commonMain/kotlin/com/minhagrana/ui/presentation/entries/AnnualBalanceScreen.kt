@@ -35,6 +35,7 @@ import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.MonthChanger
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.ProgressBar
+import com.minhagrana.ui.monthDisplayName
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.month_balance
 import minhagrana.composeapp.generated.resources.no_months_found
@@ -146,7 +147,7 @@ private fun AnnualBalanceContent(
                     } else {
                         targetYear.months.forEach { month ->
                             BalanceCard(
-                                title = month.name,
+                                title = monthDisplayName(month.name),
                                 subtitle = stringResource(Res.string.month_balance),
                                 balanceValue = month.balance,
                                 onClick = { onMonthSelected(month.uuid, targetYear.id.toLong()) },

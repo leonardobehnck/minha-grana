@@ -42,6 +42,7 @@ import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.MonthChanger
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.ProgressBar
+import com.minhagrana.ui.monthDisplayName
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.my_balance
 import minhagrana.composeapp.generated.resources.no_entries_this_month
@@ -127,7 +128,7 @@ private fun EntriesContent(
             MonthChanger(
                 onNextPressed = onNextMonth,
                 onPreviousPressed = onPreviousMonth,
-                month = month.name,
+                month = monthDisplayName(month.name),
             )
             Spacer(modifier = Modifier.height(16.dp))
             AnimatedContent(

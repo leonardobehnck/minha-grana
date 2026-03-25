@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.minhagrana.entities.Category
+import com.minhagrana.entities.NullableCategorySaver
 import com.minhagrana.models.newentry.NewEntryFormState
 import com.minhagrana.models.newentry.NewEntryInteraction
 import com.minhagrana.models.newentry.NewEntryViewModel
@@ -105,7 +105,7 @@ private fun NewEntryContent(
 
     var entryName by rememberSaveable { mutableStateOf("") }
     var selectedDate by rememberSaveable { mutableStateOf(getCurrentDate()) }
-    var selectedCategory by remember { mutableStateOf<Category?>(null) }
+    var selectedCategory by rememberSaveable(stateSaver = NullableCategorySaver) { mutableStateOf(null) }
     var selectedEntryPositive by rememberSaveable { mutableStateOf(false) }
     var selectedEntryNegative by rememberSaveable { mutableStateOf(true) }
 
