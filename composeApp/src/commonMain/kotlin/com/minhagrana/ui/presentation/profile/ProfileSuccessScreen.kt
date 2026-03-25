@@ -21,6 +21,10 @@ import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.back
+import minhagrana.composeapp.generated.resources.profile_updated
+import minhagrana.composeapp.generated.resources.profile_updated_animation
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ProfileSuccessScreen(onContinue: () -> Unit) {
@@ -53,17 +57,17 @@ fun ProfileSuccessScreen(onContinue: () -> Unit) {
                         composition = composition,
                         progress = { progress },
                     ),
-                contentDescription = "Profile updated animation",
+                contentDescription = stringResource(Res.string.profile_updated_animation),
             )
             Spacer(modifier = Modifier.size(16.dp))
             Text(
-                text = "Perfil atualizado!",
+                text = stringResource(Res.string.profile_updated),
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.primary,
             )
         }
         PrimaryButton(
-            title = "Voltar",
+            title = stringResource(Res.string.back),
             enabled = true,
             onClick = onContinue,
         )

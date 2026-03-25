@@ -46,6 +46,17 @@ import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SelectorEntry
 import com.minhagrana.ui.getCurrentDate
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.add
+import minhagrana.composeapp.generated.resources.add_entry
+import minhagrana.composeapp.generated.resources.category
+import minhagrana.composeapp.generated.resources.currency_placeholder
+import minhagrana.composeapp.generated.resources.expense
+import minhagrana.composeapp.generated.resources.income
+import minhagrana.composeapp.generated.resources.name
+import minhagrana.composeapp.generated.resources.saving
+import minhagrana.composeapp.generated.resources.value
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -115,7 +126,7 @@ private fun NewEntryContent(
                     .verticalScroll(rememberScrollState()),
         ) {
             Header1(
-                title = "Adicionar lançamento",
+                title = stringResource(Res.string.add_entry),
             )
             Column(
                 modifier =
@@ -132,7 +143,7 @@ private fun NewEntryContent(
                 }
 
                 BasicInputText(
-                    hint = "Nome",
+                    hint = stringResource(Res.string.name),
                     value = entryName,
                     onValueChange = { entryName = it },
                     keyboardOptions =
@@ -155,7 +166,7 @@ private fun NewEntryContent(
                     ) {
                         Row {
                             SelectorEntry(
-                                title = "Entrada",
+                                title = stringResource(Res.string.income),
                                 selected = selectedEntryPositive,
                                 textColor = MaterialTheme.colorScheme.primary,
                                 onClick = {
@@ -164,7 +175,7 @@ private fun NewEntryContent(
                                 },
                             )
                             SelectorEntry(
-                                title = "Saída",
+                                title = stringResource(Res.string.expense),
                                 selected = selectedEntryNegative,
                                 textColor = MaterialTheme.colorScheme.error,
                                 onClick = {
@@ -177,7 +188,7 @@ private fun NewEntryContent(
                 }
 
                 InputText(
-                    title = "Valor",
+                    title = stringResource(Res.string.value),
                     maxLength = 11,
                     textFieldValue = value,
                     onValueChange = {
@@ -189,7 +200,7 @@ private fun NewEntryContent(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Done,
                         ),
-                    hint = "R$0,00",
+                    hint = stringResource(Res.string.currency_placeholder),
                 )
 
                 DatePicker(
@@ -198,7 +209,7 @@ private fun NewEntryContent(
                 )
 
                 Link(
-                    title = "Categoria",
+                    title = stringResource(Res.string.category),
                     iconRightVisibility = true,
                     result = selectedCategory?.name ?: "",
                     color = MaterialTheme.colorScheme.onSecondary,
@@ -225,7 +236,7 @@ private fun NewEntryContent(
                     .padding(horizontal = 8.dp, vertical = 8.dp),
         ) {
             PrimaryButton(
-                title = if (isSaving) "Salvando..." else "Adicionar",
+                title = if (isSaving) stringResource(Res.string.saving) else stringResource(Res.string.add),
                 onClick = {
                     onSaveClicked(
                         NewEntryFormState(

@@ -35,6 +35,10 @@ import com.minhagrana.ui.components.Error
 import com.minhagrana.ui.components.MonthChanger
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.ProgressBar
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.month_balance
+import minhagrana.composeapp.generated.resources.no_months_found
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -138,12 +142,12 @@ private fun AnnualBalanceContent(
                             .fillMaxSize(),
                 ) {
                     if (targetYear.months.isEmpty()) {
-                        Empty(message = "Nenhum mês encontrado")
+                        Empty(message = stringResource(Res.string.no_months_found))
                     } else {
                         targetYear.months.forEach { month ->
                             BalanceCard(
                                 title = month.name,
-                                subtitle = "saldo do mês",
+                                subtitle = stringResource(Res.string.month_balance),
                                 balanceValue = month.balance,
                                 onClick = { onMonthSelected(month.uuid, targetYear.id.toLong()) },
                             )

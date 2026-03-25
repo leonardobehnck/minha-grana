@@ -32,8 +32,14 @@ import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.create_account
+import minhagrana.composeapp.generated.resources.enter_your_name
+import minhagrana.composeapp.generated.resources.logo_content_description
 import minhagrana.composeapp.generated.resources.logo_small
+import minhagrana.composeapp.generated.resources.name
+import minhagrana.composeapp.generated.resources.welcome
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -102,7 +108,7 @@ private fun WelcomeContent(
                         .height(90.dp)
                         .padding(horizontal = 16.dp),
                 painter = painterResource(Res.drawable.logo_small),
-                contentDescription = "Logo MinhaGrana",
+                contentDescription = stringResource(Res.string.logo_content_description),
                 contentScale = ContentScale.Fit,
             )
         }
@@ -114,13 +120,13 @@ private fun WelcomeContent(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = "Boas-vindas!",
+                text = stringResource(Res.string.welcome),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = "Informe o seu nome",
+                text = stringResource(Res.string.enter_your_name),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -132,7 +138,7 @@ private fun WelcomeContent(
                 )
             }
             InputText(
-                title = "Nome",
+                title = stringResource(Res.string.name),
                 textFieldValue = name,
                 onValueChange = onNameChange,
                 keyboardOptions =
@@ -147,7 +153,7 @@ private fun WelcomeContent(
         PrimaryButton(
             modifier = Modifier.padding(bottom = 16.dp),
             enabled = name.text.isNotBlank(),
-            title = "Criar conta",
+            title = stringResource(Res.string.create_account),
             onClick = { onCreateAccount(name.text) },
         )
     }

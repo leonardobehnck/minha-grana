@@ -34,6 +34,9 @@ import com.minhagrana.ui.components.PieChart
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.processMonthDataByExpense
 import com.minhagrana.util.currentMonthNumber
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.month_report
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -107,7 +110,7 @@ private fun HomeContent(
                     modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = "relatório do mês",
+                    text = stringResource(Res.string.month_report),
                 )
                 Box(
                     modifier =

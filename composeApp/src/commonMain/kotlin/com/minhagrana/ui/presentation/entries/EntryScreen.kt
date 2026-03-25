@@ -33,6 +33,15 @@ import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.parseBRLInputToDouble
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.cancel
+import minhagrana.composeapp.generated.resources.category
+import minhagrana.composeapp.generated.resources.delete_entry_message
+import minhagrana.composeapp.generated.resources.delete_entry_title
+import minhagrana.composeapp.generated.resources.edit_entry
+import minhagrana.composeapp.generated.resources.save
+import minhagrana.composeapp.generated.resources.yes
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -120,7 +129,7 @@ private fun EntryContent(
                     .background(MaterialTheme.colorScheme.background),
         ) {
             Header1(
-                title = "Editar lançamento",
+                title = stringResource(Res.string.edit_entry),
             )
             Column(
                 modifier =
@@ -145,7 +154,7 @@ private fun EntryContent(
                         onDateSelected = { entryDate = it },
                     )
                     Link(
-                        title = "Categoria",
+                        title = stringResource(Res.string.category),
                         iconRightVisibility = true,
                         result = entryCategory,
                         color = MaterialTheme.colorScheme.onSecondary,
@@ -154,10 +163,10 @@ private fun EntryContent(
                 }
             }
             Dialog(
-                title = "Deletar este lançamento?",
-                subtitle = "Tem certeza que deseja excluir?",
-                actionButtonText = "Sim",
-                dismissButtonText = "Cancelar",
+                title = stringResource(Res.string.delete_entry_title),
+                subtitle = stringResource(Res.string.delete_entry_message),
+                actionButtonText = stringResource(Res.string.yes),
+                dismissButtonText = stringResource(Res.string.cancel),
                 onConfirmSelected = {
                     showBottomSheetDelete.value = false
                     onDeleteEntry()
@@ -178,7 +187,7 @@ private fun EntryContent(
             }
         }
         PrimaryButton(
-            title = "Salvar",
+            title = stringResource(Res.string.save),
             onClick = {
                 val updatedEntry =
                     entry.copy(

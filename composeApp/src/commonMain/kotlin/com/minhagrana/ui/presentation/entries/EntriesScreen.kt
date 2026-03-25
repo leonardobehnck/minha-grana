@@ -42,6 +42,11 @@ import com.minhagrana.ui.components.Header1
 import com.minhagrana.ui.components.MonthChanger
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.ProgressBar
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.my_balance
+import minhagrana.composeapp.generated.resources.no_entries_this_month
+import minhagrana.composeapp.generated.resources.view_annual_balance
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -115,8 +120,8 @@ private fun EntriesContent(
                     .padding(padding),
         ) {
             Header1(
-                title = "Meu balanço",
-                actionText = "Ver balanço anual >",
+                title = stringResource(Res.string.my_balance),
+                actionText = stringResource(Res.string.view_annual_balance),
                 onClick = { onEntriesByYearSelected() },
             )
             MonthChanger(
@@ -150,7 +155,7 @@ private fun EntriesContent(
                             .verticalScroll(rememberScrollState()),
                 ) {
                     if (targetMonth.entries.isEmpty()) {
-                        Empty(message = "Nenhum lançamento neste mês")
+                        Empty(message = stringResource(Res.string.no_entries_this_month))
                     } else {
                         targetMonth.entries.forEachIndexed { index, entry ->
                             AnimatedVisibility(

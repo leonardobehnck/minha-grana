@@ -36,6 +36,17 @@ import com.minhagrana.ui.components.InputText
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.noRippleClickable
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.cancel
+import minhagrana.composeapp.generated.resources.delete
+import minhagrana.composeapp.generated.resources.delete_account
+import minhagrana.composeapp.generated.resources.delete_account_message
+import minhagrana.composeapp.generated.resources.delete_account_title
+import minhagrana.composeapp.generated.resources.delete_account_warning
+import minhagrana.composeapp.generated.resources.edit_account
+import minhagrana.composeapp.generated.resources.name
+import minhagrana.composeapp.generated.resources.save
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -122,9 +133,9 @@ private fun ProfileContent(
                         .background(MaterialTheme.colorScheme.surface)
                         .verticalScroll(rememberScrollState()),
             ) {
-                Header1(title = "Editar conta")
+                Header1(title = stringResource(Res.string.edit_account))
                 InputText(
-                    title = "Nome",
+                    title = stringResource(Res.string.name),
                     textFieldValue = name,
                     onValueChange = { name = it },
                     keyboardOptions =
@@ -140,7 +151,7 @@ private fun ProfileContent(
                             .align(Alignment.End)
                             .padding(16.dp)
                             .noRippleClickable(onClick = { showDeleteAccountDialog = true }),
-                    text = "Excluir conta",
+                    text = stringResource(Res.string.delete_account),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.labelMedium,
                 )
@@ -148,7 +159,7 @@ private fun ProfileContent(
 
             PrimaryButton(
                 modifier = Modifier.padding(top = 56.dp),
-                title = "Salvar",
+                title = stringResource(Res.string.save),
                 enabled = name.text.isNotEmpty(),
                 onClick = {
                     onUpdateName(name.text)
@@ -157,11 +168,11 @@ private fun ProfileContent(
             )
 
             Dialog(
-                title = "Deletar conta",
-                subtitle = "Tem certeza que deseja excluir sua conta?",
-                description = "Todos seus dados serão perdidos.",
-                actionButtonText = "Excluir",
-                dismissButtonText = "Cancelar",
+                title = stringResource(Res.string.delete_account_title),
+                subtitle = stringResource(Res.string.delete_account_message),
+                description = stringResource(Res.string.delete_account_warning),
+                actionButtonText = stringResource(Res.string.delete),
+                dismissButtonText = stringResource(Res.string.cancel),
                 onConfirmSelected = {
                     showDeleteAccountDialog = false
                     onConfirmDeleteAccount()
