@@ -6,8 +6,21 @@ import androidx.compose.ui.graphics.Color
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
-import com.minhagrana.util.currentMonthNumber
 import com.minhagrana.util.getCurrentDateString
+import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.month_april
+import minhagrana.composeapp.generated.resources.month_august
+import minhagrana.composeapp.generated.resources.month_december
+import minhagrana.composeapp.generated.resources.month_february
+import minhagrana.composeapp.generated.resources.month_january
+import minhagrana.composeapp.generated.resources.month_july
+import minhagrana.composeapp.generated.resources.month_june
+import minhagrana.composeapp.generated.resources.month_march
+import minhagrana.composeapp.generated.resources.month_may
+import minhagrana.composeapp.generated.resources.month_november
+import minhagrana.composeapp.generated.resources.month_october
+import minhagrana.composeapp.generated.resources.month_september
+import org.jetbrains.compose.resources.stringResource
 
 fun parseBRLInputToDouble(text: String): Double {
     val digits = text.filter { it.isDigit() }
@@ -48,25 +61,23 @@ fun balanceColor(value: Double): Color =
         else -> MaterialTheme.colorScheme.primary
     }
 
-fun monthNamePtBr(month: Int): String =
-    when (month) {
-        1 -> "Janeiro"
-        2 -> "Fevereiro"
-        3 -> "Março"
-        4 -> "Abril"
-        5 -> "Maio"
-        6 -> "Junho"
-        7 -> "Julho"
-        8 -> "Agosto"
-        9 -> "Setembro"
-        10 -> "Outubro"
-        11 -> "Novembro"
-        12 -> "Dezembro"
-        else -> throw IllegalArgumentException("Invalid month number: $month")
+@Composable
+fun monthDisplayName(monthNumber: String): String =
+    when (monthNumber.toIntOrNull()) {
+        1 -> stringResource(Res.string.month_january)
+        2 -> stringResource(Res.string.month_february)
+        3 -> stringResource(Res.string.month_march)
+        4 -> stringResource(Res.string.month_april)
+        5 -> stringResource(Res.string.month_may)
+        6 -> stringResource(Res.string.month_june)
+        7 -> stringResource(Res.string.month_july)
+        8 -> stringResource(Res.string.month_august)
+        9 -> stringResource(Res.string.month_september)
+        10 -> stringResource(Res.string.month_october)
+        11 -> stringResource(Res.string.month_november)
+        12 -> stringResource(Res.string.month_december)
+        else -> monthNumber
     }
-
-val currentMonth: String
-    get() = monthNamePtBr(currentMonthNumber())
 
 fun getCurrentDate(): String = getCurrentDateString()
 

@@ -55,6 +55,8 @@
     <string name="select_category">Selecionar categoria</string>
 
     <!-- Balance -->
+    <string name="balance_hidden">R$ *****</string>
+    <string name="hide_balance">Esconder saldo</string>
     <string name="incomes_label">Entradas</string>
     <string name="expenses_label">Saídas</string>
 

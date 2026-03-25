@@ -55,6 +55,8 @@
     <string name="select_category">Select category</string>
 
     <!-- Balance -->
+    <string name="balance_hidden">$ *****</string>
+    <string name="hide_balance">Hide balance</string>
     <string name="incomes_label">Income</string>
     <string name="expenses_label">Expenses</string>
 
