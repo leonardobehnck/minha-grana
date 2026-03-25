@@ -1,6 +1,6 @@
 package com.minhagrana.entities
 
-import com.minhagrana.ui.currentMonth
+import com.minhagrana.util.getCurrentDateString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,7 +21,7 @@ data class Entry(
     @SerialName("value")
     val value: Double = 18850.0,
     @SerialName("date")
-    val date: String = currentMonth,
+    val date: String = getCurrentDateString(),
     @SerialName("type")
     val type: EntryType = EntryType.EXPENSE,
     @SerialName("category")
