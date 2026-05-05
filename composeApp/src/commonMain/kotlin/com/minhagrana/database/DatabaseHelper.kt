@@ -8,7 +8,6 @@ import com.minhagrana.entities.EntryType
 import com.minhagrana.entities.Month
 import com.minhagrana.entities.User
 import com.minhagrana.entities.Year
-import com.minhagrana.entities.getDefaultColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +25,7 @@ class DatabaseHelper(
             queries.insertUser(
                 uuid = user.uuid,
                 name = user.name,
+                currency_code = user.currencyCode,
             )
             queries.lastInsertRowId().executeAsOne()
         }
@@ -44,7 +44,18 @@ class DatabaseHelper(
     suspend fun updateUser(user: User) {
         queries.updateUser(
             name = user.name,
+            currency_code = user.currencyCode,
             uuid = user.uuid,
+        )
+    }
+
+    suspend fun updateUserCurrency(
+        userUuid: String,
+        currencyCode: String,
+    ) {
+        queries.updateUserCurrency(
+            currency_code = currencyCode,
+            uuid = userUuid,
         )
     }
 
@@ -67,6 +78,7 @@ class DatabaseHelper(
             queries.insertCategory(
                 name = category.name,
                 color_hex = colorToHex(category.color),
+                string_key = category.stringKey,
             )
             queries.lastInsertRowId().executeAsOne()
         }
@@ -241,13 +253,15 @@ class DatabaseHelper(
         User(
             uuid = uuid,
             name = name,
+            currencyCode = currency_code,
         )
 
     private fun CategoryEntity.toCategory(): Category =
         Category(
             id = id.toInt(),
             name = name,
-            color = getDefaultColor(name),
+            color = hexToColor(color_hex),
+            stringKey = string_key,
         )
 
     private fun YearEntity.toYear(months: List<Month>): Year =
@@ -292,7 +306,8 @@ class DatabaseHelper(
                 Category(
                     id = category_id_.toInt(),
                     name = category_name,
-                    color = getDefaultColor(category_name),
+                    color = hexToColor(category_color_hex),
+                    stringKey = category_string_key,
                 ),
         )
 
@@ -310,5 +325,19 @@ class DatabaseHelper(
         return "#${red.toString(
             16,
         ).padStart(2, '0').uppercase()}${green.toString(16).padStart(2, '0').uppercase()}${blue.toString(16).padStart(2, '0').uppercase()}"
+    }
+
+    private fun hexToColor(hex: String): androidx.compose.ui.graphics.Color {
+        val cleaned = hex.removePrefix("#")
+        if (cleaned.length != 6 && cleaned.length != 8) return com.minhagrana.ui.theme.gray
+        return runCatching {
+            val rgb = cleaned.takeLast(6)
+            val alpha = if (cleaned.length == 8) cleaned.substring(0, 2).toInt(16) else 255
+            val red = rgb.substring(0, 2).toInt(16)
+            val green = rgb.substring(2, 4).toInt(16)
+            val blue = rgb.substring(4, 6).toInt(16)
+            androidx.compose.ui.graphics
+                .Color(red = red, green = green, blue = blue, alpha = alpha)
+        }.getOrDefault(com.minhagrana.ui.theme.gray)
     }
 }
