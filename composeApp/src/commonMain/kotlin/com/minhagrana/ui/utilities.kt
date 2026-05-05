@@ -22,37 +22,6 @@ import minhagrana.composeapp.generated.resources.month_october
 import minhagrana.composeapp.generated.resources.month_september
 import org.jetbrains.compose.resources.stringResource
 
-fun parseBRLInputToDouble(text: String): Double {
-    val digits = text.filter { it.isDigit() }
-    if (digits.isEmpty()) return 0.0
-    return (digits.toLongOrNull() ?: 0L) / 100.0
-}
-
-fun formatDoubleToBRL(value: Double): String {
-    val rounded = kotlin.math.round(value * 100) / 100
-    val isNegative = rounded < 0
-    val absValue = kotlin.math.abs(rounded)
-
-    val intPart = absValue.toLong()
-    val decPart = ((absValue - intPart) * 100 + 0.5).toLong()
-
-    val intStr =
-        if (intPart == 0L) {
-            "0"
-        } else {
-            intPart
-                .toString()
-                .reversed()
-                .chunked(3)
-                .joinToString(".")
-                .reversed()
-        }
-    val decStr = decPart.toString().padStart(2, '0')
-
-    val sign = if (isNegative) "-" else ""
-    return "${sign}R$ $intStr,$decStr"
-}
-
 @Composable
 fun balanceColor(value: Double): Color =
     when {
