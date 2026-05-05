@@ -2,14 +2,16 @@
 CREATE TABLE IF NOT EXISTS UserEntity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     uuid TEXT NOT NULL UNIQUE,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    currency_code TEXT NOT NULL DEFAULT 'BRL'
 );
 
 -- Category table
 CREATE TABLE IF NOT EXISTS CategoryEntity (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    color_hex TEXT NOT NULL
+    color_hex TEXT NOT NULL,
+    string_key TEXT
 );
 
 -- Year table
@@ -49,8 +51,8 @@ CREATE TABLE IF NOT EXISTS EntryEntity (
 
 -- User queries
 insertUser:
-INSERT INTO UserEntity(uuid, name)
-VALUES (?, ?);
+INSERT INTO UserEntity(uuid, name, currency_code)
+VALUES (?, ?, ?);
 
 selectAllUsers:
 SELECT * FROM UserEntity;
@@ -62,7 +64,10 @@ selectUserByUuid:
 SELECT * FROM UserEntity WHERE uuid = ?;
 
 updateUser:
-UPDATE UserEntity SET name = ? WHERE uuid = ?;
+UPDATE UserEntity SET name = ?, currency_code = ? WHERE uuid = ?;
+
+updateUserCurrency:
+UPDATE UserEntity SET currency_code = ? WHERE uuid = ?;
 
 deleteUserById:
 DELETE FROM UserEntity WHERE id = ?;
@@ -72,8 +77,8 @@ DELETE FROM UserEntity;
 
 -- Category queries
 insertCategory:
-INSERT INTO CategoryEntity(name, color_hex)
-VALUES (?, ?);
+INSERT INTO CategoryEntity(name, color_hex, string_key)
+VALUES (?, ?, ?);
 
 selectAllCategories:
 SELECT * FROM CategoryEntity;
@@ -85,7 +90,7 @@ selectCategoryByName:
 SELECT * FROM CategoryEntity WHERE name = ?;
 
 updateCategory:
-UPDATE CategoryEntity SET name = ?, color_hex = ? WHERE id = ?;
+UPDATE CategoryEntity SET name = ?, color_hex = ?, string_key = ? WHERE id = ?;
 
 deleteCategoryById:
 DELETE FROM CategoryEntity WHERE id = ?;
@@ -177,7 +182,8 @@ SELECT
     EntryEntity.category_id,
     CategoryEntity.id AS category_id_,
     CategoryEntity.name AS category_name,
-    CategoryEntity.color_hex AS category_color_hex
+    CategoryEntity.color_hex AS category_color_hex,
+    CategoryEntity.string_key AS category_string_key
 FROM EntryEntity
 JOIN CategoryEntity ON EntryEntity.category_id = CategoryEntity.id
 WHERE EntryEntity.month_id = ?;

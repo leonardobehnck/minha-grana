@@ -1,0 +1,9 @@
+ALTER TABLE UserEntity ADD COLUMN currency_code TEXT NOT NULL DEFAULT 'BRL';
+ALTER TABLE CategoryEntity ADD COLUMN string_key TEXT;
+
+UPDATE CategoryEntity SET string_key = 'category_salary' WHERE name = 'Salário';
+UPDATE CategoryEntity SET string_key = 'category_transport' WHERE name = 'Transporte';
+UPDATE CategoryEntity SET string_key = 'category_health' WHERE name = 'Saúde';
+UPDATE CategoryEntity SET string_key = 'category_children' WHERE name = 'Filhos';
+UPDATE CategoryEntity SET string_key = 'category_pet' WHERE name IN ('Pet', 'Pets');
+UPDATE CategoryEntity SET string_key = 'category_general' WHERE name = 'Geral';
