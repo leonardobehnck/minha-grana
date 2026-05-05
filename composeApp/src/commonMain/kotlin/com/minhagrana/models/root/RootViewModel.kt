@@ -2,6 +2,7 @@ package com.minhagrana.models.root
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.minhagrana.currency.CurrencyRepository
 import com.minhagrana.models.repositories.UserRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class RootViewModel(
     private val userRepository: UserRepository,
+    private val currencyRepository: CurrencyRepository,
 ) : ViewModel() {
     private val interactions = Channel<RootInteraction>(Channel.UNLIMITED)
     private val states = MutableStateFlow<RootViewState>(RootViewState.Idle)
@@ -38,6 +40,9 @@ class RootViewModel(
         states.value = RootViewState.Loading
         viewModelScope.launch {
             val hasUser = userRepository.getAllUsersFlow().first().isNotEmpty()
+            if (hasUser) {
+                currencyRepository.refreshFromActiveUser()
+            }
             states.value = if (hasUser) RootViewState.HasUser else RootViewState.NoUser
         }
     }

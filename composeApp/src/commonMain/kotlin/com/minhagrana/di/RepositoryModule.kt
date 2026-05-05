@@ -1,5 +1,6 @@
 package com.minhagrana.di
 
+import com.minhagrana.currency.CurrencyRepository
 import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.models.repositories.CategoryRepository
 import com.minhagrana.models.repositories.EntryRepository
@@ -23,4 +24,5 @@ val repositoryModule =
         single<EntryRepository> { EntryRepositoryImpl(get(), get()) }
         single { DatabaseInitializer(get(), get(), get(), get(), get()) }
         single { MonthResolver(get(), get()) }
+        single { CurrencyRepository(get()) }
     }
