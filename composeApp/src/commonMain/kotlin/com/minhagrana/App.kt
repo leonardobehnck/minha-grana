@@ -38,10 +38,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.minhagrana.currency.ProvideCurrency
 import com.minhagrana.models.root.RootInteraction
 import com.minhagrana.models.root.RootViewModel
 import com.minhagrana.models.root.RootViewState
 import com.minhagrana.ui.components.ProgressBar
+import com.minhagrana.ui.presentation.createcategory.CreateCategoryScreen
 import com.minhagrana.ui.presentation.entries.AnnualBalanceScreen
 import com.minhagrana.ui.presentation.entries.EntriesScreen
 import com.minhagrana.ui.presentation.entries.EntryScreen
@@ -64,14 +66,16 @@ import org.koin.compose.koinInject
 @Composable
 fun App() {
     AppTheme {
-        Surface(
-            modifier =
-                Modifier
-                    .imePadding()
-                    .background(MaterialTheme.colorScheme.background),
-        ) {
-            val navController = rememberNavController()
-            BottomNavigationBar(navController)
+        ProvideCurrency {
+            Surface(
+                modifier =
+                    Modifier
+                        .imePadding()
+                        .background(MaterialTheme.colorScheme.background),
+            ) {
+                val navController = rememberNavController()
+                BottomNavigationBar(navController)
+            }
         }
     }
 }
@@ -190,6 +194,7 @@ fun BottomNavigationBar(rootNavController: NavHostController) {
                 homeNavGraph(navController = navController)
                 newEntryNavGraph(navController = navController)
                 entriesNavGraph(navController = navController)
+                createCategoryNavGraph(navController = navController)
             }
         }
     }
@@ -313,6 +318,23 @@ fun NavGraphBuilder.newEntryNavGraph(navController: NavHostController) {
                         popUpTo(EntriesRoute.Entries()) { inclusive = true }
                     }
                 },
+                onCreateCategory = {
+                    navController.navigate(CreateCategoryRoute.Create)
+                },
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.createCategoryNavGraph(navController: NavHostController) {
+    navigation<CreateCategoryRoute.Root>(
+        startDestination = CreateCategoryRoute.Create,
+    ) {
+        composable<CreateCategoryRoute.Create> {
+            CreateCategoryScreen(
+                onCategoryCreated = {
+                    navController.navigateUp()
+                },
             )
         }
     }
@@ -357,6 +379,9 @@ fun NavGraphBuilder.entriesNavGraph(navController: NavHostController) {
                     navController.navigate(EntriesRoute.Entries()) {
                         popUpTo(EntriesRoute.Entries()) { inclusive = true }
                     }
+                },
+                onCreateCategory = {
+                    navController.navigate(CreateCategoryRoute.Create)
                 },
             )
         }
@@ -427,6 +452,15 @@ sealed class NewEntryRoute {
 
     @Serializable
     data object NewEntry : NewEntryRoute()
+}
+
+@Serializable
+sealed class CreateCategoryRoute {
+    @Serializable
+    data object Root : CreateCategoryRoute()
+
+    @Serializable
+    data object Create : CreateCategoryRoute()
 }
 
 @Serializable
