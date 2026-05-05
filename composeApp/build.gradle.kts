@@ -119,6 +119,7 @@ sqldelight {
     databases {
         create("MinhaGranaDatabase") {
             packageName.set("com.minhagrana.database")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
         }
     }
 }
