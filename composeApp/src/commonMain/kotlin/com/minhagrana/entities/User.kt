@@ -15,4 +15,6 @@ data class User(
     val uuid: String = "",
     @SerialName("name")
     val name: String = "",
+    @SerialName("currency_code")
+    val currencyCode: String = "BRL",
 )
