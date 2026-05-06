@@ -2,6 +2,7 @@ package com.minhagrana.models.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.minhagrana.currency.CurrencyRepository
 import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.entities.User
 import com.minhagrana.models.repositories.UserRepository
@@ -16,6 +17,7 @@ import kotlin.uuid.Uuid
 class OnboardingViewModel(
     private val userRepository: UserRepository,
     private val databaseInitializer: DatabaseInitializer,
+    private val currencyRepository: CurrencyRepository,
 ) : ViewModel() {
     private val interactions = Channel<OnboardingInteraction>(Channel.UNLIMITED)
     private val states = MutableStateFlow<OnboardingViewState>(OnboardingViewState.Idle)
@@ -43,12 +45,15 @@ class OnboardingViewModel(
         states.value = OnboardingViewState.Loading
         viewModelScope.launch {
             try {
+                val resolvedCurrency = currencyRepository.resolveFromDevice()
                 val user =
                     User(
                         uuid = Uuid.random().toString(),
                         name = name.trim().ifEmpty { "Usuário" },
+                        currencyCode = resolvedCurrency.code,
                     )
                 userRepository.insertUser(user)
+                currencyRepository.setLocal(resolvedCurrency)
                 databaseInitializer.onUserCreated(userUuid = user.uuid)
                 states.value = OnboardingViewState.Success(user)
             } catch (e: Exception) {

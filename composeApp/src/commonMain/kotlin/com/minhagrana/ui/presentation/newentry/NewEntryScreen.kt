@@ -14,7 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,12 +33,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.minhagrana.currency.CurrencyVisualTransformation
+import com.minhagrana.currency.LocalCurrency
+import com.minhagrana.currency.format
 import com.minhagrana.entities.NullableCategorySaver
 import com.minhagrana.models.newentry.NewEntryFormState
 import com.minhagrana.models.newentry.NewEntryInteraction
 import com.minhagrana.models.newentry.NewEntryViewModel
 import com.minhagrana.models.newentry.NewEntryViewState
-import com.minhagrana.ui.components.BRLVisualTransformation
 import com.minhagrana.ui.components.BasicInputText
 import com.minhagrana.ui.components.DatePicker
 import com.minhagrana.ui.components.DialogCategory
@@ -45,12 +50,13 @@ import com.minhagrana.ui.components.Link
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
 import com.minhagrana.ui.components.SelectorEntry
+import com.minhagrana.ui.components.localizedName
 import com.minhagrana.ui.getCurrentDate
+import com.minhagrana.ui.theme.Elevation
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.add
 import minhagrana.composeapp.generated.resources.add_entry
 import minhagrana.composeapp.generated.resources.category
-import minhagrana.composeapp.generated.resources.currency_placeholder
 import minhagrana.composeapp.generated.resources.expense
 import minhagrana.composeapp.generated.resources.income
 import minhagrana.composeapp.generated.resources.name
@@ -62,6 +68,7 @@ import org.koin.compose.koinInject
 @Composable
 fun NewEntryScreen(
     onEntrySaved: () -> Unit,
+    onCreateCategory: () -> Unit = {},
     viewModel: NewEntryViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
@@ -76,6 +83,7 @@ fun NewEntryScreen(
                 isSaving = state is NewEntryViewState.Loading,
                 errorMessage = (state as? NewEntryViewState.Error)?.message,
                 onSaveClicked = { form -> viewModel.interact(NewEntryInteraction.OnSaveClicked(form)) },
+                onCreateCategory = onCreateCategory,
             )
         }
 
@@ -100,6 +108,7 @@ private fun NewEntryContent(
     isSaving: Boolean,
     errorMessage: String?,
     onSaveClicked: (NewEntryFormState) -> Unit,
+    onCreateCategory: () -> Unit,
 ) {
     val openCategoryDialog = remember { mutableStateOf(false) }
 
@@ -128,93 +137,130 @@ private fun NewEntryContent(
             Header1(
                 title = stringResource(Res.string.add_entry),
             )
-            Column(
+            Card(
+                shape = MaterialTheme.shapes.large,
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                elevation =
+                    CardDefaults.cardElevation(
+                        defaultElevation = Elevation.raised,
+                    ),
                 modifier =
                     Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                if (errorMessage != null) {
-                    Text(
-                        text = errorMessage,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-
-                BasicInputText(
-                    hint = stringResource(Res.string.name),
-                    value = entryName,
-                    onValueChange = { entryName = it },
-                    keyboardOptions =
-                        KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                        ),
-                )
-
-                Crossfade(
-                    targetState = !selectedEntryPositive,
-                    animationSpec =
-                        TweenSpec(
-                            durationMillis = 700,
-                            easing = FastOutSlowInEasing,
-                        ),
-                    label = "",
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
-                    AnimatedVisibility(
-                        visible = selectedEntryPositive || selectedEntryNegative,
+                    if (errorMessage != null) {
+                        Text(
+                            text = errorMessage,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    BasicInputText(
+                        hint = stringResource(Res.string.name),
+                        value = entryName,
+                        onValueChange = { entryName = it },
+                        keyboardOptions =
+                            KeyboardOptions(
+                                imeAction = ImeAction.Next,
+                            ),
+                    )
+
+                    Crossfade(
+                        targetState = !selectedEntryPositive,
+                        animationSpec =
+                            TweenSpec(
+                                durationMillis = 700,
+                                easing = FastOutSlowInEasing,
+                            ),
+                        label = "",
                     ) {
-                        Row {
-                            SelectorEntry(
-                                title = stringResource(Res.string.income),
-                                selected = selectedEntryPositive,
-                                textColor = MaterialTheme.colorScheme.primary,
-                                onClick = {
-                                    selectedEntryPositive = true
-                                    selectedEntryNegative = false
-                                },
+                        AnimatedVisibility(
+                            visible = selectedEntryPositive || selectedEntryNegative,
+                        ) {
+                            Surface(
+                                shape = MaterialTheme.shapes.large,
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(4.dp),
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                ) {
+                                    SelectorEntry(
+                                        title = stringResource(Res.string.income),
+                                        selected = selectedEntryPositive,
+                                        textColor = MaterialTheme.colorScheme.primary,
+                                        onClick = {
+                                            selectedEntryPositive = true
+                                            selectedEntryNegative = false
+                                        },
+                                    )
+                                    SelectorEntry(
+                                        title = stringResource(Res.string.expense),
+                                        selected = selectedEntryNegative,
+                                        textColor = MaterialTheme.colorScheme.error,
+                                        onClick = {
+                                            selectedEntryNegative = true
+                                            selectedEntryPositive = false
+                                        },
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    val currency = LocalCurrency.current
+                    InputText(
+                        title = stringResource(Res.string.value),
+                        maxLength = 11,
+                        textFieldValue = value,
+                        onValueChange = {
+                            value = it.copy(selection = TextRange(it.text.length))
+                        },
+                        visualTransformation = CurrencyVisualTransformation(currency),
+                        keyboardOptions =
+                            KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done,
+                            ),
+                        hint = format(0.0, currency),
+                    )
+
+                    Surface(
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            DatePicker(
+                                selectedDate = selectedDate,
+                                onDateSelected = { selectedDate = it },
                             )
-                            SelectorEntry(
-                                title = stringResource(Res.string.expense),
-                                selected = selectedEntryNegative,
-                                textColor = MaterialTheme.colorScheme.error,
-                                onClick = {
-                                    selectedEntryNegative = true
-                                    selectedEntryPositive = false
-                                },
+
+                            Link(
+                                title = stringResource(Res.string.category),
+                                iconRightVisibility = true,
+                                result = selectedCategory?.localizedName().orEmpty(),
+                                color = MaterialTheme.colorScheme.onSecondary,
+                                onClick = { openCategoryDialog.value = true },
                             )
                         }
                     }
                 }
-
-                InputText(
-                    title = stringResource(Res.string.value),
-                    maxLength = 11,
-                    textFieldValue = value,
-                    onValueChange = {
-                        value = it.copy(selection = TextRange(it.text.length))
-                    },
-                    visualTransformation = BRLVisualTransformation(),
-                    keyboardOptions =
-                        KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done,
-                        ),
-                    hint = stringResource(Res.string.currency_placeholder),
-                )
-
-                DatePicker(
-                    selectedDate = selectedDate,
-                    onDateSelected = { selectedDate = it },
-                )
-
-                Link(
-                    title = stringResource(Res.string.category),
-                    iconRightVisibility = true,
-                    result = selectedCategory?.name ?: "",
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    onClick = { openCategoryDialog.value = true },
-                )
             }
 
             when {
@@ -225,6 +271,10 @@ private fun NewEntryContent(
                             openCategoryDialog.value = false
                         },
                         onDismissRequest = { openCategoryDialog.value = false },
+                        onCreateNewCategory = {
+                            openCategoryDialog.value = false
+                            onCreateCategory()
+                        },
                     )
             }
         }
