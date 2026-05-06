@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +34,9 @@ import com.minhagrana.ui.components.Header3
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.PieChart
 import com.minhagrana.ui.components.ProgressBar
+import com.minhagrana.ui.components.localizedName
 import com.minhagrana.ui.processMonthDataByExpense
+import com.minhagrana.ui.theme.Elevation
 import com.minhagrana.util.currentMonthNumber
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.month_report
@@ -96,18 +100,30 @@ private fun HomeContent(
             balanceValue = totalBalance,
         )
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         ) {
-            Column(
+            val expenseByCategory = processMonthDataByExpense(month)
+
+            Card(
+                shape = MaterialTheme.shapes.large,
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                elevation =
+                    CardDefaults.cardElevation(
+                        defaultElevation = Elevation.raised,
+                    ),
                 modifier =
                     Modifier
-                        .padding(top = 16.dp)
-                        .background(MaterialTheme.colorScheme.surface)
-                        .verticalScroll(rememberScrollState()),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                val expenseByCategory = processMonthDataByExpense(month)
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     text = stringResource(Res.string.month_report),
@@ -145,7 +161,7 @@ private fun HomeContent(
                             CircularIcon(color = category.color)
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
-                                text = "${category.name} - ${percentage.toInt()}%",
+                                text = "${category.localizedName()} - ${percentage.toInt()}%",
                             )
                         }
                     }
