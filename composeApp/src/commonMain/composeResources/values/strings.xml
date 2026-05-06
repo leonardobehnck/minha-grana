@@ -33,7 +33,6 @@
     <string name="income">Entrada</string>
     <string name="expense">Saída</string>
     <string name="value">Valor</string>
-    <string name="currency_placeholder">R$0,00</string>
     <string name="saving">Salvando...</string>
     <string name="add">Adicionar</string>
 
@@ -53,9 +52,25 @@
 
     <!-- Category Dialog -->
     <string name="select_category">Selecionar categoria</string>
+    <string name="add_new_category">+ Criar nova categoria</string>
+
+    <!-- Create Category -->
+    <string name="create_category">Nova categoria</string>
+    <string name="category_name_hint">Nome da categoria</string>
+    <string name="category_color_label">Cor</string>
+    <string name="error_category_empty">Informe um nome</string>
+    <string name="error_category_duplicate">Já existe uma categoria com esse nome</string>
+    <string name="error_category_no_color">Selecione uma cor</string>
+
+    <!-- Default Categories (used by stringKey resolution) -->
+    <string name="category_salary">Salário</string>
+    <string name="category_transport">Transporte</string>
+    <string name="category_health">Saúde</string>
+    <string name="category_children">Filhos</string>
+    <string name="category_pet">Pet</string>
+    <string name="category_general">Geral</string>
 
     <!-- Balance -->
-    <string name="balance_hidden">R$ *****</string>
     <string name="hide_balance">Esconder saldo</string>
     <string name="incomes_label">Entradas</string>
     <string name="expenses_label">Saídas</string>
