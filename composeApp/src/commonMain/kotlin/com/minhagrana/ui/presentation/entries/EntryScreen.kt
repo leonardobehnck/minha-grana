@@ -18,6 +18,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.minhagrana.currency.LocalCurrency
+import com.minhagrana.currency.parseDigitsToDouble
 import com.minhagrana.entities.CategorySaver
 import com.minhagrana.entities.Entry
 import com.minhagrana.models.entries.EntryInteraction
@@ -34,7 +36,7 @@ import com.minhagrana.ui.components.Link
 import com.minhagrana.ui.components.NoConnectivity
 import com.minhagrana.ui.components.PrimaryButton
 import com.minhagrana.ui.components.ProgressBar
-import com.minhagrana.ui.parseBRLInputToDouble
+import com.minhagrana.ui.components.localizedName
 import minhagrana.composeapp.generated.resources.Res
 import minhagrana.composeapp.generated.resources.cancel
 import minhagrana.composeapp.generated.resources.category
@@ -52,6 +54,7 @@ fun EntryScreen(
     navigateUp: () -> Unit,
     onSaveEntrySelected: () -> Unit,
     onEntryDeleted: () -> Unit,
+    onCreateCategory: () -> Unit = {},
     viewModel: EntryViewModel = koinInject(),
 ) {
     val state by viewModel.bind().collectAsState()
@@ -78,6 +81,7 @@ fun EntryScreen(
                     viewModel.interact(EntryInteraction.OnEntryDeleted)
                     onEntryDeleted()
                 },
+                onCreateCategory = onCreateCategory,
             )
         }
 
@@ -99,6 +103,7 @@ private fun EntryContent(
     navigateUp: () -> Unit,
     onSaveEntry: (Entry) -> Unit,
     onDeleteEntry: () -> Unit,
+    onCreateCategory: () -> Unit,
 ) {
     var category by rememberSaveable(stateSaver = CategorySaver) { mutableStateOf(entry.category) }
     var entryNameValue by remember { mutableStateOf(entry.name) }
@@ -110,7 +115,7 @@ private fun EntryContent(
                 .toString(),
         )
     }
-    var entryCategory by remember { mutableStateOf(entry.category.name) }
+    var entryCategory by remember { mutableStateOf(entry.category) }
     var entryDate by remember { mutableStateOf(entry.date) }
     var entryType by remember { mutableStateOf(entry.type) }
 
@@ -158,7 +163,7 @@ private fun EntryContent(
                     Link(
                         title = stringResource(Res.string.category),
                         iconRightVisibility = true,
-                        result = entryCategory,
+                        result = entryCategory.localizedName(),
                         color = MaterialTheme.colorScheme.onSecondary,
                         onClick = { showBottomSheetCategory.value = true },
                     )
@@ -182,19 +187,24 @@ private fun EntryContent(
                         onDismissRequest = { showBottomSheetCategory.value = false },
                         onItemSelected = {
                             category = it
-                            entryCategory = it.name
+                            entryCategory = it
                             showBottomSheetCategory.value = false
+                        },
+                        onCreateNewCategory = {
+                            showBottomSheetCategory.value = false
+                            onCreateCategory()
                         },
                     )
             }
         }
+        val currency = LocalCurrency.current
         PrimaryButton(
             title = stringResource(Res.string.save),
             onClick = {
                 val updatedEntry =
                     entry.copy(
                         name = entryNameValue,
-                        value = parseBRLInputToDouble(entryValue),
+                        value = parseDigitsToDouble(entryValue, currency),
                         date = entryDate,
                         type = entryType,
                         category = category,
