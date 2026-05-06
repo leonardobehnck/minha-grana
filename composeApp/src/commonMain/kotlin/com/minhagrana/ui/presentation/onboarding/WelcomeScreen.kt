@@ -4,11 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -98,63 +101,76 @@ private fun WelcomeContent(
         Column(
             modifier =
                 Modifier
-                    .padding(top = 175.dp)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
         ) {
-            Image(
+            Column(
+                modifier =
+                    Modifier
+                        .padding(top = 175.dp)
+                        .background(MaterialTheme.colorScheme.surface),
+            ) {
+                Image(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(horizontal = 16.dp),
+                    painter = painterResource(Res.drawable.logo_small),
+                    contentDescription = stringResource(Res.string.logo_content_description),
+                    contentScale = ContentScale.Fit,
+                )
+            }
+            Column(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .height(90.dp)
-                        .padding(horizontal = 16.dp),
-                painter = painterResource(Res.drawable.logo_small),
-                contentDescription = stringResource(Res.string.logo_content_description),
-                contentScale = ContentScale.Fit,
-            )
+                        .background(MaterialTheme.colorScheme.surface),
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    text = stringResource(Res.string.welcome),
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    text = stringResource(Res.string.enter_your_name),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
+                InputText(
+                    title = stringResource(Res.string.name),
+                    textFieldValue = name,
+                    onValueChange = onNameChange,
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done,
+                        ),
+                )
+                Spacer(modifier = Modifier.height(50.dp))
+            }
         }
-        Column(
+        Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface),
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = stringResource(Res.string.welcome),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+            PrimaryButton(
+                modifier = Modifier.padding(bottom = 16.dp),
+                enabled = name.text.isNotBlank(),
+                title = stringResource(Res.string.create_account),
+                onClick = { onCreateAccount(name.text) },
             )
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = stringResource(Res.string.enter_your_name),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (errorMessage != null) {
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-            InputText(
-                title = stringResource(Res.string.name),
-                textFieldValue = name,
-                onValueChange = onNameChange,
-                keyboardOptions =
-                    KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done,
-                    ),
-            )
-            Spacer(modifier = Modifier.height(50.dp))
         }
-        Spacer(modifier = Modifier.weight(1f))
-        PrimaryButton(
-            modifier = Modifier.padding(bottom = 16.dp),
-            enabled = name.text.isNotBlank(),
-            title = stringResource(Res.string.create_account),
-            onClick = { onCreateAccount(name.text) },
-        )
     }
 }
