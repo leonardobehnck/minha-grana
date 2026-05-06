@@ -1,6 +1,7 @@
 package com.minhagrana.di
 
 import com.minhagrana.models.annualbalance.AnnualBalanceViewModel
+import com.minhagrana.models.createcategory.CreateCategoryViewModel
 import com.minhagrana.models.entries.EntriesViewModel
 import com.minhagrana.models.entries.EntryViewModel
 import com.minhagrana.models.home.HomeViewModel
@@ -12,12 +13,13 @@ import org.koin.dsl.module
 
 val viewModelModule =
     module {
-        factory { RootViewModel(get()) }
+        factory { RootViewModel(get(), get()) }
         factory { HomeViewModel(get(), get()) }
         factory { AnnualBalanceViewModel(get(), get()) }
         factory { EntriesViewModel(get(), get(), get(), get()) }
         factory { EntryViewModel(get(), get(), get(), get()) }
-        factory { NewEntryViewModel(get(), get(), get()) }
-        factory { OnboardingViewModel(get(), get()) }
+        factory { NewEntryViewModel(get(), get(), get(), get()) }
+        factory { OnboardingViewModel(get(), get(), get()) }
         factory { ProfileViewModel(get()) }
+        factory { CreateCategoryViewModel(get()) }
     }

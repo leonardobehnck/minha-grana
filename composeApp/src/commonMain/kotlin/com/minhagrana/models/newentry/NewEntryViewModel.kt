@@ -2,12 +2,13 @@ package com.minhagrana.models.newentry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.minhagrana.currency.CurrencyRepository
+import com.minhagrana.currency.parseDigitsToDouble
 import com.minhagrana.database.DatabaseInitializer
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
 import com.minhagrana.models.repositories.EntryRepository
 import com.minhagrana.models.repositories.YearRepository
-import com.minhagrana.ui.parseBRLInputToDouble
 import com.minhagrana.ui.parseDateDDMMYYYY
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ class NewEntryViewModel(
     private val databaseInitializer: DatabaseInitializer,
     private val yearRepository: YearRepository,
     private val entryRepository: EntryRepository,
+    private val currencyRepository: CurrencyRepository,
 ) : ViewModel() {
     private val interactions = Channel<NewEntryInteraction>(Channel.UNLIMITED)
     private val states = MutableStateFlow<NewEntryViewState>(NewEntryViewState.Idle)
@@ -55,7 +57,7 @@ class NewEntryViewModel(
         }
 
         val (_, monthNumber, yearNumber) = parsed
-        val entryValue = parseBRLInputToDouble(form.valueText)
+        val entryValue = parseDigitsToDouble(form.valueText, currencyRepository.observe().value)
 
         val entry =
             Entry(
