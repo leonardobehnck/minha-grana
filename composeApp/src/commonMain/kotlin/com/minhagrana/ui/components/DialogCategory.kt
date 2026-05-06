@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.minhagrana.entities.Categories
 import com.minhagrana.entities.Category
 import com.minhagrana.models.repositories.CategoryRepository
+import com.minhagrana.ui.theme.Elevation
 import minhagrana.composeapp.generated.resources.Res
+import minhagrana.composeapp.generated.resources.add_new_category
 import minhagrana.composeapp.generated.resources.select_category
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -32,6 +34,7 @@ import org.koin.compose.koinInject
 fun DialogCategory(
     onItemSelected: (Category) -> Unit,
     onDismissRequest: () -> Unit,
+    onCreateNewCategory: (() -> Unit)? = null,
     categoryRepository: CategoryRepository = koinInject(),
 ) {
     val categoriesFlow by categoryRepository.getAllCategoriesFlow().collectAsState(initial = emptyList())
@@ -45,7 +48,7 @@ fun DialogCategory(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .shadow(8.dp)
+                    .shadow(Elevation.modal)
                     .clip(MaterialTheme.shapes.large)
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(16.dp),
@@ -82,8 +85,21 @@ fun DialogCategory(
                             )
                             Text(
                                 modifier = Modifier.padding(start = 8.dp),
-                                text = categories[index].name,
+                                text = categories[index].localizedName(),
                                 color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
+                    }
+                    if (onCreateNewCategory != null) {
+                        items(1) {
+                            Text(
+                                modifier =
+                                    Modifier
+                                        .padding(top = 12.dp, start = 8.dp, end = 8.dp)
+                                        .noRippleClickable { onCreateNewCategory() },
+                                text = stringResource(Res.string.add_new_category),
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.labelLarge,
                             )
                         }
                     }

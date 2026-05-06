@@ -14,6 +14,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.minhagrana.currency.CurrencyVisualTransformation
+import com.minhagrana.currency.LocalCurrency
 import com.minhagrana.entities.Category
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
@@ -79,7 +81,7 @@ fun EditItemHeader(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
                 ),
-            visualTransformation = BRLVisualTransformation(),
+            visualTransformation = CurrencyVisualTransformation(LocalCurrency.current),
             textColor = entryColor,
         )
     }

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minhagrana.ui.theme.AppTheme
+import com.minhagrana.ui.theme.Elevation
 
 @Composable
 fun SecondaryButton(
@@ -30,11 +31,17 @@ fun SecondaryButton(
             .height(56.dp),
     enabled = enabled,
     onClick = onClick,
-    shape = MaterialTheme.shapes.small,
+    shape = MaterialTheme.shapes.medium,
     colors =
         ButtonDefaults.buttonColors(
             containerColor = colorButton,
             contentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+    elevation =
+        ButtonDefaults.buttonElevation(
+            defaultElevation = Elevation.raised,
+            pressedElevation = Elevation.card,
+            disabledElevation = Elevation.none,
         ),
 ) {
     Text(

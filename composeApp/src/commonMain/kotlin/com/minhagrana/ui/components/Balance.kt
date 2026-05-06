@@ -1,11 +1,12 @@
 package com.minhagrana.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,11 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.minhagrana.currency.LocalCurrency
+import com.minhagrana.currency.format
+import com.minhagrana.currency.hiddenBalanceText
 import com.minhagrana.ui.balanceColor
-import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
+import com.minhagrana.ui.theme.Elevation
 import minhagrana.composeapp.generated.resources.Res
-import minhagrana.composeapp.generated.resources.balance_hidden
 import minhagrana.composeapp.generated.resources.hide_balance
 import minhagrana.composeapp.generated.resources.ic_hide
 import minhagrana.composeapp.generated.resources.ic_unhide
@@ -37,43 +40,57 @@ fun Balance(
 ) {
     var isBalanceVisible by remember { mutableStateOf(balanceVisibility) }
 
-    Column(
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+        elevation =
+            CardDefaults.cardElevation(
+                defaultElevation = Elevation.card,
+            ),
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
-                .height(85.dp)
-                .background(MaterialTheme.colorScheme.surface),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp),
-            verticalAlignment = Alignment.Bottom,
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(85.dp),
         ) {
-            Column(
-                modifier = Modifier.weight(1f),
+            Row(
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                verticalAlignment = Alignment.Bottom,
             ) {
-                Text(
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    text = stringResource(Res.string.month_balance),
-                )
-                Text(
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = balanceColor(balanceValue),
-                    text = if (isBalanceVisible) formatDoubleToBRL(balanceValue) else stringResource(Res.string.balance_hidden),
+                Column(
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary,
+                        text = stringResource(Res.string.month_balance),
+                    )
+                    Text(
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = balanceColor(balanceValue),
+                        text = if (isBalanceVisible) format(balanceValue, LocalCurrency.current) else hiddenBalanceText(),
+                    )
+                }
+                Icon(
+                    modifier = Modifier.noRippleClickable { isBalanceVisible = !isBalanceVisible },
+                    painter =
+                        if (isBalanceVisible) {
+                            painterResource(Res.drawable.ic_unhide)
+                        } else {
+                            painterResource(Res.drawable.ic_hide)
+                        },
+                    contentDescription = stringResource(Res.string.hide_balance),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Icon(
-                modifier = Modifier.noRippleClickable { isBalanceVisible = !isBalanceVisible },
-                painter =
-                    if (isBalanceVisible) {
-                        painterResource(Res.drawable.ic_unhide)
-                    } else {
-                        painterResource(Res.drawable.ic_hide)
-                    },
-                contentDescription = stringResource(Res.string.hide_balance),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }

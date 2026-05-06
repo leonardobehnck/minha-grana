@@ -2,8 +2,6 @@ package com.minhagrana.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,7 +32,7 @@ fun SelectorEntry(
                 .noRippleClickable { onClick() }
                 .padding(8.dp),
         color = backgroundColor,
-        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+        shape = MaterialTheme.shapes.large,
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 32.dp, vertical = 4.dp),

@@ -1,14 +1,13 @@
 package com.minhagrana.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.minhagrana.currency.LocalCurrency
+import com.minhagrana.currency.format
 import com.minhagrana.entities.Entry
 import com.minhagrana.entities.EntryType
-import com.minhagrana.ui.formatDoubleToBRL
 import com.minhagrana.ui.theme.AppTheme
+import com.minhagrana.ui.theme.Elevation
 
 @Composable
 fun EntryItem(
@@ -33,14 +34,27 @@ fun EntryItem(
             EntryType.INCOME -> MaterialTheme.colorScheme.primary
         }
 
-    Column(
-        modifier = Modifier.clickable { onClick() },
+    Card(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.medium,
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+        elevation =
+            CardDefaults.cardElevation(
+                defaultElevation = Elevation.card,
+                pressedElevation = Elevation.raised,
+            ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
                     .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -62,7 +76,7 @@ fun EntryItem(
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(
-                    text = entry.category.name,
+                    text = entry.category.localizedName(),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall,
                 )
@@ -70,7 +84,7 @@ fun EntryItem(
 
             Column {
                 Text(
-                    text = formatDoubleToBRL(entry.value),
+                    text = format(entry.value, LocalCurrency.current),
                     color = color,
                     style = MaterialTheme.typography.labelMedium,
                 )
@@ -85,9 +99,6 @@ fun EntryItem(
             }
         }
     }
-    HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant,
-    )
 }
 
 @Preview
