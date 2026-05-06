@@ -19,6 +19,26 @@ val categoryTransport = Color(0xFFB33D3C)
 val categoryHealth = Color(0xFF08415C)
 val categoryBaby = Color(0xFFC0FDFB)
 val categoryPet = Color(0xFF8B5CF6)
+val categoryFood = Color(0xFFF59E0B)
+val categoryHome = Color(0xFF14B8A6)
+val categoryEducation = Color(0xFF3B82F6)
+val categoryLeisure = Color(0xFFEC4899)
+val categoryShopping = Color(0xFFFACC15)
+
+val categoryPalette: List<Color> =
+    listOf(
+        categoryIncome,
+        categoryTransport,
+        categoryHealth,
+        categoryBaby,
+        categoryPet,
+        categoryFood,
+        categoryHome,
+        categoryEducation,
+        categoryLeisure,
+        categoryShopping,
+        gray,
+    )
 
 val primaryLight = Color(0xFF17C747)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -40,7 +60,7 @@ val backgroundLight = Color(0xFFF2F2F2)
 val onBackgroundLight = Color(0xFF000000)
 val surfaceLight = Color(0xFFFFFFFF)
 val onSurfaceLight = Color(0xFF000000)
-val surfaceVariantLight = Color(0xFFE8E8E8)
+val surfaceVariantLight = Color(0xFFF5F5F5)
 val onSurfaceVariantLight = Color(0xFF404751)
 val outlineLight = Color(0xC8707882)
 val outlineVariantLight = Color(0x51C0C7D3)
