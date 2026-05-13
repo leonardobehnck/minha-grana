@@ -89,8 +89,8 @@ android {
             libs.versions.android.targetSdk
                 .get()
                 .toInt()
-        versionCode = 5
-        versionName = "1.5"
+        versionCode = 7
+        versionName = "1.7"
     }
     packaging {
         resources {
