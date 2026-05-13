@@ -1,8 +1,12 @@
 package com.minhagrana.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun BasicInputText(
@@ -37,13 +42,23 @@ fun BasicInputText(
         mutableStateOf(TextFieldValue(value))
     }
 
+    val shape = RoundedCornerShape(12.dp)
     Box(
-        modifier = modifier,
+        modifier =
+            modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    shape = shape,
+                ).border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = shape,
+                ).padding(horizontal = 12.dp, vertical = 10.dp),
     ) {
         if (value.isEmpty()) {
             Text(
                 text = hint,
-                color = textColor,
+                color = textColor.copy(alpha = 0.6f),
                 style = textStyle,
             )
         }

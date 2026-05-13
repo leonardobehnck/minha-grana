@@ -222,6 +222,7 @@ private fun NewEntryContent(
 
                     val currency = LocalCurrency.current
                     InputText(
+                        modifier = Modifier.fillMaxWidth(),
                         title = stringResource(Res.string.value),
                         maxLength = 11,
                         textFieldValue = value,

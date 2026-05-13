@@ -31,13 +31,14 @@ fun InputText(
     textFieldValue: TextFieldValue = TextFieldValue(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    modifier: Modifier =
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
     ) {
         Text(
             text = title,
@@ -69,10 +70,10 @@ fun InputText(
             },
             colors =
                 OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    focusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
                     focusedLabelColor = MaterialTheme.colorScheme.secondary,
                     cursorColor = MaterialTheme.colorScheme.onBackground,
                 ),
