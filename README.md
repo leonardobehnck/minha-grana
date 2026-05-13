@@ -1,6 +1,7 @@
 # Minha Grana
 
 A personal finance app built with **Kotlin Multiplatform**, using Compose Multiplatform for the UI, running on **Android** and **iOS**.
+<a href="https://play.google.com/store/apps/details?id=com.minhagrana" target="_blank" rel="noopener noreferrer">Play Store</a>
 
 ## Overview
 
